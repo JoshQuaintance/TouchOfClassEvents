@@ -1,0 +1,16 @@
+// @use '~attractions/_variables';
+// @use '~attractions/_mixins';
+// @use '~attractions/_appearances';
+
+// .something {
+//   color: variables.$main;
+
+//   // See the source code to discover these internal mixins:
+//   @include appearances.button;
+//   @include mixins.show-on-focus;
+// }
+
+@forward '~attractions/_variables' with (
+  $main: rgba(99, 102, 241, 1),
+);
+$something-else: red;
