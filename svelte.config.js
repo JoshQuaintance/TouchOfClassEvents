@@ -1,5 +1,6 @@
 import sveltePreprocess from 'svelte-preprocess';
 import makeAttractionsImporter from 'attractions/importer.js';
+import vercel from '@sveltejs/adapter-vercel';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -21,7 +22,8 @@ const config = {
 
 	kit: {
 		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte'
+		target: '#svelte',
+		adapter: vercel()
 	}
 };
 
