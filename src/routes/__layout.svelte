@@ -14,6 +14,5 @@
 
 	:global(html) {
 		background-color: #E5E5E5;
-		height: 150vh;
 	}
 </style>
