@@ -1,10 +1,20 @@
-# Changelogs
-
+# Changelog
 
 ## Version 0
 
-### 0.2.0
+### 0.2.1
 
+Added changelog route in the main page and styled.
+
+##### Changes
+
+- Added changelog
+  - Added route
+  - Custom styles
+  - Markdown parser and sanitizer
+
+### 0.2.0
+   
 Added a simple changelog mock to keep track of changes.
 
 ##### Changes
@@ -13,10 +23,10 @@ Added a simple changelog mock to keep track of changes.
 
 ### 0.1.1
 
-Hosted the app, available at:
+Hosted the app, available at: <br>
 https://touch-of-class-events.vercel.app
 
-##### **Changes**
+##### Changes
 
 - App hosted in vercel
 
@@ -24,7 +34,7 @@ https://touch-of-class-events.vercel.app
 
 Initialized project with TailWind and fixed the problem with the template config. Mockup landing page is also created.
 
-##### **Changes**
+##### Changes
 
 - Added content mockup
 - Added header and footer
