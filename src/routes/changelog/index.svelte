@@ -16,8 +16,10 @@
 	});
 </script>
 
-<div class="container flex flex-col justify-center px-16 pt-10">
-	{@html content}
+<div class="container flex flex-col justify-center items-center min-w-full py-16">
+	<div>
+		{@html content}
+	</div>
 </div>
 
 <style>

@@ -1,17 +1,75 @@
 h1 {
 	@apply md:text-6xl text-indigo-900 font-extrabold;
-    @apply mb-10;
+	@apply mb-14;
 }
 
 h2 {
-    @apply relative;
-    @apply md:text-4xl font-bold mb-5;
+	@apply relative;
+	@apply md:text-5xl font-bold mb-6 mt-10 font-neue;
 }
 
-h2::after {
+/* h2::after {
 	@apply rounded-full opacity-40;
 	@apply absolute -bottom-3 left-0;
 	@apply w-full h-[2px] bg-black;
 
 	content: '';
+} */
+
+h3 {
+	@apply font-semibold md:text-3xl font-neue text-gray-900;
+	@apply mb-4 mt-12;
+}
+
+h5 {
+	@apply font-bold text-xl mb-4 mt-2 text-indigo-900 text-opacity-90;
+}
+
+a {
+	@apply relative;
+
+	color: rgba(0, 47, 255, 0.9);
+}
+
+a::after {
+	@apply absolute;
+	@apply opacity-[65];
+
+	width: 2%;
+	height: 0%;
+	left: 0;
+	bottom: 2px;
+	z-index: -1;
+	transition: width 0.3s ease, height 0.3s ease-in-out 0.3s;
+	background-color: rgba(0, 174, 255, 0.534);
+
+	content: '';
+}
+
+a:hover::after {
+	height: 100%;
+	width: 95%;
+	transition: width 0.3s ease 0.3s, height 0.3s ease-in-out;
+}
+
+p {
+	@apply mb-3 md:text-2xl font-neue text-gray-700;
+}
+
+li {
+	@apply list-disc md:text-xl font-neue text-gray-700;
+	@apply md:ml-14;
+	@apply my-2;
+}
+
+li ul li {
+	@apply text-gray-600;
+
+	list-style-type: circle;
+}
+
+code {
+	@apply bg-gray-500 text-white;
+	@apply rounded;
+	@apply p-1;
 }
