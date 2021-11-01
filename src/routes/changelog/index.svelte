@@ -16,7 +16,7 @@
 	});
 </script>
 
-<div class="container flex flex-col justify-center items-center min-w-full py-16">
+<div class="container flex flex-col justify-center items-center min-w-full py-16 px-6 whitespace-line-wrap">
 	<div>
 		{@html content}
 	</div>
