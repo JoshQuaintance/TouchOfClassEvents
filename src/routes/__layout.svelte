@@ -13,6 +13,7 @@
 	}
 
 	:global(html) {
-		background-color: #E5E5E5;
+		/* @apply bg-cameo-pink-lightest; */
+		
 	}
 </style>

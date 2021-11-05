@@ -76,24 +76,24 @@
 						clip-rule="evenodd"
 					/>
 				</svg>
-
 				Menu
 			</button>
 			<!-- buttons - end -->
 		</header>
 		<!-- menu - end -->
 	</div>
-</div>
+</div> 
 
-<div class="bg-white py-6 sm:py-8 lg:py-12">
-	<div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
-		<div class="max-w-xl flex flex-col items-center text-center mx-auto">
+<!-- custom color -->
+<div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12 ">
+	<div class="max-w-screen-2xl px-4 md:px-8 mx-auto flex justify-center">
+		<div class="max-w-3xl flex flex-col items-center text-center">
 			<p class="text-indigo-500 md:text-lg xl:text-xl font-semibold mb-4 md:mb-6">
-				Proud to introduce
-			</p>
+				
+						</p>
 
 			<h1 class="text-black-800 text-3xl sm:text-4xl md:text-5xl font-bold mb-8 md:mb-12">
-				Revolutionary way to build the web
+				Welcome to your #1 <br> source for Event-Planning
 			</h1>
 
 			<div class="w-full flex flex-col sm:flex-row sm:justify-center gap-5 text-indigo-800">
@@ -115,7 +115,7 @@
 					class="text-indigo-900 active:text-gray-700 hover:bg-gray-300 transition-all ease-in-out 
 					
 					sm:px-8 sm:py-3 
-					">Take tour</Button
+					">Learn more</Button
 				>
 			</div>
 		</div>

@@ -2,6 +2,21 @@
 
 ## Version 0
 
+### 0.2.2
+
+Added content to welcome page
+
+##### Changes
+
+- Editted call to action
+  - Formated greeting message
+  - edited "Learn more" button
+- Added preset color for background
+- Added new routes
+  - Log in
+  - About
+- Added gitpod support for development process
+
 ### 0.2.1
 
 Added changelog route in the main page and styled.
