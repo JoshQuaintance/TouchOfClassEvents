@@ -93,7 +93,7 @@
 						</p>
 
 			<h1 class="text-black-800 text-3xl sm:text-4xl md:text-5xl font-bold mb-8 md:mb-12">
-				Welcome to your #1 source for Event-Planning
+				Welcome to your #1 <br> source for Event-Planning
 			</h1>
 
 			<div class="w-full flex flex-col sm:flex-row sm:justify-center gap-5 text-indigo-800">
