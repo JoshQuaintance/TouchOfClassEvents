@@ -1,37 +1,40 @@
-h1 {
-	@apply md:text-6xl text-indigo-900 font-extrabold;
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+
+ 
+#changelog-content h1 {
+	@apply text-4xl md:text-6xl text-indigo-900 font-extrabold;
 	@apply mb-14;
 }
 
-h2 {
+#changelog-content h2 {
 	@apply relative;
-	@apply md:text-5xl font-bold mb-6 mt-10 font-neue;
+	@apply text-3xl md:text-5xl font-bold mb-6 mt-10 font-neue;
 }
 
-/* h2::after {
+#changelog-content h2::after {
 	@apply rounded-full opacity-40;
-	@apply absolute -bottom-3 left-0;
-	@apply w-full h-[2px] bg-black;
+	@apply absolute -bottom-3 left-2;
+	@apply w-[5%] h-[2px] bg-black;
 
 	content: '';
-} */
+}
 
-h3 {
-	@apply font-semibold md:text-3xl font-neue text-gray-900;
+#changelog-content h3 {
+	@apply text-2xl font-semibold md:text-3xl font-neue text-gray-900;
 	@apply mb-4 mt-12;
 }
 
-h5 {
-	@apply font-bold text-xl mb-4 mt-2 text-indigo-900 text-opacity-90;
+#changelog-content h5 {
+	@apply font-bold text-base md:text-xl mb-4 mt-2 text-indigo-900 text-opacity-90;
 }
 
-a {
+#changelog-content a {
 	@apply relative;
 
 	color: rgba(0, 47, 255, 0.9);
 }
 
-a::after {
+#changelog-content a::after {
 	@apply absolute;
 	@apply opacity-[65];
 
@@ -46,29 +49,35 @@ a::after {
 	content: '';
 }
 
-a:hover::after {
+#changelog-content a:hover::after {
 	height: 100%;
 	width: 95%;
 	transition: width 0.3s ease 0.3s, height 0.3s ease-in-out;
 }
 
-p {
+#changelog-content p {
 	@apply mb-3 md:text-2xl font-neue text-gray-700;
 }
 
-li {
-	@apply list-disc md:text-xl font-neue text-gray-700;
-	@apply md:ml-14;
-	@apply my-2;
+#changelog-content ul {
+	@apply list-inside;
 }
 
-li ul li {
+#changelog-content li {
+	@apply list-disc md:text-xl font-neue text-gray-700;
+	@apply ml-4 md:ml-8;
+
+	/* @apply my-2; */
+}
+
+#changelog-content li ul li {
 	@apply text-gray-600;
+	@apply ml-6 md:ml-12;
 
 	list-style-type: circle;
 }
 
-code {
+#changelog-content code {
 	@apply bg-gray-500 text-white;
 	@apply rounded;
 	@apply p-1;

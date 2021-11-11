@@ -3,7 +3,7 @@
 	import DOMPurify from 'dompurify';
 	import marked from 'marked';
 
-	let content = 'Fetching Changelogs';
+	let content = 'Fetching Changelogs...';
 
 	onMount(async () => {
 		const data = await fetch('CHANGELOG.md');
@@ -16,8 +16,8 @@
 	});
 </script>
 
-<div class="container flex flex-col justify-center items-center min-w-full py-16">
-	<div>
+<div class="container flex flex-col justify-center items-center min-w-full py-16 px-6 whitespace-line-wrap">
+	<div id="changelog-content">
 		{@html content}
 	</div>
 </div>

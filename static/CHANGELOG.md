@@ -2,6 +2,24 @@
 
 ## Version 0
 
+### 0.2.3 - [November 10, 2021]
+
+Finished chore responsive changelog page
+
+##### Changes
+
+- Moved header to `__layout.svelte` from `src/index.svelte`
+- Contain changelog content into a level deeper
+- Made changelog responsive
+  - Changed font size
+  - Changed `list-style-position` to keep list bullets inside the container
+  - Changed paddings and margins
+- Started dating changelogs
+- Made README for the project
+  - About the project
+  - Members
+  - How to edit and run the project locally
+
 ### 0.2.2
 
 Added content to welcome page
@@ -29,7 +47,7 @@ Added changelog route in the main page and styled.
   - Markdown parser and sanitizer
 
 ### 0.2.0
-   
+
 Added a simple changelog mock to keep track of changes.
 
 ##### Changes
