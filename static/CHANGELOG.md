@@ -15,6 +15,10 @@ Finished chore responsive changelog page
   - Changed `list-style-position` to keep list bullets inside the container
   - Changed paddings and margins
 - Started dating changelogs
+- Made README for the project
+  - About the project
+  - Members
+  - How to edit and run the project locally
 
 ### 0.2.2
 
