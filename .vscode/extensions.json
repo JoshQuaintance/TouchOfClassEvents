@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "aaron-bond.better-comments",
+        "esbenp.prettier-vscode",
+        "svelte.svelte-vscode",
+        "bradlc.vscode-tailwindcss"
+    ]
+}
