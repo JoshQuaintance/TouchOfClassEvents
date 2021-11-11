@@ -98,5 +98,7 @@
 
 	:global(html) {
 		background-color: #e5e5e5;
+		/* @apply bg-cameo-pink-lightest; */
+		
 	}
 </style>

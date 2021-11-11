@@ -25,6 +25,13 @@ module.exports = {
 					400: '#3A2555'
 				},
 
+				'cameo-pink': {
+					lightest: '#FAF0F2',
+					light: "F0D1D9",
+				},
+				
+			
+
 				prussian: {
 					lightest: '#1F5784',
 					light: '#174163',
