@@ -27,7 +27,7 @@ module.exports = {
 
 				'cameo-pink': {
 					lightest: '#FAF0F2',
-					light: "F0D1D9",
+					light: "#F0D1D9",
 				},
 				
 			
