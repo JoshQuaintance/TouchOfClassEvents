@@ -9,14 +9,24 @@
     import anime from 'animejs';
     import { onMount } from 'svelte';
 
-    let textWrapper;
+    let textWrapper: HTMLSpanElement;
+    let textWrapper2: HTMLSpanElement;
     onMount(() => {
         textWrapper.innerHTML = textWrapper.textContent.replace(
             /([a-z#A-Z0-9\-])/g,
             "<span class='letter inline-block'>$&</span>"
         );
 
-        let lettersWidth = document.querySelector('.ml11 .letters').getBoundingClientRect().width;
+        textWrapper2.innerHTML = textWrapper2.textContent.replace(
+            /([a-z#A-Z0-9\-])/g,
+            "<span class='letter inline-block'>$&</span>"
+        );
+
+        let lettersWidth = document.querySelector('.ml11 .letters-2').getBoundingClientRect().width;
+        
+    
+        textWrapper.style.opacity = '1';
+        textWrapper2.style.opacity = '1';
 
         anime
             .timeline({
@@ -44,12 +54,15 @@
                 },
                 '-=750'
             )
-            .add({
-                targets: '.ml11 .line',
-                scaleY: [1, 0],
-                opacity: [1, .5],
-                duration: 700
-            }, '-=200');
+            .add(
+                {
+                    targets: '.ml11 .line',
+                    scaleY: [1, 0],
+                    opacity: [1, 0.5],
+                    duration: 700
+                },
+                '-=200'
+            );
     });
 </script>
 
@@ -63,12 +76,14 @@
         <div class="max-w-3xl flex flex-col items-center text-center">
             <p class="text-indigo-500 md:text-lg xl:text-xl font-semibold mb-4 md:mb-6" />
 
-            <h1 class="ml11 text-black-800 text-3xl sm:text-4xl md:text-5xl font-bold mb-8 md:mb-12">
-                <span class="text-wrapper">
+            <h1 class="ml11 text-black-800 text-3xl sm:text-2xl md:text-5xl font-bold mb-8 md:mb-12">
+                <span class="text-wrapper" style="width: fit-content;">
                     <span class="line line1" />
-                    <span class="letters inline-block " bind:this={textWrapper}
-                        >Welcome to your #1 source<br /> for Event-Planning
+                    <span class="letters inline-block" bind:this={textWrapper} style="opacity: 0;"
+                        >Welcome to your #1
                     </span>
+                    <br>
+                    <span class="letters-2 inline-block" bind:this={textWrapper2} style="opacity: 0;">source for Event-Planning</span>
                 </span>
             </h1>
 
@@ -699,6 +714,14 @@
                                 href="#"
                                 class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
                                 >FAQ</a
+                            >
+                        </div>
+
+                        <div>
+                            <a
+                                href="/changelog"
+                                class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
+                                >Changelog</a
                             >
                         </div>
                     </nav>
