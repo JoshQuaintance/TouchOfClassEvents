@@ -1,27 +1,55 @@
+<!-- 
+	Description: Index file for changelog route
+	File Location: src/routes/changelog/index.svelte 
+ -->
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import DOMPurify from 'dompurify';
-	import marked from 'marked';
+    export const prerender = true;
+    import { onMount } from 'svelte';
+    import DOMPurify from 'dompurify';
+    import marked from 'marked';
+    import { headerHeight } from '../stores';
+    import { Divider } from 'attractions';
 
-	let content = 'Fetching Changelogs...';
+    let content;
 
-	onMount(async () => {
-		const data = await fetch('CHANGELOG.md');
-		let text = await data.text();
-		let parsed = marked(text);
+    onMount(async () => {
+        const data = await fetch('CHANGELOG.md');
+        let text = await data.text();
+        let parsed = marked(text);
 
-		content = DOMPurify.sanitize(parsed, { USE_PROFILES: { html: true } });
-
-		// content = DOMPurify.sanitize(marked(await data.text()), { USE_PROFILES: { html: true } });
-	});
+        content = DOMPurify.sanitize(parsed, { USE_PROFILES: { html: true } });
+    });
 </script>
 
-<div class="container flex flex-col justify-center items-center min-w-full py-16 px-6 whitespace-line-wrap">
-	<div id="changelog-content">
-		{@html content}
-	</div>
-</div>
+<svelte:head>
+    <title>Changelog - Touch of Class Events</title>
+</svelte:head>
+
+<Divider style="margin-top: {$headerHeight}px; opacity: 0;" />
+{#if content}
+    <div
+        class="relative container flex flex-col justify-center items-center min-w-full pb-16 px-6 whitespace-line-wrap mt-16"
+    >
+        <div id="changelog-content">
+            {@html content}
+        </div>
+    </div>
+{:else}
+    <div class="fixed w-screen h-screen bg-gray-800 bg-opacity-90 z-40 backdrop-filter blur-lg" />
+
+    <div
+        class="fixed w-screen h-screen bg-transparent flex flex-col justify-center items-center z-50 text-cameo-pink-lightest"
+    >
+        <!-- Loading spinner got from https://tobiasahlin.com/spinkit -->
+        <div class="spinner">
+            <div class="double-bounce1" />
+            <div class="double-bounce2" />
+        </div>
+
+        Fetching Changelogs ...
+    </div>
+{/if}
 
 <style>
-	@import './style.css';
+    @import './style.css';
 </style>
