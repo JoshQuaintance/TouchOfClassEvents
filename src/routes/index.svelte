@@ -1,18 +1,111 @@
+<!-- 
+    Description: Index file for main page
+    File Location: src/routes/index.svelte 
+ -->
 <script lang="ts">
-	let dark = false;
-	// @ts-ignore
-	import { Button } from 'attractions';
+    let dark = false;
+    // @ts-ignore
+    import { Button } from 'attractions';
+    import anime from 'animejs';
+    import { onMount } from 'svelte';
+
+    let textWrapper;
+    onMount(() => {
+        textWrapper.innerHTML = textWrapper.textContent.replace(
+            /([a-z#A-Z0-9\-])/g,
+            "<span class='letter inline-block'>$&</span>"
+        );
+
+        let lettersWidth = document.querySelector('.ml11 .letters').getBoundingClientRect().width;
+
+        anime
+            .timeline({
+                easing: 'easeOutExpo',
+                loop: false
+            })
+            .add({
+                targets: '.ml11 .line',
+                scaleY: [0, 1],
+                opacity: [0.5, 1],
+                duration: 700
+            })
+            .add({
+                targets: '.ml11 .line',
+                translateX: [0, lettersWidth + 10],
+                duration: 700,
+                delay: 100
+            })
+            .add(
+                {
+                    targets: '.ml11 .letter',
+                    opacity: [0, 1],
+                    duration: 600,
+                    delay: (el, i) => 34 * (i + 1)
+                },
+                '-=750'
+            )
+            .add({
+                targets: '.ml11 .line',
+                scaleY: [1, 0],
+                opacity: [1, .5],
+                duration: 700
+            }, '-=200');
+    });
 </script>
 
+<svelte:head>
+    <title>Home - Touch of Class Events</title>
+</svelte:head>
+
 <!-- custom color -->
-<div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12 ">
-    <div class="max-w-screen-2xl px-4 md:px-8 mx-auto flex justify-center">
+<div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12 h-screen flex justify-center items-center">
+    <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
         <div class="max-w-3xl flex flex-col items-center text-center">
             <p class="text-indigo-500 md:text-lg xl:text-xl font-semibold mb-4 md:mb-6" />
 
-            <h1 class="text-black-800 text-3xl sm:text-4xl md:text-5xl font-bold mb-8 md:mb-12">
-                Welcome to your #1 <br /> source for Event-Planning
+            <h1 class="ml11 text-black-800 text-3xl sm:text-4xl md:text-5xl font-bold mb-8 md:mb-12">
+                <span class="text-wrapper">
+                    <span class="line line1" />
+                    <span class="letters inline-block " bind:this={textWrapper}
+                        >Welcome to your #1 source<br /> for Event-Planning
+                    </span>
+                </span>
             </h1>
+
+            <style>
+                .ml11 {
+                    font-weight: 700;
+                    font-size: 3.5em;
+                }
+
+                .ml11 .line {
+                    opacity: 0;
+                    position: absolute;
+                    left: 0;
+                    height: 100%;
+                    width: 3px;
+                    background-color: black;
+                    transform-origin: 0 50%;
+                }
+
+                .ml11 .line1 {
+                    top: 0;
+                    left: 0;
+                }
+
+                .ml11 .text-wrapper {
+                    position: relative;
+                    display: inline-block;
+                    padding-top: 0.1em;
+                    padding-right: 0.05em;
+                    padding-bottom: 0.15em;
+                }
+
+                .ml11 .letter {
+                    display: inline-block;
+                    line-height: 1em;
+                }
+            </style>
 
             <div class="w-full flex flex-col sm:flex-row sm:justify-center gap-5 text-indigo-800">
                 <Button
@@ -39,11 +132,10 @@
         </div>
     </div>
 </div>
-<!-- ! ADD WHITESPACE HERE -->
 
 <!-- Content One -->
 
-<div class="bg-white py-6 sm:py-8 lg:py-12">
+<div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
     <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
         <!-- text - start -->
         <div class="mb-10 md:mb-16">
@@ -273,13 +365,11 @@
 </div>
 <!-- Content Two -->
 
-<div class="bg-white py-6 sm:py-8 lg:py-12">
+<div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
     <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
         <!-- text - start -->
         <div class="mb-10 md:mb-16">
-            <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">
-                Collections
-            </h2>
+            <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">Collections</h2>
 
             <p class="max-w-screen-md text-gray-500 md:text-lg text-center mx-auto">
                 This is a section of some simple filler text, also known as placeholder text. It shares some
@@ -290,10 +380,7 @@
 
         <div class="grid sm:grid-cols-2 gap-6">
             <!-- product - start -->
-            <a
-                href="#"
-                class="group h-80 flex items-end bg-gray-100 rounded-lg overflow-hidden shadow-lg relative p-4"
-            >
+            <a href="#" class="group h-80 flex items-end bg-gray-100 rounded-lg overflow-hidden shadow-lg relative p-4">
                 <img
                     src="https://images.unsplash.com/photo-1620243318482-fdd2affd7a38?auto=format&q=75&fit=crop&w=750"
                     loading="lazy"
@@ -313,10 +400,7 @@
             <!-- product - end -->
 
             <!-- product - start -->
-            <a
-                href="#"
-                class="group h-80 flex items-end bg-gray-100 rounded-lg overflow-hidden shadow-lg relative p-4"
-            >
+            <a href="#" class="group h-80 flex items-end bg-gray-100 rounded-lg overflow-hidden shadow-lg relative p-4">
                 <img
                     src="https://images.unsplash.com/photo-1620241608701-94ef138c7ec9?auto=format&q=75&fit=crop&w=750"
                     loading="lazy"
@@ -340,7 +424,7 @@
 
 <!-- Content Three -->
 
-<div class="bg-white py-6 sm:py-8 lg:py-12">
+<div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
     <div class="max-w-screen-xl px-4 md:px-8 mx-auto">
         <!-- text - start -->
         <div class="mb-10 md:mb-16">
@@ -359,19 +443,12 @@
             <!-- question - start -->
             <div class="bg-gray-100 rounded-lg p-5">
                 <div class="flex justify-between items-center border-b gap-4 pb-4 mb-4">
-                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">
-                        How does the product work?
-                    </h3>
+                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">How does the product work?</h3>
 
                     <span
                         class="w-8 h-8 inline-flex justify-center items-center flex-shrink-0 bg-gray-300 text-gray-500 rounded-full"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="w-6 h-6"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
                             <path
                                 fill-rule="evenodd"
                                 d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
@@ -382,8 +459,8 @@
                 </div>
 
                 <p class="text-gray-500">
-                    This is a section of some simple filler text, also known as placeholder text. It shares
-                    some characteristics of a real written text but is random or otherwise generated.
+                    This is a section of some simple filler text, also known as placeholder text. It shares some
+                    characteristics of a real written text but is random or otherwise generated.
                 </p>
             </div>
             <!-- question - end -->
@@ -391,19 +468,12 @@
             <!-- question - start -->
             <div class="bg-gray-100 rounded-lg p-5">
                 <div class="flex justify-between items-center border-b gap-4 pb-4 mb-4">
-                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">
-                        What are the features?
-                    </h3>
+                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">What are the features?</h3>
 
                     <span
                         class="w-8 h-8 inline-flex justify-center items-center flex-shrink-0 bg-gray-300 text-gray-500 rounded-full"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="w-6 h-6"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
                             <path
                                 fill-rule="evenodd"
                                 d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
@@ -414,8 +484,8 @@
                 </div>
 
                 <p class="text-gray-500">
-                    This is a section of some simple filler text, also known as placeholder text. It shares
-                    some characteristics of a real written text but is random or otherwise generated.
+                    This is a section of some simple filler text, also known as placeholder text. It shares some
+                    characteristics of a real written text but is random or otherwise generated.
                 </p>
             </div>
             <!-- question - end -->
@@ -423,19 +493,12 @@
             <!-- question - start -->
             <div class="bg-gray-100 rounded-lg p-5">
                 <div class="flex justify-between items-center border-b gap-4 pb-4 mb-4">
-                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">
-                        What about integrations?
-                    </h3>
+                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">What about integrations?</h3>
 
                     <span
                         class="w-8 h-8 inline-flex justify-center items-center flex-shrink-0 bg-gray-300 text-gray-500 rounded-full"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="w-6 h-6"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
                             <path
                                 fill-rule="evenodd"
                                 d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
@@ -446,8 +509,8 @@
                 </div>
 
                 <p class="text-gray-500">
-                    This is a section of some simple filler text, also known as placeholder text. It shares
-                    some characteristics of a real written text but is random or otherwise generated.
+                    This is a section of some simple filler text, also known as placeholder text. It shares some
+                    characteristics of a real written text but is random or otherwise generated.
                 </p>
             </div>
             <!-- question - end -->
@@ -460,12 +523,7 @@
                     <span
                         class="w-8 h-8 inline-flex justify-center items-center flex-shrink-0 bg-gray-300 text-gray-500 rounded-full"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="w-6 h-6"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
                             <path
                                 fill-rule="evenodd"
                                 d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
@@ -476,8 +534,8 @@
                 </div>
 
                 <p class="text-gray-500">
-                    This is a section of some simple filler text, also known as placeholder text. It shares
-                    some characteristics of a real written text but is random or otherwise generated.
+                    This is a section of some simple filler text, also known as placeholder text. It shares some
+                    characteristics of a real written text but is random or otherwise generated.
                 </p>
             </div>
             <!-- question - end -->
@@ -486,12 +544,10 @@
 </div>
 
 <!-- Footer -->
-<footer class="bg-white">
+<footer class="bg-cameo-pink-lightest">
     <div class="pt-4 sm:pt-10 lg:pt-12 pb-16">
         <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
-            <div
-                class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 border-t gap-12 lg:gap-8 pt-10 lg:pt-12"
-            >
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 border-t gap-12 lg:gap-8 pt-10 lg:pt-12">
                 <div class="col-span-full lg:col-span-2">
                     <!-- logo - start -->
                     <div class="lg:-mt-2 mb-4">
@@ -774,4 +830,7 @@
 </footer>
 
 <style>
+    #svelte {
+        overflow-x: none;
+    }
 </style>
