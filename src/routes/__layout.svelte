@@ -12,13 +12,15 @@
 
 <script lang="ts">
     import PageTransitions from '$components/PageTransitions.svelte';
+    import { headerHeight } from '$utils/stores';
 
     import Nav from '../components/Nav.svelte';
     export let key;
-    
 </script>
 
 <Nav />
+
+<div style="margin-top: {$headerHeight}px;" />
 
 <PageTransitions refresh={key}>
     <slot />

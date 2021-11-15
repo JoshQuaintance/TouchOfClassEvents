@@ -8,6 +8,7 @@
     import { Button } from 'attractions';
     import anime from 'animejs';
     import { onMount } from 'svelte';
+    import { headerHeight } from '$utils/stores';
 
     let textWrapper: HTMLSpanElement;
     let textWrapper2: HTMLSpanElement;
@@ -23,8 +24,7 @@
         );
 
         let lettersWidth = document.querySelector('.ml11 .letters-2').getBoundingClientRect().width;
-        
-    
+
         textWrapper.style.opacity = '1';
         textWrapper2.style.opacity = '1';
 
@@ -71,7 +71,11 @@
 </svelte:head>
 
 <!-- custom color -->
-<div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12 h-screen flex justify-center items-center">
+<div
+    id="call-to-action"
+    class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-10 flex justify-center items-center"
+    style="height: calc(100vh - {$headerHeight}px) !important;"
+>
     <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
         <div class="max-w-3xl flex flex-col items-center text-center">
             <p class="text-indigo-500 md:text-lg xl:text-xl font-semibold mb-4 md:mb-6" />
@@ -82,8 +86,10 @@
                     <span class="letters inline-block" bind:this={textWrapper} style="opacity: 0;"
                         >Welcome to your #1
                     </span>
-                    <br>
-                    <span class="letters-2 inline-block" bind:this={textWrapper2} style="opacity: 0;">source for Event-Planning</span>
+                    <br />
+                    <span class="letters-2 inline-block" bind:this={textWrapper2} style="opacity: 0;"
+                        >source for Event-Planning</span
+                    >
                 </span>
             </h1>
 
