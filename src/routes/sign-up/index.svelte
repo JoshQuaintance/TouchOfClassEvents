@@ -1,50 +1,56 @@
+<script lang="ts">
+    import type { Auth0Client } from '@auth0/auth0-spa-js';
+
+    import { FormField, TextField } from 'attractions';
+    import { MailIcon, UserIcon } from 'svelte-feather-icons';
+
+    import auth from '../../authService';
+    import { isAuthenticated, user } from '$utils/stores';
+    import { onMount } from 'svelte';
+
+    let auth0Client: 
+    onMount(async () => {
+        auth0Client = await auth.createClient();
+
+        isAuthenticated.set(await auth0Client.isAuthenticated());
+        user.set(await auth0Client.getUser());
+    });
+
+    function login() {
+        auth.loginWithPopup(auth0Client);
+    }
+
+    function logout() {
+        auth.logout(auth0Client);
+    }
+</script>
+
 <div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
     <div class="max-w-screen-2xl px-4 md:px-8 mx-auto ">
-        <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-8">Login</h2>
+        <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-8">Sign Up</h2>
 
         <form class="max-w-lg border rounded-lg mx-auto bg-white">
             <div class="flex flex-col gap-4 p-4 md:p-8">
                 <div>
-                    <label for="email" class="inline-block text-gray-800 text-sm sm:text-base mb-2">Email</label>
-                    <input
-                        name="email"
-                        class="
-                            w-full
-                            bg-gray-50
-                            text-gray-800
-                            border
-                            focus:ring
-                            ring-indigo-300
-                            rounded
-                            outline-none
-                            transition
-                            duration-100
-                            px-3
-                            py-2
-                        "
-                    />
+                    <TextField label="Email" outline withItem class="relative">
+                        <MailIcon size="24" class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
+                    </TextField>
                 </div>
 
                 <div>
-                    <label for="password" class="inline-block text-gray-800 text-sm sm:text-base mb-2">Password</label>
-                    <input
-                        name="password"
-                        class="
-                            w-full
-                            bg-gray-50
-                            text-gray-800
-                            border
-                            focus:ring
-                            ring-indigo-300
-                            rounded
-                            outline-none
-                            transition
-                            duration-100
-                            px-3
-                            py-2
-                        "
-                    />
+                    <TextField label="Username" outline withItem class="relative">
+                        <UserIcon size="24" class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
+                    </TextField>
                 </div>
+
+                <style>
+                    .text-field input {
+                        @apply rounded outline-none;
+                        @apply px-3 py-2;
+
+                        border-radius: 5px !important;
+                    }
+                </style>
 
                 <button
                     class="
@@ -66,12 +72,12 @@
                         py-3
                     "
                 >
-                    Log in
+                    Sign Up
                 </button>
 
                 <div class="flex justify-center items-center relative">
                     <span class="h-px bg-gray-300 absolute inset-x-0" />
-                    <span class="bg-white text-gray-400 text-sm relative px-4">Log in with social</span>
+                    <span class="bg-white text-gray-400 text-sm relative px-4">Sign Up with social</span>
                 </div>
 
                 <button
@@ -115,6 +121,7 @@
                 </button>
 
                 <button
+                    on:click={login}
                     class="
                         flex
                         justify-center
