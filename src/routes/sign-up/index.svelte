@@ -8,20 +8,21 @@
     import { isAuthenticated, user } from '$utils/stores';
     import { onMount } from 'svelte';
 
-    let auth0Client: 
-    onMount(async () => {
-        auth0Client = await auth.createClient();
+    let auth0Client: Auth0Client;
 
-        isAuthenticated.set(await auth0Client.isAuthenticated());
-        user.set(await auth0Client.getUser());
+    onMount(async () => {
+        auth0Client = await auth.createWebClient();
+
+        // isAuthenticated.set(await auth0Client.isAuthenticated());
+        // user.set(await auth0Client.getUser());
     });
 
     function login() {
-        auth.loginWithPopup(auth0Client);
+        auth.loginWithGoogle();
     }
 
     function logout() {
-        auth.logout(auth0Client);
+        // auth.logout(auth0Client);
     }
 </script>
 
