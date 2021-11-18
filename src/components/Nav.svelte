@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { Button } from 'attractions';
+    import { Button, DropdownShell, Dropdown } from 'attractions';
     import { ChevronDownIcon } from 'svelte-feather-icons';
     import { headerHeight } from '$utils/stores';
+    
 </script>
 
 <div class="header-container fixed top-0 z-10 w-screen" bind:clientHeight={$headerHeight}>
@@ -15,25 +16,57 @@
 
             <!-- nav - start -->
             <nav class="hidden lg:flex gap-12">
-                <a
-                    href="/"
-                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100"
-                    >Home</a
-                >
-                <a href="#" class="inline-flex items-center text-indigo-500 text-lg font-semibold gap-1">
-                    Features
-                    <ChevronDownIcon size="1x" class="fill-current text-indigo-500" />
-                </a>
-                <a
-                    href="#"
-                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100"
-                    >Pricing</a
-                >
-                <a
-                    href="#"
-                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100"
-                    >About</a
-                >
+                <Button href="/" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent">
+                    Home
+                </Button>
+                <div>
+                    <DropdownShell let:toggle >
+                        <Button on:click={toggle} class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
+                          Features
+                          <ChevronDownIcon size="1x" class="fill-current" />
+                        </Button>
+                        <Dropdown>
+                          <div class="padded">
+                            <a href="#" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
+                                Seating Chart
+                            </a>
+                            <br>
+                            <a href="#" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
+                                Option 2
+                            </a>
+                          </div>
+                        </Dropdown>
+                      </DropdownShell>         
+                </div>
+
+                  <style>
+                      .dropdown {
+                          /*position: absolute;*/
+                          margin-left: +3%;
+                          /* transform: translate(0 50%) */
+                      }
+
+                      .dropdown .padded {
+                          width: 9rem;
+                          height: 4rem;
+                          text-align: center;
+                          font-size: 1.25em;
+                      }
+
+                  </style>
+                <Button href="#" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent">
+                    Pricing
+                </Button>
+                <Button href="#" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent">
+                    About
+                </Button>
+
+                <style>
+                    input[type="button"] {
+                        border: none;
+                        outline:none;
+                    }
+                </style>
             </nav>
             <!-- nav - end -->
 
