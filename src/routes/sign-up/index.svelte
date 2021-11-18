@@ -2,27 +2,22 @@
     import type { Auth0Client } from '@auth0/auth0-spa-js';
 
     import { FormField, TextField } from 'attractions';
-    import { MailIcon, UserIcon } from 'svelte-feather-icons';
+    import { MailIcon, UserIcon, KeyIcon } from 'svelte-feather-icons';
 
     import auth from '../../authService';
-    import { isAuthenticated, user } from '$utils/stores';
     import { onMount } from 'svelte';
+    import hash from '$utils/hash';
 
-    let auth0Client: Auth0Client;
+    let userEmail: string;
+    let userName: string;
+    let userPass: string;
 
-    onMount(async () => {
-        auth0Client = await auth.createWebClient();
-
-        // isAuthenticated.set(await auth0Client.isAuthenticated());
-        // user.set(await auth0Client.getUser());
-    });
-
-    function login() {
-        auth.loginWithGoogle();
-    }
-
-    function logout() {
-        // auth.logout(auth0Client);
+    async function emailSignUp() {
+        auth.signup({
+            email: userEmail,
+            password: userPass,
+            username: userName
+        });
     }
 </script>
 
@@ -30,17 +25,53 @@
     <div class="max-w-screen-2xl px-4 md:px-8 mx-auto ">
         <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-8">Sign Up</h2>
 
-        <form class="max-w-lg border rounded-lg mx-auto bg-white">
+        <form class="max-w-lg border rounded-lg mx-auto bg-white" on:submit={(e) => e.preventDefault()}>
             <div class="flex flex-col gap-4 p-4 md:p-8">
                 <div>
-                    <TextField label="Email" outline withItem class="relative">
+                    <TextField
+                        type="email"
+                        placeholder="example@mail.com"
+                        label="Email*"
+                        outline
+                        withItem
+                        required
+                        class="relative"
+                        bind:value={userEmail}
+                    >
                         <MailIcon size="24" class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
                     </TextField>
                 </div>
 
                 <div>
-                    <TextField label="Username" outline withItem class="relative">
+                    <TextField
+                        type="text"
+                        placeholder="SuperCoolUsername"
+                        label="Username*"
+                        outline
+                        withItem
+                        required
+                        bind:value={userName}
+                        class="relative"
+                    >
                         <UserIcon size="24" class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
+                    </TextField>
+                </div>
+
+                <div>
+                    <TextField
+                        type="password"
+                        placeholder="**********"
+                        label="Password*"
+                        outline
+                        withItem
+                        required
+                        bind:value={userPass}
+                        class="relative"
+                    >
+                        <KeyIcon
+                            size="18"
+                            class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2 rotate-45"
+                        />
                     </TextField>
                 </div>
 
@@ -49,11 +80,18 @@
                         @apply rounded outline-none;
                         @apply px-3 py-2;
 
-                        border-radius: 5px !important;
+                        border-radius: 6px !important;
+                    }
+
+                    .text-field label {
+                        height: fit-content;
                     }
                 </style>
 
+                <span class="text-red-600 italic text-right">* required</span>
+
                 <button
+                    on:click={emailSignUp}
                     class="
                         block
                         bg-gray-800
@@ -122,7 +160,6 @@
                 </button>
 
                 <button
-                    on:click={login}
                     class="
                         flex
                         justify-center

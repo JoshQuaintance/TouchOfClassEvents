@@ -22,29 +22,16 @@ async function createWebClient() {
     return webAuth;
 }
 
-// async function loginWithPopup(client: Auth0Client) {
+async function signup({ email, password, username }: { email: string; password: string; username: string }) {
+    const webAuth = await createWebClient();
 
-// }
-
-async function loginWithGoogle() {
-    let webAuth = await createWebClient();
-
-    webAuth.popup.authorize(
-        //@ts-ignore
-        {
-            // clientId: config.clientId,
-            // domain: config.domain,
-            redirectUri: 'http://localhost:3000/sign-up/checkout-auth',
-            responseType: 'token id_token',
-            connection: 'google-oauth2'
-        },
-        (err, authResult) => {
-            if (err) alert(JSON.stringify(err));
-            debugger;
-            let token = authResult.accessToken;
-            alert(token);
-        }
-    );
+    webAuth.signup({
+        clientId: import.meta.env.VITE_SECRET_AUTH0_CLIENT_ID as string,
+        email,
+        password,
+        username,
+        
+    })
 }
 
 // async function loginWithPopup(client: Auth0Client, options?) {
@@ -68,8 +55,8 @@ function logout(client) {
 
 const auth = {
     createWebClient,
-    loginWithGoogle,
-    logout
+    logout,
+    signup
     // createClient,
     // loginWithPopup,
     // logout
