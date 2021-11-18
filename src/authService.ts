@@ -2,7 +2,6 @@ import createAuth0Client from '@auth0/auth0-spa-js';
 import { WebAuth } from 'auth0-js';
 import type { Auth0Client } from '@auth0/auth0-spa-js';
 import { user, isAuthenticated, popupOpen } from '$utils/stores';
-import config from '../auth_config';
 
 // async function createClient() {
 //     let auth0Client: Auth0Client = await createAuth0Client({
@@ -16,8 +15,8 @@ import config from '../auth_config';
 
 async function createWebClient() {
     let webAuth = new WebAuth({
-        domain: config.domain,
-        clientID: config.clientId
+        domain: import.meta.env.VITE_SECRET_AUTH0_DOMAIN as string,
+        clientID: import.meta.env.VITE_SECRET_AUTH0_CLIENT_ID as string
     });
 
     return webAuth;
