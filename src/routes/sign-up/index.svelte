@@ -1,23 +1,31 @@
-<script lang="ts">
-    import type { Auth0Client } from '@auth0/auth0-spa-js';
+<!--
+    File Location: src/routes/sign-up/index.svelte
+    Description: This file will render what's displayed on '/sign-up' page
+-->
 
+<script lang="ts">
     import { FormField, TextField } from 'attractions';
     import { MailIcon, UserIcon, KeyIcon } from 'svelte-feather-icons';
 
-    import auth from '../../authService';
-    import { onMount } from 'svelte';
-    import hash from '$utils/hash';
+    import { checkIfUserExist } from './index';
 
     let userEmail: string;
-    let userName: string;
+    let nickname: string;
     let userPass: string;
 
     async function emailSignUp() {
-        auth.signup({
-            email: userEmail,
-            password: userPass,
-            username: userName
-        });
+        (userEmail = 'test@gmail.com'), (nickname = 'cat');
+        let userExist = await checkIfUserExist(userEmail, nickname);
+        alert(userExist)
+
+        const res = await fetch('/sign-up', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: userEmail,
+                nickname,
+                password: userPass
+            })
+        })
     }
 </script>
 
@@ -50,7 +58,7 @@
                         outline
                         withItem
                         required
-                        bind:value={userName}
+                        bind:value={nickname}
                         class="relative"
                     >
                         <UserIcon size="24" class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
