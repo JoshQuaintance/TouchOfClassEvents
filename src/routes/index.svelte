@@ -1,6 +1,6 @@
 <!-- 
-    Description: Index file for main page
     File Location: src/routes/index.svelte 
+    Description: Renders main page
  -->
 <script lang="ts">
     let dark = false;

@@ -1,3 +1,7 @@
+/**
+ * This file will be deleted, but it has information we might need
+ */
+
 function str2ab(str) {
     const buf = new ArrayBuffer(str.length);
     const bufView = new Uint8Array(buf);

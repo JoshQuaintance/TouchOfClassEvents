@@ -1,3 +1,9 @@
+/**
+ * File Location: src/utils/stores.ts
+ * Description: All the svelte stores used are located here.
+ *  Note: Stores are used to share data between routes
+ */
+
 import { writable, derived } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 

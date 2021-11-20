@@ -1,6 +1,6 @@
 <!-- 
-    Description: Layout that will be used for all routes
     File Location: src/routes/__layout.svelte
+    Description: Layout that will be used for all routes
  -->
 <script context="module">
     export const load = async ({ page }) => ({
