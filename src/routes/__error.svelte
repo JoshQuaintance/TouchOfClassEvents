@@ -1,3 +1,8 @@
+<!--
+    File Location: src/routes/__error.svelte
+    Description: Layout/template for error page
+-->
+
 <script>
     export const prerender = true;
 </script>

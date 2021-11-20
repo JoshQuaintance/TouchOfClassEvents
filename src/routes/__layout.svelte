@@ -1,6 +1,6 @@
 <!-- 
-    Description: Layout that will be used for all routes
     File Location: src/routes/__layout.svelte
+    Description: Layout that will be used for all routes
  -->
 <script context="module">
     export const load = async ({ page }) => ({
@@ -12,13 +12,15 @@
 
 <script lang="ts">
     import PageTransitions from '$components/PageTransitions.svelte';
+    import { headerHeight } from '$utils/stores';
 
     import Nav from '../components/Nav.svelte';
     export let key;
-    
 </script>
 
 <Nav />
+
+<div style="margin-top: {$headerHeight}px;" />
 
 <PageTransitions refresh={key}>
     <slot />

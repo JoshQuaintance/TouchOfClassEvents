@@ -1,27 +1,31 @@
-<script lang="ts">
-    import type { Auth0Client } from '@auth0/auth0-spa-js';
+<!--
+    File Location: src/routes/sign-up/index.svelte
+    Description: This file will render what's displayed on '/sign-up' page
+-->
 
+<script lang="ts">
     import { FormField, TextField } from 'attractions';
     import { MailIcon, UserIcon, KeyIcon } from 'svelte-feather-icons';
 
-    import auth from '../../authService';
-    import { isAuthenticated, user } from '$utils/stores';
-    import { email as emailRegex } form '$utils/regex'
-    import { onMount } from 'svelte';
-
-    let auth0Client: Auth0Client;
-
-    onMount(async () => {
-        // auth0Client = await auth.createWebClient();
-        // isAuthenticated.set(await auth0Client.isAuthenticated());
-        // user.set(await auth0Client.getUser());
-    });
+    import { checkIfUserExist } from './index';
 
     let userEmail: string;
+    let nickname: string;
     let userPass: string;
 
-    function emailSignUp() {
-        console.log(userEmail);
+    async function emailSignUp() {
+        (userEmail = 'test@gmail.com'), (nickname = 'cat');
+        let userExist = await checkIfUserExist(userEmail, nickname);
+        alert(userExist)
+
+        const res = await fetch('/sign-up', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: userEmail,
+                nickname,
+                password: userPass
+            })
+        })
     }
 </script>
 
@@ -35,11 +39,11 @@
                     <TextField
                         type="email"
                         placeholder="example@mail.com"
-                        label="Email"
+                        label="Email*"
                         outline
                         withItem
+                        required
                         class="relative"
-                        error={}
                         bind:value={userEmail}
                     >
                         <MailIcon size="24" class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
@@ -50,9 +54,11 @@
                     <TextField
                         type="text"
                         placeholder="SuperCoolUsername"
-                        label="Username"
+                        label="Username*"
                         outline
                         withItem
+                        required
+                        bind:value={nickname}
                         class="relative"
                     >
                         <UserIcon size="24" class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
@@ -63,9 +69,11 @@
                     <TextField
                         type="password"
                         placeholder="**********"
-                        label="Password"
+                        label="Password*"
                         outline
                         withItem
+                        required
+                        bind:value={userPass}
                         class="relative"
                     >
                         <KeyIcon
@@ -80,9 +88,15 @@
                         @apply rounded outline-none;
                         @apply px-3 py-2;
 
-                        border-radius: 5px !important;
+                        border-radius: 6px !important;
+                    }
+
+                    .text-field label {
+                        height: fit-content;
                     }
                 </style>
+
+                <span class="text-red-600 italic text-right">* required</span>
 
                 <button
                     on:click={emailSignUp}

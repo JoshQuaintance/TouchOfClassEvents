@@ -1,3 +1,7 @@
+<!--
+    File Location: src/routes/changelog/index.svelte
+    Description: Renders the changelog
+-->
 <script lang="ts">
     import { onMount } from 'svelte';
     import DOMPurify from 'dompurify';
@@ -7,15 +11,15 @@
     let content = 'Fetching Changelogs...';
 
     onMount(async () => {
+        // fetches the changelog that is loaded statically
+        // Changelog location: static/CHANGELOG.md
         const data = await fetch('CHANGELOG.md');
         let text = await data.text();
         let parsed = marked(text);
 
+        // sanitize!! make sure nothing was injected in the process of importing the changelog
         content = DOMPurify.sanitize(parsed, { USE_PROFILES: { html: true } });
-
-        // content = DOMPurify.sanitize(marked(await data.text()), { USE_PROFILES: { html: true } });
     });
-
 </script>
 
 <div

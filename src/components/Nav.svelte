@@ -1,8 +1,10 @@
 <script lang="ts">
     import { Button, DropdownShell, Dropdown } from 'attractions';
     import { ChevronDownIcon } from 'svelte-feather-icons';
-    import { headerHeight } from '$utils/stores';
-    
+    import { headerHeight, isAuthenticated } from '$utils/stores';
+    import { page } from '$app/stores';
+
+    let userSignedIn = $isAuthenticated;
 </script>
 
 <div class="header-container fixed top-0 z-10 w-screen" bind:clientHeight={$headerHeight}>
@@ -70,21 +72,24 @@
             </nav>
             <!-- nav - end -->
 
+            <!-- {#if } -->
             <!-- buttons - start -->
-            <div class="hidden lg:flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-2.5 -ml-8">
+            <div
+                class="hidden lg:flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-2.5 -ml-8"
+                style="visibility: {userSignedIn || $page.path == '/sign-up' ? 'hidden' : 'visible'}"
+            >
                 <a
-                    href="#"
+                    href="log-in"
                     class="inline-block focus-visible:ring ring-indigo-300 text-gray-500 hover:text-indigo-500 active:text-indigo-600 text-sm md:text-base font-semibold text-center transition duration-100"
                     ><Button rectangle>Log in</Button></a
                 >
 
                 <a
-                    href="#"
+                    href="sign-up"
                     class="inline-block focus-visible:ring ring-indigo-300 text-sm md:text-base font-semibold text-center transition duration-100"
                     ><Button filled rectangle class="text-white px-[1.4rem]">Sign up</Button></a
                 >
             </div>
-
             <button
                 type="button"
                 class="inline-flex items-center lg:hidden bg-gray-200 hover:bg-gray-300 focus-visible:ring ring-indigo-300 text-gray-500 active:text-gray-700 text-sm md:text-base font-semibold rounded-lg gap-2 px-2.5 py-2"
