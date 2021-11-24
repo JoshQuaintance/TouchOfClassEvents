@@ -26,7 +26,7 @@ const config = {
         adapter: vercel(),
         vite: {
             optimizeDeps: {
-                exclude: ['crypto']
+                exclude: ['bcrypt']
             },
             resolve: {
                 alias: {
