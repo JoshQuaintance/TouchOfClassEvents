@@ -1,3 +1,8 @@
+/**
+ * File Location: src/routes/changelog/style.css
+ * Description: Styles for the markdown in the changelog
+ */
+
 @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
 
 #changelog-content h1 {
