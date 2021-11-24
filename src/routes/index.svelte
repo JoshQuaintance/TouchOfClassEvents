@@ -6,64 +6,9 @@
     let dark = false;
     // @ts-ignore
     import { Button } from 'attractions';
-    import anime from 'animejs';
-    import { onMount } from 'svelte';
     import { headerHeight } from '$utils/stores';
+    import Typewriter from 'svelte-typewriter';
 
-    let textWrapper: HTMLSpanElement;
-    let textWrapper2: HTMLSpanElement;
-    onMount(() => {
-        textWrapper.innerHTML = textWrapper.textContent.replace(
-            /([a-z#A-Z0-9\-])/g,
-            "<span class='letter inline-block'>$&</span>"
-        );
-
-        textWrapper2.innerHTML = textWrapper2.textContent.replace(
-            /([a-z#A-Z0-9\-])/g,
-            "<span class='letter inline-block'>$&</span>"
-        );
-
-        let lettersWidth = document.querySelector('.ml11 .letters-2').getBoundingClientRect().width;
-
-        textWrapper.style.opacity = '1';
-        textWrapper2.style.opacity = '1';
-
-        anime
-            .timeline({
-                easing: 'easeOutExpo',
-                loop: false
-            })
-            .add({
-                targets: '.ml11 .line',
-                scaleY: [0, 1],
-                opacity: [0.5, 1],
-                duration: 700
-            })
-            .add({
-                targets: '.ml11 .line',
-                translateX: [0, lettersWidth + 10],
-                duration: 700,
-                delay: 100
-            })
-            .add(
-                {
-                    targets: '.ml11 .letter',
-                    opacity: [0, 1],
-                    duration: 600,
-                    delay: (el, i) => 34 * (i + 1)
-                },
-                '-=750'
-            )
-            .add(
-                {
-                    targets: '.ml11 .line',
-                    scaleY: [1, 0],
-                    opacity: [1, 0.5],
-                    duration: 700
-                },
-                '-=200'
-            );
-    });
 </script>
 
 <svelte:head>
@@ -81,52 +26,11 @@
             <p class="text-indigo-500 md:text-lg xl:text-xl font-semibold mb-4 md:mb-6" />
 
             <h1 class="ml11 text-black-800 text-3xl sm:text-2xl md:text-5xl font-bold mb-8 md:mb-12">
-                <span class="text-wrapper" style="width: fit-content;">
-                    <span class="line line1" />
-                    <span class="letters inline-block" bind:this={textWrapper} style="opacity: 0;"
-                        >Welcome to your #1
-                    </span>
-                    <br />
-                    <span class="letters-2 inline-block" bind:this={textWrapper2} style="opacity: 0;"
-                        >source for Event-Planning</span
-                    >
-                </span>
+                <Typewriter cascade cursor="#e6859e">
+                    <span>Welcome to your #1</span> <br />
+                    <span>source for Event-Planning</span>
+                </Typewriter>
             </h1>
-
-            <style>
-                .ml11 {
-                    font-weight: 700;
-                    font-size: 3.5em;
-                }
-
-                .ml11 .line {
-                    opacity: 0;
-                    position: absolute;
-                    left: 0;
-                    height: 100%;
-                    width: 3px;
-                    background-color: black;
-                    transform-origin: 0 50%;
-                }
-
-                .ml11 .line1 {
-                    top: 0;
-                    left: 0;
-                }
-
-                .ml11 .text-wrapper {
-                    position: relative;
-                    display: inline-block;
-                    padding-top: 0.1em;
-                    padding-right: 0.05em;
-                    padding-bottom: 0.15em;
-                }
-
-                .ml11 .letter {
-                    display: inline-block;
-                    line-height: 1em;
-                }
-            </style>
 
             <div class="w-full flex flex-col sm:flex-row sm:justify-center gap-5 text-indigo-800">
                 <Button
