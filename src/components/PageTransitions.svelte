@@ -1,3 +1,7 @@
+<!--
+    File Location: src/components/PageTransition.svelte
+    Description: Component that gives an animation on page transition
+ -->
 <script>
     import { fly } from 'svelte/transition';
     export let refresh = '';
