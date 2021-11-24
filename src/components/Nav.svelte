@@ -1,13 +1,18 @@
+<!-- 
+    File Location: src/components/Nav.svelte
+    Description: Navigation bar component
+ -->
+
 <script lang="ts">
     import { Button, DropdownShell, Dropdown } from 'attractions';
-    import { ChevronDownIcon } from 'svelte-feather-icons';
     import { headerHeight, isAuthenticated } from '$utils/stores';
     import { page } from '$app/stores';
+    import Icon from '$components/Icon.svelte';
 
     let userSignedIn = $isAuthenticated;
 </script>
 
-<div class="header-container fixed top-0 z-10 w-screen" bind:clientHeight={$headerHeight}>
+<div class="header-container fixed top-0 z-[101] w-screen" bind:clientHeight={$headerHeight}>
     <div class="max-w-screen-2xl">
         <header class="flex justify-between items-center px-4 md:px-8 py-2 md:py-4 w-screen">
             <!-- logo - start -->
@@ -18,55 +23,75 @@
 
             <!-- nav - start -->
             <nav class="hidden lg:flex gap-12">
-                <Button href="/" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent">
+                <Button
+                    href="/"
+                    noPrefetch
+                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent"
+                >
                     Home
                 </Button>
                 <div>
-                    <DropdownShell let:toggle >
-                        <Button on:click={toggle} class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
-                          Features
-                          <ChevronDownIcon size="1x" class="fill-current" />
+                    <DropdownShell let:toggle>
+                        <Button
+                            on:click={toggle}
+                            class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
+                        >
+                            Features
+                            <Icon data="expand_more" class="fill-current" />
                         </Button>
                         <Dropdown>
-                          <div class="padded">
-                            <a href="#" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
-                                Seating Chart
-                            </a>
-                            <br>
-                            <a href="#" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
-                                Option 2
-                            </a>
-                          </div>
+                            <div class="padded">
+                                <a
+                                    href="#"
+                                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
+                                >
+                                    Seating Chart
+                                </a>
+                                <br />
+                                <a
+                                    href="#"
+                                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
+                                >
+                                    Option 2
+                                </a>
+                            </div>
                         </Dropdown>
-                      </DropdownShell>         
+                    </DropdownShell>
                 </div>
 
-                  <style>
-                      .dropdown {
-                          /*position: absolute;*/
-                          margin-left: +3%;
-                          /* transform: translate(0 50%) */
-                      }
+                <style>
+                    .dropdown {
+                        /*position: absolute;*/
+                        margin-left: +3%;
+                        /* transform: translate(0 50%) */
+                    }
 
-                      .dropdown .padded {
-                          width: 9rem;
-                          height: 4rem;
-                          text-align: center;
-                          font-size: 1.25em;
-                      }
-
-                  </style>
-                <Button href="#" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent">
+                    .dropdown .padded {
+                        width: 9rem;
+                        height: 4rem;
+                        text-align: center;
+                        font-size: 1.25em;
+                    }
+                </style>
+                <Button
+                    href="#"
+                    noPrefetch
+                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent"
+                >
                     Pricing
                 </Button>
-                <Button href="#" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent">
+                <Button
+                    href="#"
+                    noPrefetch
+                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent"
+                >
                     About
                 </Button>
 
                 <style>
-                    input[type="button"] {
+                    input[type='button'] {
                         border: none;
-                        outline:none;
+                        outline: none;
                     }
                 </style>
             </nav>
