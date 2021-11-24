@@ -3,35 +3,49 @@
     Description: Layout that will be used for all routes
  -->
 <script context="module">
-    export const load = async ({ page }) => ({
-        props: {
-            key: page.path
-        }
-    });
+    export const load = async ({ page }) => {
+        pageLoaded.set(false);
+        return {
+            props: {
+                key: page.path
+            }
+        };
+    };
 </script>
 
 <script lang="ts">
+    import 'material-icons/iconfont/outlined.css';
     import PageTransitions from '$components/PageTransitions.svelte';
-    import { headerHeight } from '$utils/stores';
+    import { headerHeight, pageLoaded } from '$utils/stores';
 
     import Nav from '../components/Nav.svelte';
+    import { onMount } from 'svelte';
+    import Spinner from '$components/Spinner.svelte';
+
+    onMount(() => pageLoaded.set(true));
+
     export let key;
 </script>
 
-<Nav />
+{#if !$pageLoaded}
+    <Spinner />
+{:else}
+    <Nav />
 
-<div style="margin-top: {$headerHeight}px;" />
+    <div style="margin-top: {$headerHeight}px;" />
 
-<PageTransitions refresh={key}>
-    <slot />
-</PageTransitions>
+    <PageTransitions refresh={key}>
+        <slot />
+    </PageTransitions>
+{/if}
 
 <style global lang="postcss">
+    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+    /* @import 'material-icons/iconfont/material-icons.css'; */
     @tailwind base;
     @tailwind components;
     @tailwind utilities;
 
-    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
     * {
         @apply text-prussian;
         padding: 0;
