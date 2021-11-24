@@ -19,12 +19,13 @@
     import { headerHeight, pageLoaded } from '$utils/stores';
 
     import Nav from '../components/Nav.svelte';
-    import { onMount } from 'svelte';
+    import { beforeUpdate, onMount } from 'svelte';
     import Spinner from '$components/Spinner.svelte';
 
-    onMount(() => pageLoaded.set(true));
-
     export let key;
+
+    beforeUpdate(() => pageLoaded.set(true));
+    onMount(() => pageLoaded.set(true));
 </script>
 
 {#if !$pageLoaded}
