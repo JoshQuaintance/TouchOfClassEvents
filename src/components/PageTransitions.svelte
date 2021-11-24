@@ -8,7 +8,10 @@
 </script>
 
 {#key refresh}
-    <div in:scale={{ opacity: 0, start: 0.5 , duration: 500, delay: 500 }} out:scale={{ opacity: 0, start: 0, duration: 500 }}>
+    <div
+        in:scale={{ opacity: 0, start: 0.5, duration: 500, delay: 500 }}
+        out:scale={{ opacity: 0, start: 0, duration: 500 }}
+    >
         <slot />
     </div>
 {/key}
