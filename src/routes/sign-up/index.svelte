@@ -2,20 +2,38 @@
     File Location: src/routes/sign-up/index.svelte
     Description: This file will render what's displayed on '/sign-up' page
 -->
+<script context="module">
+    import { get } from 'svelte/store';
+    import { isSignedIn } from '$utils/stores';
+    import { goto } from '$app/navigation';
+
+    export async function load(req) {
+        if (get(isSignedIn)) {
+            return {
+                status: 302,
+                redirect: '/log-in'
+            };
+        }
+
+        return {};
+    }
+</script>
+
 <script lang="ts">
-    import { TextField } from 'attractions';
+    import { Button, TextField } from 'attractions';
 
     import PasswordInput from '$components/PasswordInput.svelte';
-    import { checkIfUserExist } from './index';
+    import { checkIfUserExist } from '$utils/db';
     import Icon from '$components/Icon.svelte';
     import GoogleAuth from '$components/GoogleAuth.svelte';
+    import { user } from '$utils/stores';
 
     let userEmail: string;
     let nickname: string;
     let userPass: string;
 
     async function emailSignUp() {
-        (userEmail = 'asdf@gmail.com'), (nickname = 'cat'), (userPass = 'pass123');
+            // (userEmail = 'asdf@gmail.com'), (nickname = 'cat'), (userPass = 'pass123');at
         let userExist = await checkIfUserExist(userEmail, nickname);
 
         if (userExist == 0) {
@@ -29,6 +47,10 @@
             });
         }
     }
+
+    function getUser() {
+        console.log($user.isSignedIn());
+    }
 </script>
 
 <svelte:head>
@@ -38,6 +60,8 @@
 <div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
     <div class="max-w-screen-2xl px-4 md:px-8 mx-auto ">
         <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-8">Sign Up</h2>
+
+        <Button on:click={() => getUser()}>Signout</Button>
 
         <form class="max-w-lg border rounded-lg mx-auto bg-white" on:submit|preventDefault>
             <div class="flex flex-col gap-4 p-4 md:p-8">

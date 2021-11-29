@@ -7,11 +7,14 @@
 import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 
+interface GoogleUser {
+    getId();
+    isSignedIn();
+    getBasicProfile();
+}
 
 export const headerHeight = writable(0);
 export const pageLoaded = writable(false);
 
-export const isAuthenticated = writable(false);
-export const user = writable({});
-export const popupOpen = writable(false);
-export const error = writable();
+export const isSignedIn = writable(false);
+export const user: Writable<GoogleUser> = writable();
