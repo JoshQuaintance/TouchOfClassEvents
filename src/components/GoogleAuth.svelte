@@ -4,56 +4,59 @@
  -->
 <script lang="ts">
     import { user } from '$utils/stores';
-
+    import { initGAPI } from '$utils/gapi';
     import { onMount } from 'svelte';
+    import { checkIfUserExist } from '$utils/db';
 
-    let GoogleAuth;
-    let signInBtn;
+    // let GoogleAuthClient;
+    let signInBtn: HTMLButtonElement;
 
     onMount(async () => {
-        // let scriptSrc = await fetch();
+        signInBtn.onclick = () => {
+            initGAPI(btnClicked);
+        };
 
-        const element = document.createElement('script');
-        element.src = 'https://apis.google.com/js/api:client.js';
-        element.onload = apiLoaded;
-        document.body.appendChild(element);
+        async function btnClicked(GoogleAuthClient) {
+            try {
+                const { code } = await GoogleAuthClient.grantOfflineAccess();
 
-        function apiLoaded() {
-            //@ts-ignore
-            window.gapi.load('auth2', async () => {
-                GoogleAuth =
-                    //@ts-ignore
-                    window.gapi.auth2.getAuthInstance() ||
-                    //@ts-ignore
-                    window.gapi.auth2.init({
-                        client_id: '481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com'
-                    });
-                GoogleAuth.then(attachHandler, handleInitialisationError);
-            });
-        }
+                // We have to wait until the user state changed
+                GoogleAuthClient.isSignedIn.listen(async (val) => {
+                    if (!val) console.warn('User state is signed out');
 
-        function attachHandler() {
-            GoogleAuth.attachClickHandler(
-                signInBtn,
-                {},
-                () => {
-                    user.set(GoogleAuth.currentUser.get());
-                },
-                (e) => {
-                    console.error(e);
+                    const userObject = GoogleAuthClient.currentUser.get();
+                    user.set(userObject);
+                    const profile = userObject.getBasicProfile();
+
+                    const email = profile.getEmail();
+                    const userExist = await checkIfUserExist(email);
+
+                    if (userExist == 1) {
+                        await fetch('/auth/link-user', {
+                            method: 'POST',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: JSON.stringify({
+                                connection: 'google',
+                                code
+                            })
+                        });
+                    }
+                });
+            } catch (e) {
+                if (e.error == 'popup_closed_by_user') {
+                    alert('popup closed');
                 }
-            );
-        }
-
-        function handleInitialisationError(e) {
-            console.error(e);
+            }
         }
     });
 </script>
 
+<!-- 
 <svelte:head>
-    <script src="https://apis.google.com/js/api:client.js"></script>
-</svelte:head>
+    <script src="https://apis.google.com/js/api:platform.js"></script>
+</svelte:head> -->
 
 <button
     type="button"
