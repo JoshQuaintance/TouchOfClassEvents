@@ -28,11 +28,11 @@
                         <Dropdown>
                           <div class="padded">
                             <a href="#" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
-                                Seating Chart
+                                Seating Charts
                             </a>
                             <br>
                             <a href="#" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
-                                Option 2
+                                Reservations
                             </a>
                           </div>
                         </Dropdown>
@@ -57,7 +57,7 @@
                 <Button href="#" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent">
                     Pricing
                 </Button>
-                <Button href="#" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent">
+                <Button href="/about" class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent">
                     About
                 </Button>
 

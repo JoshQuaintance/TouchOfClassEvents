@@ -8,6 +8,7 @@
     import { Button } from 'attractions';
     import anime from 'animejs';
     import { onMount } from 'svelte';
+import { headerHeight } from '$utils/stores';
 
     let textWrapper: HTMLSpanElement;
     let textWrapper2: HTMLSpanElement;
@@ -71,7 +72,8 @@
 </svelte:head>
 
 <!-- custom color -->
-<div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12 h-screen flex justify-center items-center">
+<div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12 h-screen flex justify-center items-center"
+style="height: calc(100vh - {$headerHeight}px) !important">
     <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
         <div class="max-w-3xl flex flex-col items-center text-center">
             <p class="text-indigo-500 md:text-lg xl:text-xl font-semibold mb-4 md:mb-6" />
@@ -139,9 +141,9 @@
                 <Button
                     rectangle
                     class="text-indigo-900 active:text-gray-700 hover:bg-gray-300 transition-all ease-in-out 
-                    
-                    sm:px-8 sm:py-3 
-                    ">Learn more</Button
+                    sm:px-8 sm:py-3 "
+                    href="/about">
+                    Learn more</Button
                 >
             </div>
         </div>
@@ -384,11 +386,10 @@
     <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
         <!-- text - start -->
         <div class="mb-10 md:mb-16">
-            <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">Collections</h2>
+            <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">Example Seating Charts</h2>
 
             <p class="max-w-screen-md text-gray-500 md:text-lg text-center mx-auto">
-                This is a section of some simple filler text, also known as placeholder text. It shares some
-                characteristics of a real written text but is random or otherwise generated.
+                Using our seating chart creater you can map out your events seats easily and you can easily then identify who is sitting where. Just like in the examples below.
             </p>
         </div>
         <!-- text - end -->
@@ -408,8 +409,8 @@
                 />
 
                 <div class="flex flex-col relative">
-                    <span class="text-gray-300">Home</span>
-                    <span class="text-white text-lg lg:text-xl font-semibold">Decoration</span>
+                    <span class="text-gray-300">Example</span>
+                    <span class="text-white text-lg lg:text-xl font-semibold">Wedding seating</span>
                 </div>
             </a>
             <!-- product - end -->
@@ -428,8 +429,8 @@
                 />
 
                 <div class="flex flex-col relative">
-                    <span class="text-gray-300">Modern</span>
-                    <span class="text-white text-lg lg:text-xl font-semibold">Furniture</span>
+                    <span class="text-gray-300">Example</span>
+                    <span class="text-white text-lg lg:text-xl font-semibold">Outdoor seating</span>
                 </div>
             </a>
             <!-- product - end -->
@@ -444,12 +445,11 @@
         <!-- text - start -->
         <div class="mb-10 md:mb-16">
             <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">
-                Frequently asked questions
+                Frequently Asked Questions
             </h2>
 
             <p class="max-w-screen-md text-gray-500 md:text-lg text-center mx-auto">
-                This is a section of some simple filler text, also known as placeholder text. It shares some
-                characteristics of a real written text but is random or otherwise generated.
+                These are popular questions asked by our users and below <br> they have been answered by the developers.
             </p>
         </div>
         <!-- text - end -->
@@ -458,7 +458,7 @@
             <!-- question - start -->
             <div class="bg-gray-100 rounded-lg p-5">
                 <div class="flex justify-between items-center border-b gap-4 pb-4 mb-4">
-                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">How does the product work?</h3>
+                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">Question one?</h3>
 
                     <span
                         class="w-8 h-8 inline-flex justify-center items-center flex-shrink-0 bg-gray-300 text-gray-500 rounded-full"
@@ -483,7 +483,7 @@
             <!-- question - start -->
             <div class="bg-gray-100 rounded-lg p-5">
                 <div class="flex justify-between items-center border-b gap-4 pb-4 mb-4">
-                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">What are the features?</h3>
+                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">Queston  two?</h3>
 
                     <span
                         class="w-8 h-8 inline-flex justify-center items-center flex-shrink-0 bg-gray-300 text-gray-500 rounded-full"
@@ -508,7 +508,7 @@
             <!-- question - start -->
             <div class="bg-gray-100 rounded-lg p-5">
                 <div class="flex justify-between items-center border-b gap-4 pb-4 mb-4">
-                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">What about integrations?</h3>
+                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">Question three?</h3>
 
                     <span
                         class="w-8 h-8 inline-flex justify-center items-center flex-shrink-0 bg-gray-300 text-gray-500 rounded-full"
@@ -533,7 +533,7 @@
             <!-- question - start -->
             <div class="bg-gray-100 rounded-lg p-5">
                 <div class="flex justify-between items-center border-b gap-4 pb-4 mb-4">
-                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">Is support available?</h3>
+                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">Question four?</h3>
 
                     <span
                         class="w-8 h-8 inline-flex justify-center items-center flex-shrink-0 bg-gray-300 text-gray-500 rounded-full"
@@ -571,18 +571,6 @@
                             class="inline-flex items-center text-black-800 text-xl md:text-2xl font-bold gap-2"
                             aria-label="logo"
                         >
-                            <svg
-                                width="95"
-                                height="94"
-                                viewBox="0 0 95 94"
-                                class="w-5 h-auto text-indigo-500"
-                                fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path d="M96 0V47L48 94H0V47L48 0H96Z" />
-                            </svg>
-
-                            Flowrift
                         </a>
                     </div>
                     <!-- logo - end -->
