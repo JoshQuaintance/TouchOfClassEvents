@@ -25,6 +25,7 @@
         "cookie": "^0.4.1",
         "cssnano": "^5.0.8",
         "dompurify": "^2.3.3",
+        "dotenv": "^10.0.0",
         "googleapis": "^91.0.0",
         "jsonwebtoken": "^8.5.1",
         "marked": "^3.0.8",
