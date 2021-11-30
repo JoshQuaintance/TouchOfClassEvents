@@ -1,6 +1,5 @@
 <script>
   import { onMount } from 'svelte';
-  import logo from './Group 4.svg';
   onMount(async () => {
     
   })
@@ -14,7 +13,7 @@
       password: userPassword
     };
   
-    let x = await fetch('/login', {
+    let x = await fetch('/log-in', {
       method: 'POST',
       body: JSON.stringify(User) 
     })
@@ -28,23 +27,15 @@
   }
   </script>
   
-  <header>
-    <div class="ml-4 mt-4">
-      <a href="https://touch-of-class-events.vercel.app/">
-        <img src={logo} alt="Touch of Class Events" />
-      </a>
-    </div>
-  </header>
-  
-  <div class="bg-white py-6 sm:py-8 lg:py-12">
+  <div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
     <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
       <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-8">Login</h2>
   
-      <form class="max-w-lg border rounded-lg mx-auto">
+      <form class="bg-white max-w-lg border rounded-lg mx-auto">
         <div class="flex flex-col gap-4 p-4 md:p-8">
           <div name="login-box">
             <div>
-              <label for="email" class="inline-block text-gray-800 text-sm sm:text-base mb-2">Email</label>
+              <label for="email" class="inline-block text-gray-800 text-sm sm:text-base mb-2">Email or Username</label>
               <input bind:value={userEmail} id="email" type="email" class="w-full bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2" />
             </div>
   

@@ -13,7 +13,7 @@ import type { GoogleConnection } from '$utils/types';
 async function encryptData(data) {
     return crypto.publicEncrypt(
         {
-            key: Buffer.from(process.env['VITE_SECRET_PUBLIC_RSA_KEY'], 'base64').toString(),
+            key: Buffer.from(import.meta.env['VITE_SECRET_PUBLIC_RSA_KEY'], 'base64').toString(),
             padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
             // @ts-ignore
             oeapHash: 'sha256'
@@ -24,13 +24,13 @@ async function encryptData(data) {
 
 async function linkWithGoogle(User, code) {
     const googleOAuth2Client = new google.auth.OAuth2(
-        process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_ID'] as string,
-        process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET'] as string,
+        import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_ID'] as string,
+        import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET'] as string,
         'localhost:3000'
     );
 
     const res = await fetch(
-        `https://oauth2.googleapis.com/token?code=${code}&redirect_uri=http://localhost:3000&client_id=${process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_ID']}&client_secret=${process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET']}&scope=&grant_type=authorization_code`,
+        `https://oauth2.googleapis.com/token?code=${code}&redirect_uri=http://localhost:3000&client_id=${import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_ID']}&client_secret=${import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET']}&scope=&grant_type=authorization_code`,
         {
             method: 'POST',
             headers: {

@@ -1,26 +1,47 @@
 import { append } from "svelte/internal";
 import { connectToDB } from "$utils/db";
-
+import bcrypt from 'bcrypt'
 
 export async function post (req) {
 
   const { mongoose, schemas } = await connectToDB();
   const { UserSchema } = await schemas;
 
-  const bcrypt = require('bcrypt')  
 
-  const {email, password} = JSON.parse(req.body)
-
+  const {email, nickname, password} = JSON.parse(req.body);
   const User = mongoose.models.User || mongoose.model('Users', UserSchema);
-  bcrypt.compare(password, function(err, result) {
 
-  });
+  const validateEmail = await User.findOne({ email })
+  const validateNickname = await User.findOne({ nickname })
 
-  if (!validate) {
-    
+  if (validateEmail || validateNickname) {
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const validatePass = await User.findOne({ hashedPassword })
+
+    if (validatePass) {
+      console.log("User found");
+      return {
+        status: 200,
+        body: {
+          message: 'User found'
+        }
+      }
+    }
+    else {
+      return {
+        status: 404,
+        body: {
+          message: 'No password'
+        }
+      }
+    }
   }
   else {
-    console.log("User found");
-
+    return {
+      status: 404,
+      body: {
+        message: 'No user found'
+      }
+    }
   }
 }
