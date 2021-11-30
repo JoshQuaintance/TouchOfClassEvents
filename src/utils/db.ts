@@ -32,7 +32,7 @@ export async function connectToDB(): Promise<{
     mongoose: typeof mongoose;
     schemas: Promise<{ UserSchema: mongoose.Schema }>;
 }> {
-    if (mongoose.connection.readyState != 1) await mongoose.connect(process.env['VITE_SECRET_MONGO_URI'] as string);
+    if (mongoose.connection.readyState != 1) await mongoose.connect(import.meta.env['VITE_SECRET_MONGO_URI'] as string);
 
     const schemas = initSchemas();
 

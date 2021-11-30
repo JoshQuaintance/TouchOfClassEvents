@@ -11,6 +11,7 @@ import type crypto_T from 'crypto';
 
 import { connectToDB } from '$utils/db';
 import * as cookie from 'cookie';
+import { generateJWT } from '$auth-utils';
 
 export async function post(req: ServerRequest<Record<string, any>, DefaultBody>) {
     /**
@@ -21,7 +22,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
      */
     const bcrypt: typeof bcrypt_T = await import('bcrypt');
     const uuid: typeof uuid_T = await import('uuid');
-    const crypto: typeof crypto_T = await import('crypto')
+    const crypto: typeof crypto_T = await import('crypto');
 
     const { v4: uuidv4 } = uuid;
     const { mongoose, schemas } = await connectToDB();
@@ -35,9 +36,10 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
         const hashedPassword = await bcrypt.hash(password, 12);
 
         const User = mongoose.models.User || mongoose.model('Users', UserSchema);
+        const uid = uuidv4();
 
         const newUser = new User({
-            uid: uuidv4(),
+            uid,
             email: email,
             nickname,
             password: hashedPassword
@@ -52,12 +54,23 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
                 };
         });
 
+        const payload = {
+            email,
+            nickname
+        };
+
         const headers = {
-            // "Set-Cookie": cookie.serialize("")
-        }
+            'Set-Cookie': cookie.serialize('jwt', await generateJWT(payload), {
+                httpOnly: true,
+                sameSite: 'lax',
+                path: '/',
+                expires: new Date('Fri, 31 Dec 9999 12:00:00 GMT')
+            })
+        };
 
         return {
             status: 201,
+            headers,
             message: 'Successfully created a new user',
             code: 'user-created'
         };
@@ -71,5 +84,3 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
         };
     }
 }
-
-

@@ -27,13 +27,14 @@
     import Icon from '$components/Icon.svelte';
     import GoogleAuth from '$components/GoogleAuth.svelte';
     import { user } from '$utils/stores';
+    import { onMount } from 'svelte';
 
     let userEmail: string;
     let nickname: string;
     let userPass: string;
 
     async function emailSignUp() {
-            // (userEmail = 'asdf@gmail.com'), (nickname = 'cat'), (userPass = 'pass123');at
+        (userEmail = 'hasianjoshua@gmail.com'), (nickname = 'Catalactics'), (userPass = 'test123');
         let userExist = await checkIfUserExist(userEmail, nickname);
 
         if (userExist == 0) {
@@ -48,9 +49,9 @@
         }
     }
 
-    function getUser() {
-        console.log($user.isSignedIn());
-    }
+    onMount(() => {
+        console.log($user);
+    });
 </script>
 
 <svelte:head>
@@ -60,8 +61,6 @@
 <div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
     <div class="max-w-screen-2xl px-4 md:px-8 mx-auto ">
         <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-8">Sign Up</h2>
-
-        <Button on:click={() => getUser()}>Signout</Button>
 
         <form class="max-w-lg border rounded-lg mx-auto bg-white" on:submit|preventDefault>
             <div class="flex flex-col gap-4 p-4 md:p-8">

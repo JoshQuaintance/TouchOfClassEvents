@@ -13,8 +13,14 @@ interface GoogleUser {
     getBasicProfile();
 }
 
+interface UserProfile {
+    email: string;
+    nickname: string;
+    iat: number; // issued at, made by JWT
+}
+
 export const headerHeight = writable(0);
 export const pageLoaded = writable(false);
 
 export const isSignedIn = writable(false);
-export const user: Writable<GoogleUser> = writable();
+export const user: Writable<UserProfile | {}> = writable({});
