@@ -25,6 +25,9 @@ const config = {
         target: '#svelte',
         adapter: vercel(),
         vite: {
+            optimizeDeps: {
+                exclude: ['bcrypt']
+            },
             resolve: {
                 alias: {
                     $lib: resolve('src/lib'),

@@ -4,3 +4,6 @@ node_modules
 /.svelte-kit
 /package
 .env
+auth_config.js
+index.cjs
+.vercel_build_output
