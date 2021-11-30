@@ -16,16 +16,28 @@
 <script lang="ts">
     import 'material-icons/iconfont/outlined.css';
     import PageTransitions from '$components/PageTransitions.svelte';
-    import { headerHeight, pageLoaded } from '$utils/stores';
+    import { headerHeight, isSignedIn, pageLoaded, user } from '$utils/stores';
 
     import Nav from '../components/Nav.svelte';
     import { beforeUpdate, onMount } from 'svelte';
     import Spinner from '$components/Spinner.svelte';
+    import { initGAPI } from '$utils/gapi';
 
     export let key;
 
     beforeUpdate(() => pageLoaded.set(true));
-    onMount(() => pageLoaded.set(true));
+    onMount(async () => {
+        pageLoaded.set(true);
+
+        initGAPI(getUser);
+
+        function getUser(GoogleAuthClient) {
+            if (GoogleAuthClient.isSignedIn.get()) {
+                user.set(GoogleAuthClient.currentUser.get());
+                isSignedIn.set(true);
+            }
+        }
+    });
 </script>
 
 {#if !$pageLoaded}

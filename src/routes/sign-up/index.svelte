@@ -2,20 +2,39 @@
     File Location: src/routes/sign-up/index.svelte
     Description: This file will render what's displayed on '/sign-up' page
 -->
+<script context="module">
+    import { get } from 'svelte/store';
+    import { isSignedIn } from '$utils/stores';
+    import { goto } from '$app/navigation';
+
+    export async function load(req) {
+        if (get(isSignedIn)) {
+            return {
+                status: 302,
+                redirect: '/log-in'
+            };
+        }
+
+        return {};
+    }
+</script>
+
 <script lang="ts">
-    import { TextField } from 'attractions';
+    import { Button, TextField } from 'attractions';
 
     import PasswordInput from '$components/PasswordInput.svelte';
-    import { checkIfUserExist } from './index';
+    import { checkIfUserExist } from '$utils/db';
     import Icon from '$components/Icon.svelte';
     import GoogleAuth from '$components/GoogleAuth.svelte';
+    import { user } from '$utils/stores';
+    import { onMount } from 'svelte';
 
     let userEmail: string;
     let nickname: string;
     let userPass: string;
 
     async function emailSignUp() {
-        (userEmail = 'asdf@gmail.com'), (nickname = 'cat'), (userPass = 'pass123');
+        (userEmail = 'hasianjoshua@gmail.com'), (nickname = 'Catalactics'), (userPass = 'test123');
         let userExist = await checkIfUserExist(userEmail, nickname);
 
         if (userExist == 0) {
@@ -29,6 +48,10 @@
             });
         }
     }
+
+    onMount(() => {
+        console.log($user);
+    });
 </script>
 
 <svelte:head>

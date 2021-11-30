@@ -32,7 +32,8 @@ const config = {
                 alias: {
                     $lib: resolve('src/lib'),
                     $components: resolve('src/components'),
-                    $utils: resolve('src/utils')
+                    $utils: resolve('src/utils'),
+                    '$auth-utils': resolve('src/routes/auth/auth-utils')
                 }
             }
         }

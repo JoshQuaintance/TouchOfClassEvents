@@ -25,13 +25,22 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
 
         if (userDataWithEmail)
             return {
-                status: 409,
+                status: 200,
                 body: {
                     message: `User with email '${email}' already exists`,
-                    code: 'user-email-exists'
+                    code: 'user-email-exist'
                 }
             };
 
+        if (!nickname)
+            return {
+                status: 200,
+                body: {
+                    message: `User with nickname '${nickname}' does not exist`,
+                    code: 'user-not-exist'
+                }
+            };
+            
         // Then use the username given to check existence
         let userDataWithNickname = await User.findOne({ nickname });
 
@@ -40,7 +49,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
                 status: 409,
                 body: {
                     message: `User with nickname '${nickname}' already exists`,
-                    code: 'user-nickname-exists'
+                    code: 'user-nickname-exist'
                 }
             };
         else

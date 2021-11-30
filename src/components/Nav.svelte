@@ -2,14 +2,13 @@
     File Location: src/components/Nav.svelte
     Description: Navigation bar component
  -->
-
 <script lang="ts">
     import { Button, DropdownShell, Dropdown } from 'attractions';
-    import { headerHeight, isAuthenticated } from '$utils/stores';
+    import { headerHeight, isSignedIn } from '$utils/stores';
     import { page } from '$app/stores';
     import Icon from '$components/Icon.svelte';
 
-    let userSignedIn = $isAuthenticated;
+    let userSignedIn = $isSignedIn;
 </script>
 
 <div class="header-container fixed top-0 z-[101] w-screen" bind:clientHeight={$headerHeight}>
