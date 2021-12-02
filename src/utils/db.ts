@@ -4,7 +4,7 @@
  */
 
 import mongoose from 'mongoose';
-import type { User, GoogleConnection, FacebookConnection } from '$utils/types';
+import type { DatabaseUser, GoogleConnection, FacebookConnection } from '$utils/types';
 
 /**
  * This is where all the schemas for the database will
@@ -15,7 +15,7 @@ async function initSchemas() {
     // and if it's not then do so
     if (mongoose.connection.readyState != 1) return;
 
-    const UserSchema: mongoose.Schema<User> = new mongoose.Schema({
+    const UserSchema: mongoose.Schema<DatabaseUser> = new mongoose.Schema({
         uid: { type: String, required: true, unique: true },
         email: { type: String, required: true, unique: true },
         nickname: { type: String, required: true, unique: true },

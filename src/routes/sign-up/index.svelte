@@ -4,19 +4,17 @@
 -->
 <script context="module">
     import { get } from 'svelte/store';
-    import { isSignedIn } from '$utils/stores';
-    import { goto } from '$app/navigation';
 
-    // export async function load(req) {
-    //     if (get(isSignedIn)) {
-    //         return {
-    //             status: 302,
-    //             redirect: '/log-in'
-    //         };
-    //     }
+    export async function load(req) {
+        if (get(isSignedIn)) {
+            return {
+                status: 302,
+                redirect: '/'
+            };
+        }
 
-    //     return {};
-    // }
+        return {};
+    }
 </script>
 
 <script lang="ts">
@@ -26,7 +24,7 @@
     import { checkIfUserExist } from '$utils/db';
     import Icon from '$components/Icon.svelte';
     import GoogleAuth from '$components/GoogleAuth.svelte';
-    import { user } from '$utils/stores';
+    import { user, isSignedIn } from '$utils/stores';
     import { onMount } from 'svelte';
 
     let userEmail: string;
