@@ -12,15 +12,12 @@ import { encryptData } from './auth-utils';
 
 async function linkWithGoogle(User, code) {
     const googleOAuth2Client = new google.auth.OAuth2(
-        import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_ID'] as string,
+        '481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com',
         import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET'] as string,
         'localhost:3000'
     );
 
-    const getUserLink = `https://oauth2.googleapis.com/token?code=${code}&redirect_uri=http://localhost:3000&client_id=${
-        import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_ID']
-    }&client_secret=${process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET']}&scope=&grant_type=authorization_code`;
-
+    const getUserLink = `https://oauth2.googleapis.com/token?code=${code}&redirect_uri=http://localhost:3000&client_id=481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com&client_secret=${process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET']}&scope=&grant_type=authorization_code`;
 
     const res = await fetch(getUserLink, {
         method: 'POST',
