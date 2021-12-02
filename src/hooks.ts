@@ -29,6 +29,7 @@ export async function handle({ request, resolve }) {
         };
     }
 
+
     // verify the jwt
     const validJWT = await verifyJWT(cookies.jwt);
 
