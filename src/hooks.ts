@@ -6,7 +6,7 @@ import { isSignedIn, user } from '$utils/stores';
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ request, resolve }) {
-    const cookies = cookie.parse(request.headers.cookie);
+    const cookies = cookie.parse(request.headers.cookie || '');
 
     interface UserData {
         nickname: string;
@@ -16,7 +16,18 @@ export async function handle({ request, resolve }) {
 
     request.locals.user = {};
 
-    if (!cookies.jwt) request.locals.user.isSignedIn = false;
+    if (!cookies.jwt) {
+        request.locals.user.isSignedIn = false;
+
+        let response = await resolve(request);
+
+        return {
+            ...response,
+            headers: {
+                ...response.headers
+            }
+        };
+    }
 
     // verify the jwt
     const validJWT = await verifyJWT(cookies.jwt);
