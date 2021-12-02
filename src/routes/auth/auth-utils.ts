@@ -1,3 +1,4 @@
+
 /**
  * File Location: src/routes/auth/auth-utils.ts
  * Description: Utilities for authentications
