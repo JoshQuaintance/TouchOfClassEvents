@@ -17,7 +17,7 @@ async function linkWithGoogle(User, code) {
         'localhost:3000'
     );
 
-    const res = await fetch(
+    const res = await fetch
         `https://oauth2.googleapis.com/token?code=${code}&redirect_uri=http://localhost:3000&client_id=${
             import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_ID']
         }&client_secret=${process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET']}&scope=&grant_type=authorization_code`,

@@ -18,7 +18,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
     try {
         /** 
             Returns in this file are essentially http responses
-            Responses that are not errors, are going to have codes to represent the responses
+            Responses that are not errors are going to have codes to represent the responses
         */
         // First, check if user exist using the email given
         let userDataWithEmail = await User.findOne({ email });

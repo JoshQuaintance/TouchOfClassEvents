@@ -36,7 +36,7 @@
                             class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
                         >
                             Features
-                            <Icon data="expand_more" class="fill-current" />
+                            <Icon icon="expand_more" class="fill-current" />
                         </Button>
                         <Dropdown>
                             <div class="padded">

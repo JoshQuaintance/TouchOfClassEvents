@@ -7,16 +7,16 @@
     import { isSignedIn } from '$utils/stores';
     import { goto } from '$app/navigation';
 
-    export async function load(req) {
-        if (get(isSignedIn)) {
-            return {
-                status: 302,
-                redirect: '/log-in'
-            };
-        }
+    // export async function load(req) {
+    //     if (get(isSignedIn)) {
+    //         return {
+    //             status: 302,
+    //             redirect: '/log-in'
+    //         };
+    //     }
 
-        return {};
-    }
+    //     return {};
+    // }
 </script>
 
 <script lang="ts">
@@ -75,7 +75,7 @@
                         class="relative"
                         bind:value={userEmail}
                     >
-                        <Icon data="email" class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
+                        <Icon icon="email" class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
                     </TextField>
                 </div>
 
@@ -90,10 +90,7 @@
                         bind:value={nickname}
                         class="relative"
                     >
-                        <Icon
-                            data="alternate_email"
-                            class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2"
-                        />
+                        <Icon icon="at" class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
                     </TextField>
                 </div>
 
