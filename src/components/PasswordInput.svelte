@@ -2,7 +2,6 @@
     File Location: src/components/PasswordInput.svelte
     Description: Input component just for passwords
  -->
-
 <script lang="ts">
     import { FormField, TextField } from 'attractions';
     import Icon from '$components/Icon.svelte';
@@ -26,19 +25,19 @@
 </script>
 
 <TextField placeholder="**********" label="Password*" outline withItem required bind:value {id} class="relative">
-    <Icon data="key" scale={1.2} class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
+    <Icon icon="key" scale={1.2} class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
 
     {#if !passwordExposed}
         <i on:click={togglePasswordState}>
             <Icon
-                data="visibility"
+                icon="visibility"
                 class="absolute top-[50%] right-0 transform-gpu translate-y-[-50%] -translate-x-3 cursor-pointer"
             />
         </i>
     {:else if passwordExposed}
         <i on:click={togglePasswordState}>
             <Icon
-                data="visibility_off"
+                icon="visibility_off"
                 class="absolute top-[50%] right-0 transform-gpu translate-y-[-50%] -translate-x-3 cursor-pointer"
             />
         </i>
