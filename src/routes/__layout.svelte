@@ -32,6 +32,9 @@
         initGAPI(getUser);
 
         function getUser(GoogleAuthClient) {
+            /**
+             * TODO: CHANGE THIS TO GETTING JWT TOKEN PAYLOAD
+            */
             if (GoogleAuthClient.isSignedIn.get()) {
                 user.set(GoogleAuthClient.currentUser.get());
                 isSignedIn.set(true);
@@ -40,6 +43,7 @@
     });
 </script>
 
+<!-- Load the spinner if the page is not fully mounted yet -->
 {#if !$pageLoaded}
     <Spinner />
 {:else}
@@ -54,7 +58,7 @@
 
 <style global lang="postcss">
     @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
-    /* @import 'material-icons/iconfont/material-icons.css'; */
+    
     @tailwind base;
     @tailwind components;
     @tailwind utilities;

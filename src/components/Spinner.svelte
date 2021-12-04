@@ -12,7 +12,9 @@
         <div class="double-bounce1" />
         <div class="double-bounce2" />
     </div>
+
     <h5 class="text-indigo-800 md:text-lg xl:text-xl font-semibold mb-4 md:mb-6">Please Wait</h5>
+    
     <Button
         href="/"
         noPrefetch

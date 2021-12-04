@@ -8,7 +8,7 @@ import type { DatabaseUser, GoogleConnection, FacebookConnection } from '$utils/
 
 /**
  * This is where all the schemas for the database will
- * be initialized
+ * be initialized.
  */
 async function initSchemas() {
     // Checks if mongoose is connected to the db or not
@@ -32,6 +32,7 @@ export async function connectToDB(): Promise<{
     mongoose: typeof mongoose;
     schemas: Promise<{ UserSchema: mongoose.Schema }>;
 }> {
+    // Before connecting, always check if somehow the database is already connected
     if (mongoose.connection.readyState != 1) await mongoose.connect(import.meta.env['VITE_SECRET_MONGO_URI'] as string);
 
     const schemas = initSchemas();
@@ -44,6 +45,7 @@ export async function connectToDB(): Promise<{
 
 /**
  * Checks if the user exists using email and username
+ * using a custom endpoint located at src/routes/auth/user-exist.ts
  *
  * ```
  * Returns codes:

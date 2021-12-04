@@ -29,6 +29,7 @@
                 >
                     Home
                 </Button>
+
                 <div>
                     <DropdownShell let:toggle>
                         <Button
@@ -72,14 +73,15 @@
                         font-size: 1.25em;
                     }
                 </style>
+
                 <Button
-                    href="#"
+                    href="/price"
                     noPrefetch
                     class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent"
                 >
                     Pricing
                 </Button>
-          
+
                 <Button
                     href="/about"
                     noPrefetch
@@ -97,24 +99,27 @@
             </nav>
             <!-- nav - end -->
 
-            <!-- {#if } -->
-            <!-- buttons - start -->
-            <div
-                class="hidden lg:flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-2.5 -ml-8"
-                style="visibility: {userSignedIn || $page.path == '/sign-up' ? 'hidden' : 'visible'}"
-            >
-                <a
-                    href="log-in"
-                    class="inline-block focus-visible:ring ring-indigo-300 text-gray-500 hover:text-indigo-500 active:text-indigo-600 text-sm md:text-base font-semibold text-center transition duration-100"
-                    ><Button rectangle>Log in</Button></a
-                >
+            <!-- 
+                login and sign-up - start
+                won't show if the user is 
+                signed in or in sign-up page
+             -->
+            {#if !(userSignedIn || $page.path == '/sign-up')}
+                <div class="hidden lg:flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-2.5 -ml-8">
+                    <a
+                        href="log-in"
+                        class="inline-block focus-visible:ring ring-indigo-300 text-gray-500 hover:text-indigo-500 active:text-indigo-600 text-sm md:text-base font-semibold text-center transition duration-100"
+                        ><Button rectangle>Log in</Button>
+                    </a>
 
-                <a
-                    href="sign-up"
-                    class="inline-block focus-visible:ring ring-indigo-300 text-sm md:text-base font-semibold text-center transition duration-100"
-                    ><Button filled rectangle class="text-white px-[1.4rem]">Sign up</Button></a
-                >
-            </div>
+                    <a
+                        href="sign-up"
+                        class="inline-block focus-visible:ring ring-indigo-300 text-sm md:text-base font-semibold text-center transition duration-100"
+                        ><Button filled rectangle class="text-white px-[1.4rem]">Sign up</Button>
+                    </a>
+                </div>
+            {/if}
+
             <button
                 type="button"
                 class="inline-flex items-center lg:hidden bg-gray-200 hover:bg-gray-300 focus-visible:ring ring-indigo-300 text-gray-500 active:text-gray-700 text-sm md:text-base font-semibold rounded-lg gap-2 px-2.5 py-2"
@@ -129,7 +134,7 @@
 
                 Menu
             </button>
-            <!-- buttons - end -->
+            <!-- login and sign-up - end -->
         </header>
         <!-- menu - end -->
     </div>

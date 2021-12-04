@@ -1,12 +1,14 @@
 <!-- 
     File Location: src/components/Icon.svelte
     Description: Icons component using material design icons
-    Note: https://icon-sets.iconify.design/mdi/
+    Icons: https://icon-sets.iconify.design/mdi/
  -->
 <script>
     import Icon from '@iconify/svelte';
 
     export let icon;
+
+    // Some default values
     export let width = 24;
     export let height = 24;
     export let color = '#FFF';
