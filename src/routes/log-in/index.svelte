@@ -4,16 +4,18 @@
     import Icon from '$components/Icon.svelte';
     import PasswordInput from '$components/PasswordInput.svelte';
     import GoogleAuth from '$components/GoogleAuth.svelte';
+    import { user, isSignedIn } from '$utils/stores';
+
     
     onMount(async () => {});
 
     let userEmail;
-    let userPassword;
+    let userPass;
 
     async function clickLogin(event) {
         const User = {
             email: userEmail,
-            password: userPassword
+            password: userPass
         };
 
         let x = await fetch('/log-in', {
@@ -22,6 +24,21 @@
         });
 
         console.log(await x.json());
+    }
+</script>
+
+<script context="module">
+    import { get } from 'svelte/store';
+
+    export async function load(req) {
+        if (get(isSignedIn)) {
+            return {
+                status: 302,
+                redirect: '/'
+            };
+        }
+
+        return {};
     }
 </script>
 
@@ -34,7 +51,7 @@
                 <div>
                     <TextField
                         type="text"
-                        placeholder="example@mail.com or SuperCoolUsername"
+                        placeholder="Username or Email"
                         label="Email or Username*"
                         outline
                         withItem
@@ -51,7 +68,7 @@
                 </div>
 
                 <div>
-                    <PasswordInput id="sign-in-password" />
+                    <PasswordInput bind:value={userPass} id="sign-in-password"  />
                 </div>
 
                 <style>
@@ -107,7 +124,7 @@
             <div class="flex justify-center items-center bg-gray-100 p-4">
                 <p class="text-gray-500 text-sm text-center">
                     Don't have an account? <a
-                        href="#"
+                        href="sign-up"
                         class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 transition duration-100"
                         >Register</a
                     >
