@@ -1,47 +1,45 @@
-import { append } from "svelte/internal";
-import { connectToDB } from "$utils/db";
-import bcrypt from 'bcrypt'
+import type bcrypt_T from 'bcrypt';
 
-export async function post (req) {
+import { append } from 'svelte/internal';
+import { connectToDB } from '$utils/db';
 
-  const { mongoose, schemas } = await connectToDB();
-  const { UserSchema } = await schemas;
+export async function post(req) {
+    const bcrypt: typeof bcrypt_T = await import('bcrypt');
+    const { mongoose, schemas } = await connectToDB();
+    const { UserSchema } = await schemas;
 
+    const { email, nickname, password } = JSON.parse(req.body);
+    const User = mongoose.models.User || mongoose.model('Users', UserSchema);
 
-  const {email, nickname, password} = JSON.parse(req.body);
-  const User = mongoose.models.User || mongoose.model('Users', UserSchema);
+    const validateEmail = await User.findOne({ email });
+    const validateNickname = await User.findOne({ nickname });
 
-  const validateEmail = await User.findOne({ email })
-  const validateNickname = await User.findOne({ nickname })
+    if (validateEmail || validateNickname) {
+        const hashedPassword = await bcrypt.hash(password, 12);
+        const validatePass = await User.findOne({ hashedPassword });
 
-  if (validateEmail || validateNickname) {
-    const hashedPassword = await bcrypt.hash(password, 12);
-    const validatePass = await User.findOne({ hashedPassword })
-
-    if (validatePass) {
-      console.log("User found");
-      return {
-        status: 200,
-        body: {
-          message: 'User found'
+        if (validatePass) {
+            console.log('User found');
+            return {
+                status: 200,
+                body: {
+                    message: 'User found'
+                }
+            };
+        } else {
+            return {
+                status: 404,
+                body: {
+                    message: 'No password'
+                }
+            };
         }
-      }
+    } else {
+        return {
+            status: 404,
+            body: {
+                message: 'No user found'
+            }
+        };
     }
-    else {
-      return {
-        status: 404,
-        body: {
-          message: 'No password'
-        }
-      }
-    }
-  }
-  else {
-    return {
-      status: 404,
-      body: {
-        message: 'No user found'
-      }
-    }
-  }
 }

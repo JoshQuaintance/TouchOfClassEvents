@@ -5,22 +5,21 @@
 import type { ServerRequest } from '@sveltejs/kit/types/hooks';
 import type { DefaultBody } from '@sveltejs/kit/types/endpoint';
 import type { GoogleConnection } from '$utils/types';
+import type mongoose_T from 'mongoose';
 
 import { connectToDB } from '$utils/db';
 import { google } from 'googleapis';
-import { encryptData } from './auth-utils';
+import { encryptData } from '../auth-utils';
 
-async function linkWithGoogle(User, code) {
+async function linkWithGoogle(User: mongoose_T.Model<any, {}, {}, {}>, code: string) {
     const googleOAuth2Client = new google.auth.OAuth2(
-        import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_ID'] as string,
+        '481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com',
         import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET'] as string,
         'localhost:3000'
     );
 
-    const getUserLink = `https://oauth2.googleapis.com/token?code=${code}&redirect_uri=http://localhost:3000&client_id=${
-        import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_ID']
-    }&client_secret=${process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET']}&scope=&grant_type=authorization_code`;
-
+    // Get the user's access and refresh token from the server
+    const getUserLink = `https://oauth2.googleapis.com/token?code=${code}&redirect_uri=http://localhost:3000&client_id=481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com&client_secret=${process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET']}&scope=&grant_type=authorization_code`;
 
     const res = await fetch(getUserLink, {
         method: 'POST',
@@ -31,10 +30,12 @@ async function linkWithGoogle(User, code) {
 
     const { access_token, refresh_token } = await res.json();
 
+    // Authorize our google oauth2 client with the access token
     googleOAuth2Client.setCredentials({
-        access_token: access_token
+        access_token
     });
 
+    // Get the user profile
     const profile = await google.oauth2('v2').userinfo.v2.me.get({ auth: googleOAuth2Client });
 
     const { id, email, name, picture } = profile.data;
@@ -48,6 +49,7 @@ async function linkWithGoogle(User, code) {
         refresh_token: (await encryptData(refresh_token)).toString()
     };
 
+    // Update the user
     const updateResponse = await User.updateOne({ email }, { $push: { connections: googleConnection } });
 
     // Acknowledged is true when the data in the db is updated
