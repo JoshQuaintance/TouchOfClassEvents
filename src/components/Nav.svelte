@@ -104,7 +104,7 @@
                 won't show if the user is 
                 signed in or in sign-up page
              -->
-            {#if !(userSignedIn || $page.path == '/sign-up')}
+            {#if !userSignedIn || $page.path == '/sign-up'}
                 <div class="hidden lg:flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-2.5 -ml-8">
                     <a
                         href="log-in"
