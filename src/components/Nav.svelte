@@ -75,7 +75,7 @@
                 </style>
 
                 <Button
-                    href="/price"
+                    href="/pricing"
                     noPrefetch
                     class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent"
                 >
