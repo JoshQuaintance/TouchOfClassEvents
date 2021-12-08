@@ -8,9 +8,6 @@
     export let name: string;
     export let role: string; 
 
-    $: fbLink= `https://facebook.com/${facebookLink}`
-    //fix Facebook
-
 </script>
 
 <div>
@@ -29,7 +26,7 @@
                     <Icon icon="email" />
                 </a>
 
-                <a href={fbLink} target="_blank" class="text-gray-400 hover:text-gray-500 active:text-gray-600 transition duration-100">
+                <a href="https://facebook.com/{facebookLink}" target="_blank" class="text-gray-400 hover:text-gray-500 active:text-gray-600 transition duration-100">
                     <Icon icon="facebook"/>
                 </a>
             </div>
