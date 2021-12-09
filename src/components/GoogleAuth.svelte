@@ -3,9 +3,9 @@
     Description: Google Authentication button to sign in with
  -->
 <script lang="ts">
+    import { onMount } from 'svelte';
     import { user } from '$utils/stores';
     import { initGAPI } from '$utils/gapi';
-    import { onMount } from 'svelte';
     import { checkIfUserExist } from '$utils/db';
 
     // let GoogleAuthClient;
@@ -13,26 +13,34 @@
 
     onMount(async () => {
         signInBtn.onclick = () => {
+            // Run the gapi initializer
             initGAPI(btnClicked);
         };
 
+        /**
+         * Callback for google sign in
+         */
         async function btnClicked(GoogleAuthClient) {
             try {
+                // Ask user for authorization
                 const { code } = await GoogleAuthClient.grantOfflineAccess();
 
                 // We have to wait until the user state changed
                 GoogleAuthClient.isSignedIn.listen(async (val) => {
-                    if (!val) console.warn('User state is signed out');
+                    if (!val) return console.error('User state is signed out');
 
                     const userObject = GoogleAuthClient.currentUser.get();
                     user.set(userObject);
+
                     const profile = userObject.getBasicProfile();
 
                     const email = profile.getEmail();
+
                     const userExist = await checkIfUserExist(email);
 
+                    // If user exist by email
                     if (userExist == 1) {
-                        await fetch('/auth/link-user', {
+                        await fetch('/auth/link-user/existing', {
                             method: 'POST',
                             headers: {
                                 'X-Requested-With': 'XMLHttpRequest'
@@ -42,12 +50,18 @@
                                 code
                             })
                         });
+                    } 
+
+                    // If user doesn't exist 
+                    if (userExist == 0) {
+
+
                     }
                 });
             } catch (e) {
-                if (e.error == 'popup_closed_by_user') {
-                    alert('popup closed');
-                }
+                // If the user closes the popup
+                // TODO: Change this into a modal
+                if (e.error == 'popup_closed_by_user') alert('popup closed');
             }
         }
     });

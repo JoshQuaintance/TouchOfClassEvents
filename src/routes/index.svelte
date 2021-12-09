@@ -3,12 +3,9 @@
     Description: Renders main page
  -->
 <script lang="ts">
-    let dark = false;
-    // @ts-ignore
+    import Typewriter from 'svelte-typewriter';
     import { Button } from 'attractions';
     import { headerHeight } from '$utils/stores';
-    import Typewriter from 'svelte-typewriter';
-import Icon from '$components/Icon.svelte';
 
 </script>
 

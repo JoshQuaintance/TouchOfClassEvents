@@ -59,6 +59,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
             nickname
         };
 
+        // Make header to set a cookie (which is going to be jwt)
         const headers = {
             'Set-Cookie': cookie.serialize('jwt', await generateJWT(payload), {
                 httpOnly: true,
