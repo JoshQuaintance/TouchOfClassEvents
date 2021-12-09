@@ -4,37 +4,35 @@
 -->
 <script context="module">
     import { get } from 'svelte/store';
-    import { isSignedIn } from '$utils/stores';
-    import { goto } from '$app/navigation';
 
-    // export async function load(req) {
-    //     if (get(isSignedIn)) {
-    //         return {
-    //             status: 302,
-    //             redirect: '/log-in'
-    //         };
-    //     }
+    export async function load(req) {
+        if (get(isSignedIn)) {
+            return {
+                status: 302,
+                redirect: '/'
+            };
+        }
 
-    //     return {};
-    // }
+        return {};
+    }
 </script>
 
 <script lang="ts">
-    import { Button, TextField } from 'attractions';
+    import { Button, Divider, TextField } from 'attractions';
+    import { onMount } from 'svelte';
 
     import PasswordInput from '$components/PasswordInput.svelte';
     import { checkIfUserExist } from '$utils/db';
     import Icon from '$components/Icon.svelte';
     import GoogleAuth from '$components/GoogleAuth.svelte';
-    import { user } from '$utils/stores';
-    import { onMount } from 'svelte';
+    import { user, isSignedIn } from '$utils/stores';
 
     let userEmail: string;
     let nickname: string;
     let userPass: string;
 
     async function emailSignUp() {
-        (userEmail = 'hasianjoshua@gmail.com'), (nickname = 'Catalactics'), (userPass = 'test123');
+        // (userEmail = 'hasianjoshua@gmail.com'), (nickname = 'Catalactics'), (userPass = 'test123');
         let userExist = await checkIfUserExist(userEmail, nickname);
 
         if (userExist == 0) {
@@ -72,10 +70,14 @@
                         outline
                         withItem
                         required
+                        autofocus
                         class="relative"
                         bind:value={userEmail}
                     >
-                        <Icon icon="email" class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
+                        <Icon
+                            icon="email"
+                            class="absolute left-0 top-[50%] transform-gpu translate-y-[-50%] translate-x-2"
+                        />
                     </TextField>
                 </div>
 
@@ -90,7 +92,10 @@
                         bind:value={nickname}
                         class="relative"
                     >
-                        <Icon icon="at" class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
+                        <Icon
+                            icon="at"
+                            class="absolute left-0 top-[50%] transform-gpu translate-y-[-50%] translate-x-2"
+                        />
                     </TextField>
                 </div>
 
@@ -137,12 +142,10 @@
                     Sign Up
                 </button>
 
-                <div class="flex justify-center items-center relative">
-                    <span class="h-px bg-gray-300 absolute inset-x-0" />
-                    <span class="bg-white text-gray-400 text-sm relative px-4">Sign Up with social</span>
-                </div>
+                <Divider class="bg-white text-gray-400 text-sm relative px-4" text="Sign Up with social" />
 
-                <button
+                <!-- Deactivated for now, if we have time implement facebook oauth -->
+                <!-- <button
                     class="
                         flex
                         justify-center
@@ -168,7 +171,7 @@
                     <img src="images/facebook-logo.svg" alt="Facebook" />
 
                     Continue with Facebook
-                </button>
+                </button> -->
 
                 <GoogleAuth />
             </div>

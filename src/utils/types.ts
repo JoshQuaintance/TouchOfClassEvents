@@ -12,7 +12,7 @@ export interface GoogleConnection {
     refresh_token: Base64;
 }
 
-export interface User {
+export interface DatabaseUser {
     uid: UUID;
     email: string;
     nickname: string;
