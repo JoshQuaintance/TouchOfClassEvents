@@ -6,6 +6,7 @@
     import Typewriter from 'svelte-typewriter';
     import { Button } from 'attractions';
     import { headerHeight } from '$utils/stores';
+    import Typewriter from 'svelte-typewriter';
 
 </script>
 

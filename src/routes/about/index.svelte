@@ -19,9 +19,10 @@ import Icon from "$components/Icon.svelte";
           <img src="https://images.unsplash.com/photo-1567515004624-219c11d31f2e??auto=format&q=75&fit=crop&w=500" loading="lazy" alt="Photo by Radu Florin" class="w-full h-full object-cover object-center" />
         </div>
 
-        <div>
-          <div class="text-indigo-500 md:text-lg font-bold">John McCulling</div>
-          <p class="text-gray-500 text-sm md:text-base mb-3 md:mb-4">Founder / CEO</p>
+      <PersonCard name="Quinton Skelly" role="Project Manager" emailLink="22.Quinton.Skelly@sidneycityschools.org" facebookLink="joshua.hasian.75"/>
+      <PersonCard name="Joshua Pelealu" role="Lead Programmer" emailLink="22.Joshua.Pelealu@sidneycityschools.org"/>
+      <PersonCard name="Ethan Napier" role="Database Developer" emailLink="22.Ethan.Napier@sidneycityschools.org"/>
+      <PersonCard name="David Crosslin" role="Html and CSS Programmer" emailLink="22.David.Crosslin@sidneycityschools.org"/>
 
           <!-- social - start -->
           <div class="flex">
@@ -198,4 +199,3 @@ import Icon from "$components/Icon.svelte";
       <!-- person - end -->
     </div>
   </div>
-</div>
