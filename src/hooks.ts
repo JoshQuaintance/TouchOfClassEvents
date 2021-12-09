@@ -10,8 +10,8 @@ export async function handle({ request, resolve }) {
 
     // if (!cookies.jwt) isSignedIn.set(false);
 
-    // // verify the jwt
-    // const validJWT = await verifyJWT(cookies.jwt);
+    // verify the jwt
+    const validJWT = await verifyJWT(cookies.jwt);
 
     // if (validJWT) {
     //     user.set(validJWT);
