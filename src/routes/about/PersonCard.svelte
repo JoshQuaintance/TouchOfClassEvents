@@ -15,7 +15,7 @@
 
 <div>
     <div class="h-48 sm:h-60 md:h-80 bg-gray-100 overflow-hidden rounded-lg shadow-lg mb-2 sm:mb-4">
-        <img {src} loading="lazy" alt={$$props.alt} class="w-full h-full object-cover object-center" />
+        <img {src} loading="lazy" alt={$$props.alt} class="w-full h-full object-cover " style="object-position: 100% 26%"/>
     </div>
 
     <div>

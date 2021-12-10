@@ -665,7 +665,7 @@ import Icon from '$components/Icon.svelte';
                 <!-- social - start -->
                 <div class="flex gap-4">
                     <a
-                        href="#"
+                        href=""
                         target="_blank"
                         class="text-gray-400 hover:text-gray-500 active:text-gray-600 transition duration-100"
                     >
