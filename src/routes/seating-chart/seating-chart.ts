@@ -1,12 +1,17 @@
-import { Viewport } from 'pixi-viewport';
 import '$utils/pixi-ssr-shim';
-import { Application, DisplayObject, Graphics, Sprite } from 'pixi.js';
-import App from './App';
+import type * as PIXI from 'pixi.js';
+
+import { Viewport } from 'pixi-viewport';
+
+import App from './utils/App';
 import { percent } from '$utils/math';
+import Container from './utils/Container';
 
 export async function init() {
     return new Promise((resolve, reject) => {
-        const app = new Application({
+        const { Graphics } = App.PIXI;
+
+        const app = new App.PIXI.Application({
             backgroundColor: 0xfaf0f2,
             resizeTo: window,
             autoStart: false
@@ -18,27 +23,35 @@ export async function init() {
         const viewport = new Viewport({
             screenWidth: app.view.width,
             screenHeight: percent(88, app.view.height),
-            worldWidth: app.view.width * 3 + 3000,
-            worldHeight: app.view.width * 3,
+            worldWidth: window.innerWidth * 6,
+            worldHeight: window.innerHeight * 6,
             passiveWheel: false,
 
             interaction: app.renderer.plugins.interaction
         });
 
         viewport.drag({}).pinch().wheel({}).decelerate();
-        // viewport.clampZoom({ minScale: 0.15, maxScale: 3 });
-        // viewport.clamp({
-        //     underflow: 'center',
-        //     top: -viewport.worldHeight * 0.016,
-        //     left: -viewport.worldWidth * 0.01,
-        //     bottom: viewport.worldHeight * 1.016,
-        //     right: viewport.worldWidth * 1.01
-        // });
+        viewport.clampZoom({ minScale: 0.15, maxScale: 3 });
+        viewport.clamp({
+            underflow: 'center',
+            top: -viewport.worldHeight * 0.016,
+            left: -viewport.worldWidth * 0.01,
+            bottom: viewport.worldHeight * 1.016,
+            right: viewport.worldWidth * 1.01
+        });
 
-        // viewport.fit(false, viewport.screenWidth, viewport.screenHeight);
-        // viewport.moveCenter(viewport.worldWidth / 2, viewport.worldHeight / 2);
+        viewport.fit(false, viewport.screenWidth, viewport.screenHeight);
+        viewport.moveCenter(viewport.worldWidth / 2, viewport.worldHeight / 2);
 
-        // app.stage.addChild(viewport);
+        app.stage.addChild(viewport);
+
+        /**
+         * Room Border
+         */
+        const border = viewport.addChild(new Graphics());
+        border.lineStyle(20, 0xff0000).drawRect(0, 0, viewport.worldWidth, viewport.worldHeight);
+
+        App.border = border;
 
         /**
          * Misc. Initializations
@@ -66,7 +79,10 @@ export async function init() {
     });
 }
 
-export async function run(el: HTMLDivElement): Promise<void> {
+export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> {
+    // Put the dynamically imported PIXI into the class
+    App.PIXI = pixi;
+
     try {
         await init();
     } catch (e: any) {
@@ -81,11 +97,14 @@ export async function run(el: HTMLDivElement): Promise<void> {
 
     app.start();
 
-    let s = new Sprite(App.resources.rounded_seat.texture);
-    s.anchor.set(0.5);
-    s.x = app.view.width / 2;
-    s.y = app.view.height / 2;
-    viewport.drag({});
-    // app.stage.addChild(s);
-    viewport.addChild(s);
+    const spawnerContainer = new Container();
+
+    const rect = new App.PIXI.Graphics();
+    rect.beginFill(0xdea3f8)
+        .drawRect(0, percent(88, window.innerHeight), app.view.width, percent(15, app.view.height))
+        .endFill();
+
+    spawnerContainer.addChild(rect);
+
+    app.stage.addChild(spawnerContainer.it);
 }
