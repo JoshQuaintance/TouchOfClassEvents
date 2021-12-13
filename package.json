@@ -20,8 +20,8 @@
         "@types/jsonwebtoken": "^8.5.6",
         "@types/marked": "^4.0.1",
         "@types/uuid": "^8.3.3",
-        "attractions": "^3.4.0",
-        "autoprefixer": "^10.3.6",
+        "attractions": "^3.5.2",
+        "autoprefixer": "^10.4.0",
         "aws-sdk": "^2.1035.0",
         "cookie": "^0.4.1",
         "cssnano": "^5.0.8",
@@ -35,7 +35,9 @@
         "mongodb": "^4.1.4",
         "mongoose": "^6.0.12",
         "nock": "^13.2.1",
-        "postcss": "^8.3.8",
+        "pixi-viewport": "^4.34.1",
+        "pixi.js": "^6.2.0",
+        "postcss": "^8.4.4",
         "postcss-load-config": "^3.1.0",
         "prettier": "^2.4.1",
         "prettier-plugin-svelte": "^2.4.0",
@@ -45,13 +47,16 @@
         "svelte-check": "^2.2.6",
         "svelte-preprocess": "^4.9.7",
         "svelte-typewriter": "^3.0.0-alpha.5",
-        "tailwindcss": "2.1",
+        "tailwindcss": "^3.0.1",
         "tslib": "^2.3.1",
         "typescript": "^4.4.3"
     },
     "type": "module",
     "dependencies": {
+        "@mszu/pixi-ssr-shim": "^1.0.1",
         "bcrypt": "^5.0.1",
+        "i": "^0.3.7",
+        "npm-run-all": "^4.1.5",
         "uuid": "^8.3.2"
     }
 }

@@ -34,7 +34,7 @@
         function getUser(GoogleAuthClient) {
             /**
              * TODO: CHANGE THIS TO GETTING JWT TOKEN PAYLOAD
-            */
+             */
             if (GoogleAuthClient.isSignedIn.get()) {
                 user.set(GoogleAuthClient.currentUser.get());
                 isSignedIn.set(true);
@@ -58,7 +58,7 @@
 
 <style global lang="postcss">
     @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
-    
+
     @tailwind base;
     @tailwind components;
     @tailwind utilities;
