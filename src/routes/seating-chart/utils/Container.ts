@@ -1,4 +1,4 @@
-import type { Container as PIXI_Container, DisplayObject } from '@pixi/display';
+import type { Container as PIXI_Container, DisplayObject } from 'pixi.js';
 import type { Sprite } from '@pixi/sprite';
 import App from './App';
 

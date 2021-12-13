@@ -1,11 +1,13 @@
 import '$utils/pixi-ssr-shim';
 import type * as PIXI from 'pixi.js';
+import type { DisplayObject, Container as PIXIContainer } from 'pixi.js';
 
 import { Viewport } from 'pixi-viewport';
 
 import App from './utils/App';
 import { percent } from '$utils/math';
 import Container from './utils/Container';
+import Spawner from './utils/Spawner';
 
 export async function init() {
     return new Promise((resolve, reject) => {
@@ -105,6 +107,23 @@ export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> 
         .endFill();
 
     spawnerContainer.addChild(rect);
+
+    const seatTexture = App.resources.rounded_seat.texture;
+    const seatSpawner = new Spawner(seatTexture, 'seat-spawner');
+
+    spawnerContainer.addChild(seatSpawner.sprite, (container: PIXIContainer, child: DisplayObject) => {
+        if (!(child instanceof App.PIXI.Sprite)) return;
+
+        child.anchor.set(0.5);
+
+        // Make the scale 50% of the rectangle's height divided by the original height
+        child.scale.set(percent(50, rect.height) / child.height);
+
+        child.x = container.width / 2;
+        child.y = percent(88, app.view.height) + percent(50, percent(12, app.view.height));
+
+        container.addChild(child);
+    });
 
     app.stage.addChild(spawnerContainer.it);
 }

@@ -1,8 +1,10 @@
 import type { Texture } from '@pixi/core';
 import type { InteractionEvent } from '@pixi/interaction';
 import type { Sprite } from '@pixi/sprite';
+import type { DraggingSprite } from './extras';
+
 import App from './App';
-import { checkIfBeyondWorld, DraggingSprite } from './extras';
+import { checkIfBeyondWorld } from './extras';
 
 export default class Spawner {
     private _sprite: Sprite;
@@ -91,6 +93,18 @@ export default class Spawner {
         clone.scale = this._sprite.scale;
 
         return clone;
+    }
+
+    set x(val: number) {
+        this._sprite.x = val;
+    }
+
+    set y(val: number) {
+        this._sprite.y = val;
+    }
+
+    get sprite(): Sprite {
+        return this._sprite;
     }
 }
 

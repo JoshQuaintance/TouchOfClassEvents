@@ -3,7 +3,7 @@ import type { Sprite } from '@pixi/sprite';
 
 import App from './App';
 
-export interface DraggingSprite extends Sprite {
+interface DraggingSprite extends Sprite {
     dragging: { x: number; y: number };
     data?: InteractionData;
 }
@@ -26,3 +26,5 @@ export function checkIfBeyondWorld(sprite: DraggingSprite, x: number, y: any) {
     )
         return true;
 }
+
+export type { DraggingSprite };
