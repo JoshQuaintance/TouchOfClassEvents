@@ -13,7 +13,7 @@
     },
     "devDependencies": {
         "@iconify/svelte": "^2.1.0",
-        "@sveltejs/adapter-vercel": "^1.0.0-next.31",
+        "@sveltejs/adapter-vercel": "^1.0.0-next.32",
         "@sveltejs/kit": "next",
         "@types/bcrypt": "^5.0.0",
         "@types/cookie": "^0.4.1",
