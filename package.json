@@ -2,6 +2,7 @@
     "name": "sveltekit-tailwind",
     "version": "0.0.1",
     "scripts": {
+        "postinstall": "node ./fixGlobals.js",
         "dev": "svelte-kit dev",
         "build": "svelte-kit build",
         "preview": "svelte-kit preview",
