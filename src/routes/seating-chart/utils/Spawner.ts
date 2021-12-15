@@ -1,8 +1,6 @@
-import type { Texture } from '@pixi/core';
-import type { InteractionEvent } from '@pixi/interaction';
-import type { Sprite } from '@pixi/sprite';
 import type { DraggingSprite } from './extras';
 
+import { Sprite, InteractionEvent, Texture } from 'pixi.js';
 import App from './App';
 import { checkIfBeyondWorld } from './extras';
 
@@ -13,7 +11,7 @@ export default class Spawner {
     private static spawners = [];
 
     constructor(src: Texture, name: string) {
-        this._sprite = new App.PIXI.Sprite(src);
+        this._sprite = new Sprite(src);
         this._name = name;
 
         this._sprite.buttonMode = true;
@@ -89,7 +87,7 @@ export default class Spawner {
     }
 
     private createClone(): Sprite {
-        let clone = new App.PIXI.Sprite(this._sprite.texture);
+        let clone = new Sprite(this._sprite.texture);
         clone.scale = this._sprite.scale;
 
         return clone;

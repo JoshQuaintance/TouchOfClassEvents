@@ -1,6 +1,6 @@
 import '$utils/pixi-ssr-shim';
 import type * as PIXI from 'pixi.js';
-import type { DisplayObject, Container as PIXIContainer } from 'pixi.js';
+import { DisplayObject, Container as PIXIContainer, Application, Graphics, Sprite } from 'pixi.js';
 
 import { Viewport } from 'pixi-viewport';
 
@@ -11,9 +11,9 @@ import Spawner from './utils/Spawner';
 
 export async function init() {
     return new Promise((resolve, reject) => {
-        const { Graphics } = App.PIXI;
+        // const { Graphics } = App.PIXI;
 
-        const app = new App.PIXI.Application({
+        const app = new Application({
             backgroundColor: 0xfaf0f2,
             resizeTo: window,
             autoStart: false
@@ -83,7 +83,7 @@ export async function init() {
 
 export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> {
     // Put the dynamically imported PIXI into the class
-    App.PIXI = pixi;
+    // App.PIXI = pixi;
 
     try {
         await init();
@@ -101,7 +101,7 @@ export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> 
 
     const spawnerContainer = new Container();
 
-    const rect = new App.PIXI.Graphics();
+    const rect = new Graphics();
     rect.beginFill(0xdea3f8)
         .drawRect(0, percent(88, window.innerHeight), app.view.width, percent(15, app.view.height))
         .endFill();
@@ -110,11 +110,15 @@ export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> 
 
     const seatTexture = App.resources.rounded_seat.texture;
     const seatSpawner = new Spawner(seatTexture, 'seat-spawner');
+    const toggleSeatSpawner = new Sprite(seatTexture);
 
-    spawnerContainer.addChild(seatSpawner.sprite, (container: PIXIContainer, child: DisplayObject) => {
-        if (!(child instanceof App.PIXI.Sprite)) return;
+    spawnerContainer.addChild(toggleSeatSpawner, (container: PIXIContainer, child: DisplayObject) => {
+        if (!(child instanceof Sprite)) return;
 
         child.anchor.set(0.5);
+        child.buttonMode = true;
+        child.cursor = 'pointer';
+        child.interactive = true;
 
         // Make the scale 50% of the rectangle's height divided by the original height
         child.scale.set(percent(50, rect.height) / child.height);
