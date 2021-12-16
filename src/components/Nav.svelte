@@ -43,16 +43,15 @@
                             <div class="padded">
                                 <a
                                     href="#"
-                                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
+                                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent mt-10 mb-7"
                                 >
-                                    Seating Chart
+                                    Make a reservation
                                 </a>
-                                <br />
                                 <a
                                     href="#"
                                     class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
                                 >
-                                    Option 2
+                                    Create an Event
                                 </a>
                             </div>
                         </Dropdown>
@@ -62,15 +61,16 @@
                 <style>
                     .dropdown {
                         /*position: absolute;*/
-                        margin-left: +3%;
+                        margin-left: -30%;
                         /* transform: translate(0 50%) */
                     }
 
                     .dropdown .padded {
-                        width: 9rem;
-                        height: 4rem;
+                        width: 12rem;
+                        height: 5rem;
                         text-align: center;
-                        font-size: 1.25em;
+                        font-size: 1.2em;
+                        padding-top: .5em;
                     }
                 </style>
 
@@ -119,10 +119,17 @@
                     </a>
                 </div>
             {/if}
-
-            <button
-                type="button"
-                class="inline-flex items-center lg:hidden bg-gray-200 hover:bg-gray-300 focus-visible:ring ring-indigo-300 text-gray-500 active:text-gray-700 text-sm md:text-base font-semibold rounded-lg gap-2 px-2.5 py-2"
+                <style>
+                    .menu {
+                        margin-top: +100%;
+                        padding-right: +300%;
+                    }
+                </style>
+            <div>
+                <DropdownShell let:toggle>
+                    <Button
+                        on:click={toggle}
+                         class="inline-flex items-center lg:hidden bg-gray-200 hover:bg-gray-300 focus-visible:ring ring-indigo-300 text-gray-500 active:text-gray-700 text-sm md:text-base font-semibold rounded-lg gap-2 px-2.5 py-2"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                     <path
@@ -133,7 +140,26 @@
                 </svg>
 
                 Menu
-            </button>
+            </Button>
+            <Dropdown>
+                <div class="menu">
+                    <a
+                                    href="#"
+                                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent mt-10 mb-7"
+                                >
+                                    Make a reservation
+                                </a>
+                                <a
+                                    href="#"
+                                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
+                                >
+                                    Create an Event
+                                </a>
+                            </div>
+                        </Dropdown>
+                    </DropdownShell>
+                </div>
+            
             <!-- login and sign-up - end -->
         </header>
         <!-- menu - end -->
