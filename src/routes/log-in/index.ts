@@ -9,7 +9,7 @@ export async function post(req) {
     const { mongoose, schemas } = await connectToDB();
     const { UserSchema } = await schemas;
 
-    const { email, nickname, password } = JSON.parse(req.body)
+    const { email, nickname, password } = JSON.parse(req.body);
     const User = mongoose.models.Users || mongoose.model('Users', UserSchema);
 
     const payload = {
@@ -19,12 +19,23 @@ export async function post(req) {
 
     const userData = await User.findOne({ email });
 
-    if (userData) {
-        const validatePass = await bcrypt.compare(password, userData.password)
+    if (!userData)
+        return {
+            status: 404,
+            body: {
+                code: 'user-cred-invalid'
+            }
+        };
 
-        if (validatePass) {
-            console.log("Valid")
-        }
+    const validatePass = await bcrypt.compare(password, userData.password);
+
+    if (!validatePass) {
+        return {
+            status: 403,
+            body: {
+                code: 'user-cred-invalid'
+            }
+        };
     }
 
     const headers = {
@@ -35,12 +46,13 @@ export async function post(req) {
             expires: new Date('Fri, 31 Dec 9999 12:00:00 GMT')
         })
     };
-
     return {
-        status: 201,
+        status: 302,
         headers,
-        message: 'Successfully created a new user',
-        code: 'user-created'
-    }
-
+        body: {
+            message: 'User Exist',
+            code: 'user-cred-valid',
+            redirect: '/'
+        }
+    };
 }

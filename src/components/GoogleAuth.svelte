@@ -50,11 +50,11 @@
                                 code
                             })
                         });
-                    } 
+                    }
 
                     // If user doesn't exist 
                     if (userExist == 0) {
-
+                        
 
                     }
                 });

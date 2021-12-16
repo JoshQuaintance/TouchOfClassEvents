@@ -56,7 +56,8 @@ export async function getSession(req) {
             ...req.headers,
             body: {
                 ...req.body
-            }
+            },
+            locals
         };
 
     isSignedIn.set(locals.isSignedIn);
