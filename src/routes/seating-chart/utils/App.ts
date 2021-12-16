@@ -10,6 +10,7 @@ export default class App {
     private static _resources: PIXI_Utils.Dict<LoaderResource>;
     private static _border: Graphics;
     private static _mode: AppMode;
+    private static _mode_event: EventTarget = new EventTarget();
     private static _PIXI: typeof PIXI;
     static parentEl: HTMLDivElement;
 
@@ -22,7 +23,14 @@ export default class App {
     }
 
     static set mode(m: AppMode) {
-        this._mode = 'view';
+        this._mode = m;
+
+        let newEvent = new CustomEvent('app-mode-changed', {
+            detail: {
+                mode: this._mode
+            }
+        });
+        this._mode_event.dispatchEvent(newEvent);
     }
 
     static set resources(res: PIXI_Utils.Dict<LoaderResource>) {
@@ -35,6 +43,10 @@ export default class App {
 
     static set PIXI(pixi: typeof PIXI) {
         this._PIXI = pixi;
+    }
+
+    static get mode_event() {
+        return this._mode_event;
     }
 
     static get viewport() {

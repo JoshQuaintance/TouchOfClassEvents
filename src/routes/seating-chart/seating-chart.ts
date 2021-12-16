@@ -1,6 +1,14 @@
 import '$utils/pixi-ssr-shim';
 import type * as PIXI from 'pixi.js';
-import { DisplayObject, Container as PIXIContainer, Application, Graphics, Sprite } from 'pixi.js';
+import {
+    DisplayObject,
+    Container as PIXIContainer,
+    Application,
+    Graphics,
+    Sprite,
+    InteractionManager,
+    InteractionEvent
+} from 'pixi.js';
 
 import { Viewport } from 'pixi-viewport';
 
@@ -8,6 +16,8 @@ import App from './utils/App';
 import { percent } from '$utils/math';
 import Container from './utils/Container';
 import Spawner from './utils/Spawner';
+import { checkIfBeyondWorld } from './utils/extras';
+import type { DraggingSprite } from './utils/extras';
 
 export async function init() {
     return new Promise((resolve, reject) => {
@@ -112,6 +122,29 @@ export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> 
     const seatSpawner = new Spawner(seatTexture, 'seat-spawner');
     const toggleSeatSpawner = new Sprite(seatTexture);
 
+    seatSpawner.sprite.x = viewport.center.x;
+    seatSpawner.sprite.y = viewport.center.y;
+    seatSpawner.sprite.alpha = 0.5;
+    seatSpawner.sprite.anchor.set(0.5);
+
+    function highlighting(e: InteractionEvent) {
+        const sprite: DraggingSprite = seatSpawner.sprite as DraggingSprite;
+        const viewport = App.viewport;
+        let { x, y } = e.data.getLocalPosition(viewport);
+        if (sprite.dragging) {
+            if (!checkIfBeyondWorld(sprite, x, y)) {
+                sprite.position.x += x - sprite.dragging.x;
+                sprite.position.y += y - sprite.dragging.y;
+                sprite.dragging = { x, y };
+            }
+        } else {
+            sprite.position.x = x;
+            sprite.position.y = y;
+        }
+    }
+
+    viewport.on('pointermove', highlighting);
+
     spawnerContainer.addChild(toggleSeatSpawner, (container: PIXIContainer, child: DisplayObject) => {
         if (!(child instanceof Sprite)) return;
 
@@ -130,4 +163,22 @@ export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> 
     });
 
     app.stage.addChild(spawnerContainer.it);
+
+    toggleSeatSpawner.on('pointerdown', (e) => {
+        App.mode = App.mode == 'build' ? 'view' : 'build';
+    });
+
+    App.mode_event.addEventListener('app-mode-changed', (e: CustomEventInit) => {
+        const mode = e.detail.mode;
+
+        console.log(mode);
+
+        if (mode == 'view') {
+            viewport.removeChild(seatSpawner.sprite);
+        }
+
+        if (mode == 'build') {
+            viewport.addChild(seatSpawner.sprite);
+        }
+    });
 }

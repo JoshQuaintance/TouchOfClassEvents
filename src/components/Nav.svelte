@@ -30,33 +30,33 @@
                     Home
                 </Button>
 
-                <div>
-                    <DropdownShell let:toggle>
-                        <Button
-                            on:click={toggle}
-                            class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
-                        >
-                            Features
-                            <Icon icon="expand_more" class="fill-current" />
-                        </Button>
-                        <Dropdown>
-                            <div class="padded">
-                                <a
-                                    href="#"
-                                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent mt-10 mb-7"
-                                >
-                                    Make a reservation
-                                </a>
-                                <a
-                                    href="#"
-                                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
-                                >
-                                    Create an Event
-                                </a>
-                            </div>
-                        </Dropdown>
-                    </DropdownShell>
-                </div>
+                <!-- <div> -->
+                <DropdownShell let:toggle>
+                    <Button
+                        on:click={toggle}
+                        class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
+                    >
+                        Features
+                        <Icon icon="expand_more" class="fill-current" />
+                    </Button>
+                    <Dropdown>
+                        <div class="padded">
+                            <a
+                                href="#"
+                                class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent mt-10 mb-7"
+                            >
+                                Make a reservation
+                            </a>
+                            <a
+                                href="#"
+                                class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
+                            >
+                                Create an Event
+                            </a>
+                        </div>
+                    </Dropdown>
+                </DropdownShell>
+                <!-- </div> -->
 
                 <style>
                     .dropdown {
@@ -70,7 +70,7 @@
                         height: 5rem;
                         text-align: center;
                         font-size: 1.2em;
-                        padding-top: .5em;
+                        padding-top: 0.5em;
                     }
                 </style>
 
@@ -119,47 +119,45 @@
                     </a>
                 </div>
             {/if}
-                <style>
-                    .menu {
-                        margin-top: +100%;
-                        padding-right: +300%;
-                    }
-                </style>
-            <div>
-                <DropdownShell let:toggle>
-                    <Button
-                        on:click={toggle}
-                         class="inline-flex items-center lg:hidden bg-gray-200 hover:bg-gray-300 focus-visible:ring ring-indigo-300 text-gray-500 active:text-gray-700 text-sm md:text-base font-semibold rounded-lg gap-2 px-2.5 py-2"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                    <path
-                        fill-rule="evenodd"
-                        d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                        clip-rule="evenodd"
-                    />
-                </svg>
+            <style>
+                .menu {
+                    margin-top: +100%;
+                    padding-right: +300%;
+                }
+            </style>
+            <!-- <DropdownShell let:toggle>
+                <Button
+                    on:click={toggle}
+                    class="inline-flex items-center lg:hidden bg-gray-200 hover:bg-gray-300 focus-visible:ring ring-indigo-300 text-gray-500 active:text-gray-700 text-sm md:text-base font-semibold rounded-lg gap-2 px-2.5 py-2"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            fill-rule="evenodd"
+                            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                            clip-rule="evenodd"
+                        />
+                    </svg>
 
-                Menu
-            </Button>
-            <Dropdown>
-                <div class="menu">
-                    <a
-                                    href="#"
-                                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent mt-10 mb-7"
-                                >
-                                    Make a reservation
-                                </a>
-                                <a
-                                    href="#"
-                                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
-                                >
-                                    Create an Event
-                                </a>
-                            </div>
-                        </Dropdown>
-                    </DropdownShell>
-                </div>
-            
+                    Menu
+                </Button>
+                <Dropdown>
+                    <div class="menu">
+                        <a
+                            href="#"
+                            class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent mt-10 mb-7"
+                        >
+                            Make a reservation
+                        </a>
+                        <a
+                            href="#"
+                            class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
+                        >
+                            Create an Event
+                        </a>
+                    </div>
+                </Dropdown>
+            </DropdownShell> -->
+
             <!-- login and sign-up - end -->
         </header>
         <!-- menu - end -->
