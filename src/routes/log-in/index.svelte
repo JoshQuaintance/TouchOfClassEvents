@@ -1,16 +1,32 @@
+<script context="module">
+    import { get } from 'svelte/store';
+
+    export async function load({ session }) {
+        if (session?.locals.user.isSignedIn) {
+            return {
+                status: 302,
+                redirect: '/'
+            };
+        }
+
+        return {};
+    }
+</script>
+
 <script>
     import { onMount } from 'svelte';
-    import { Divider, TextField } from 'attractions';
+    import { goto } from '$app/navigation';
+    import { Divider, Snackbar, SnackbarContainer, TextField, Button } from 'attractions';
     import Icon from '$components/Icon.svelte';
     import PasswordInput from '$components/PasswordInput.svelte';
     import GoogleAuth from '$components/GoogleAuth.svelte';
     import { user, isSignedIn } from '$utils/stores';
 
-    
     onMount(async () => {});
 
     let userEmail;
     let userPass;
+    let showSnackbar;
 
     async function clickLogin(event) {
         const User = {
@@ -23,82 +39,100 @@
             body: JSON.stringify(User)
         });
 
-        console.log(await x.json());
-    }
-</script>
+        let res = await x.json();
 
-<script context="module">
-    import { get } from 'svelte/store';
-
-    export async function load(req) {
-        if (get(isSignedIn)) {
-            return {
-                status: 302,
-                redirect: '/'
-            };
+        if (res.code == 'user-cred-invalid') {
+            showSnackbar.showSnackbar({
+                props: { text: 'No User Found' },
+                component: undefined,
+                duration: 2000
+            });
         }
 
-        return {};
+        if (res.code == 'user-cred-valid') {
+            goto('/');
+        }
+    }
+
+    function show() {
+        showSnackbar.showSnackbar({
+            props: { text: 'No User Found', class: 'bg-red-500' },
+            component: undefined,
+            duration: 50000
+        });
     }
 </script>
 
-<div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
-    <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
-        <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-8">Login</h2>
+<SnackbarContainer bind:this={showSnackbar}>
+    <style>
+        .snackbar-stack {
+            @apply left-5 bottom-5 !important;
+        }
 
-        <form class="bg-white max-w-lg border rounded-lg mx-auto" on:submit|preventDefault>
-            <div class="flex flex-col gap-4 p-4 md:p-8">
-                <div>
-                    <TextField
-                        type="text"
-                        placeholder="Username or Email"
-                        label="Email or Username*"
-                        outline
-                        withItem
-                        required
-                        autofocus
-                        class="relative"
-                        bind:value={userEmail}
+        /* .snackbar {
+            @apply bg-red-500 !important;
+        } */
+    </style>
+
+    <button on:click={show}>PRESS MEE DADDY</button>
+
+    <div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
+        <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
+            <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-8">Login</h2>
+
+            <form class="bg-white max-w-lg border rounded-lg mx-auto" on:submit|preventDefault>
+                <div class="flex flex-col gap-4 p-4 md:p-8">
+                    <div>
+                        <TextField
+                            type="text"
+                            placeholder="Email"
+                            label="Email*"
+                            outline
+                            withItem
+                            required
+                            autofocus
+                            class="relative"
+                            bind:value={userEmail}
+                        >
+                            <Icon
+                                icon="account"
+                                class="absolute left-0 top-[50%] transform-gpu translate-y-[-50%] translate-x-2"
+                            />
+                        </TextField>
+                    </div>
+
+                    <div>
+                        <PasswordInput bind:value={userPass} id="sign-in-password" />
+                    </div>
+
+                    <style>
+                        .text-field input {
+                            @apply rounded outline-none;
+                            @apply px-3 py-2;
+
+                            border-radius: 6px !important;
+                        }
+
+                        .text-field label {
+                            height: fit-content;
+                        }
+                    </style>
+
+                    <span class="text-red-600 italic text-right">* required</span>
+
+                    <button
+                        type="submit"
+                        on:click={clickLogin}
+                        id="Login"
+                        class="block bg-gray-800 hover:bg-gray-700 active:bg-gray-600 focus-visible:ring ring-gray-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3"
+                        >Log in</button
                     >
-                        <Icon
-                            icon="account"
-                            class="absolute left-0 top-[50%] transform-gpu translate-y-[-50%] translate-x-2"
-                        />
-                    </TextField>
-                </div>
 
-                <div>
-                    <PasswordInput bind:value={userPass} id="sign-in-password"  />
-                </div>
+                    <Divider class="bg-white text-gray-400 text-sm relative px-4" text="Log in with social" />
 
-                <style>
-                    .text-field input {
-                        @apply rounded outline-none;
-                        @apply px-3 py-2;
+                    <!-- Deactivated for now, if we have time implement facebook oauth -->
 
-                        border-radius: 6px !important;
-                    }
-
-                    .text-field label {
-                        height: fit-content;
-                    }
-                </style>
-
-                <span class="text-red-600 italic text-right">* required</span>
-
-                <button
-                    type="submit"
-                    on:click={clickLogin}
-                    id="Login"
-                    class="block bg-gray-800 hover:bg-gray-700 active:bg-gray-600 focus-visible:ring ring-gray-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3"
-                    >Log in</button
-                >
-
-                <Divider class="bg-white text-gray-400 text-sm relative px-4" text="Log in with social" />
-
-                <!-- Deactivated for now, if we have time implement facebook oauth -->
-
-                <!-- <button
+                    <!-- <button
                     class="flex justify-center items-center bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus-visible:ring ring-blue-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 gap-2 px-8 py-3"
                 >
                     <svg
@@ -118,18 +152,29 @@
                     Continue with Facebook
                 </button> -->
 
-                <GoogleAuth />
-            </div>
+                    <GoogleAuth />
+                </div>
 
-            <div class="flex justify-center items-center bg-gray-100 p-4">
-                <p class="text-gray-500 text-sm text-center">
-                    Don't have an account? <a
-                        href="sign-up"
-                        class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 transition duration-100"
-                        >Register</a
-                    >
-                </p>
-            </div>
-        </form>
+                <div class="flex justify-center items-center bg-gray-100 p-4">
+                    <p class="text-gray-500 text-sm text-center">
+                        Forgot your password? <a
+                            href="#"
+                            class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 transition duration-100"
+                            >Reset password</a
+                        >
+                        <br />
+                        Don't have an account?
+                        <a
+                            href="sign-up"
+                            class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 transition duration-100"
+                            >Register</a
+                        >
+                    </p>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+</SnackbarContainer>
+
+<style>
+</style>

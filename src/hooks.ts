@@ -29,7 +29,6 @@ export async function handle({ request, resolve }) {
         };
     }
 
-
     // verify the jwt
     const validJWT = await verifyJWT(cookies.jwt);
 
@@ -58,7 +57,8 @@ export async function getSession(req) {
             ...req.headers,
             body: {
                 ...req.body
-            }
+            },
+            locals
         };
 
     isSignedIn.set(locals.isSignedIn);
