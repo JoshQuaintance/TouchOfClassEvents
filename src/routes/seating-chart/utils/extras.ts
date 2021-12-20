@@ -1,3 +1,7 @@
+/**
+ * Location: src/routes/seating-chart/utils/extras.ts
+ * Description: Here are extra utilities and functions
+ */
 import type { InteractionData } from '@pixi/interaction';
 import type { Sprite } from '@pixi/sprite';
 

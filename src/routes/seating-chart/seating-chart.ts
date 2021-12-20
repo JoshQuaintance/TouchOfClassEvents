@@ -1,3 +1,7 @@
+/**
+ * Location: src/routes/seating-chart/seating-chart.ts
+ * Description: Main execution process
+ */
 import '$utils/pixi-ssr-shim';
 import type * as PIXI from 'pixi.js';
 import {

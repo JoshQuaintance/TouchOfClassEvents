@@ -1,3 +1,8 @@
+<!--
+    File Location: src/routes/seating-chart/utils/BuildingObject.svelte
+    Description: A component to be able to toggle building objects
+ -->
+
 <script lang="ts">
     import { percent } from '$utils/math';
     import App from './App';

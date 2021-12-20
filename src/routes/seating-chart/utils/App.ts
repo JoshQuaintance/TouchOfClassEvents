@@ -1,3 +1,9 @@
+/**
+ * Location: src/routes/seating-chart/utils/App.ts
+ * Description: This class will act as a way for every part of 
+ * the seating chart have access to the pixi.js application
+ */     
+
 import type {
     Application,
     LoaderResource,

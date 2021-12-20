@@ -1,3 +1,7 @@
+/**
+ * Location: src/routes/seating-chart/utils/Spawner.ts
+ * Description: A Spawner class that will be able to spawn objects
+ */
 import type { DraggingSprite } from './extras';
 
 import { Sprite, InteractionEvent, Texture } from 'pixi.js';

@@ -1,3 +1,8 @@
+<!--
+    File Location: src/routes/seating-chart/index.svelte
+    Description: Seating chart
+-->
+
 <script lang="ts">
     import '$utils/pixi-ssr-shim';
     import { onMount } from 'svelte';
