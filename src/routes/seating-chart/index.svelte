@@ -12,6 +12,7 @@
         //@ts-ignore
         const PIXI = await import('pixi.js');
 
+        App.setEventTarget = new EventTarget();
         run(el, PIXI);
 
         window.addEventListener('resize', () => {

@@ -29,13 +29,17 @@ export default class App {
     private static _resources: PIXI_Utils.Dict<LoaderResource>;
     private static _border: Graphics;
     private static _mode: AppMode;
-    private static _mode_event = new globalThis.EventTarget();
+    private static _mode_event: EventTarget;
     private static _build_object: string;
     private static _previous_object: string;
     private static _PIXI: typeof PIXI;
     private static _previous_app_events: AppEvent[] = [];
     private static _undone_app_events: AppEvent[] = [];
     static parentEl: HTMLDivElement;
+
+    static set setEventTarget(eventTarget: EventTarget) {
+        this._mode_event = eventTarget;
+    }
 
     static undo_prev_event() {
         if (this._previous_app_events.length == 0) return;
