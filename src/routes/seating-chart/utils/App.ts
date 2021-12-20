@@ -29,7 +29,7 @@ export default class App {
     private static _resources: PIXI_Utils.Dict<LoaderResource>;
     private static _border: Graphics;
     private static _mode: AppMode;
-    private static _mode_event: EventTarget = new EventTarget();
+    private static _mode_event = new EventTarget();
     private static _build_object: string;
     private static _previous_object: string;
     private static _PIXI: typeof PIXI;
@@ -40,7 +40,7 @@ export default class App {
     static undo_prev_event() {
         if (this._previous_app_events.length == 0) return;
 
-        let prevEvent = this._previous_app_events.shift() 
+        let prevEvent = this._previous_app_events.shift();
 
         if (prevEvent.event == 'spawn-object') {
             const { sprite, parent } = prevEvent.additional as SpawnObjectEvent;
