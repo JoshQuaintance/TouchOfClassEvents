@@ -8,7 +8,7 @@ export default class Spawner {
     private _sprite: Sprite;
     private _name: string;
 
-    private static spawners = [];
+    private static spawners = {};
 
     constructor(src: Texture, name: string) {
         this._sprite = new Sprite(src);
@@ -18,7 +18,7 @@ export default class Spawner {
         this._sprite.cursor = 'pointer';
         this._sprite.interactive = true;
 
-        Spawner.spawners.push(this);
+        Spawner.spawners[name] = this;
 
         this._sprite.on('pointerdown', (e) => this.clicked(e));
     }
@@ -65,7 +65,7 @@ export default class Spawner {
             sprite.dragging = null;
             sprite.data = null;
             clone.sprite.cursor = 'grab';
-            App.viewport.drag();
+            if (App.mode != 'build') App.viewport.drag();
         }
 
         const clone = new SpawnedObject(this.createClone());
@@ -82,6 +82,15 @@ export default class Spawner {
         clone.sprite.on('pointermove', onDragMove);
         clone.sprite.on('pointerup', onDragEnd);
         clone.sprite.on('pointerupoutside', onDragEnd);
+
+        App.new_app_event = {
+            event: 'spawn-object',
+            additional: {
+                sprite: clone.sprite,
+                coords: {x: clone.sprite.x, y: clone.sprite.y},
+                parent: clone.sprite.parent
+            }
+        }
 
         return true;
     }
@@ -103,6 +112,10 @@ export default class Spawner {
 
     get sprite(): Sprite {
         return this._sprite;
+    }
+
+    static getSpawner(name: string): Spawner {
+        return Spawner.spawners[name];
     }
 }
 

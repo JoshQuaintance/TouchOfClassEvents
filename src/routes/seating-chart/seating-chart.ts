@@ -76,7 +76,9 @@ export async function init() {
          * Preload Resources
          */
         app.loader.baseUrl = 'images';
-        app.loader.add('rounded_seat', 'seat.svg');
+        app.loader.add('seat', 'seat.svg');
+        app.loader.add('table', 'table.svg');
+        app.loader.add('circular_table', 'circular_table.svg');
 
         app.loader.onComplete.add(() => resolve(true));
         app.loader.onError.add(() => {
@@ -111,24 +113,25 @@ export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> 
 
     const spawnerContainer = new Container();
 
-    const rect = new Graphics();
-    rect.beginFill(0xdea3f8)
-        .drawRect(0, percent(88, window.innerHeight), app.view.width, percent(15, app.view.height))
-        .endFill();
+    function createSpawner(name) {
+        const spawnerTexture = App.resources[name].texture;
+        const newSpawner = new Spawner(spawnerTexture, `${name}-spawner`);
 
-    spawnerContainer.addChild(rect);
+        newSpawner.sprite.x = viewport.center.x;
+        newSpawner.sprite.y = viewport.center.y;
+        newSpawner.sprite.alpha = 0.5;
+        newSpawner.sprite.anchor.set(0.5);
+        newSpawner.sprite.scale.set(percent(65, percent(12, window.innerHeight)) / newSpawner.sprite.height);
 
-    const seatTexture = App.resources.rounded_seat.texture;
-    const seatSpawner = new Spawner(seatTexture, 'seat-spawner');
-    const toggleSeatSpawner = new Sprite(seatTexture);
+        return newSpawner;
+    }
 
-    seatSpawner.sprite.x = viewport.center.x;
-    seatSpawner.sprite.y = viewport.center.y;
-    seatSpawner.sprite.alpha = 0.5;
-    seatSpawner.sprite.anchor.set(0.5);
+    const seatSpawner = createSpawner('seat');
+    const tableSpawner = createSpawner('table');
+    const circularTableSpawner = createSpawner('circular_table');
 
     function highlighting(e: InteractionEvent) {
-        const sprite: DraggingSprite = seatSpawner.sprite as DraggingSprite;
+        const sprite: DraggingSprite = Spawner.getSpawner(App.build_object + '-spawner').sprite as DraggingSprite;
         const viewport = App.viewport;
         let { x, y } = e.data.getLocalPosition(viewport);
         if (sprite.dragging) {
@@ -143,42 +146,27 @@ export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> 
         }
     }
 
-    viewport.on('pointermove', highlighting);
-
-    spawnerContainer.addChild(toggleSeatSpawner, (container: PIXIContainer, child: DisplayObject) => {
-        if (!(child instanceof Sprite)) return;
-
-        child.anchor.set(0.5);
-        child.buttonMode = true;
-        child.cursor = 'pointer';
-        child.interactive = true;
-
-        // Make the scale 50% of the rectangle's height divided by the original height
-        child.scale.set(percent(50, rect.height) / child.height);
-
-        child.x = container.width / 2;
-        child.y = percent(88, app.view.height) + percent(50, percent(12, app.view.height));
-
-        container.addChild(child);
-    });
-
     app.stage.addChild(spawnerContainer.it);
-
-    toggleSeatSpawner.on('pointerdown', (e) => {
-        App.mode = App.mode == 'build' ? 'view' : 'build';
-    });
 
     App.mode_event.addEventListener('app-mode-changed', (e: CustomEventInit) => {
         const mode = e.detail.mode;
 
-        console.log(mode);
-
         if (mode == 'view') {
-            viewport.removeChild(seatSpawner.sprite);
+            viewport.on('pointermove', () => {});
+            viewport.drag({});
+            let buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
+
+            viewport.removeChild(buildingObject.sprite);
         }
 
         if (mode == 'build') {
-            viewport.addChild(seatSpawner.sprite);
+            let buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
+            let previousObject = Spawner.getSpawner(App.previous_object + '-spawner');
+
+            viewport.on('pointermove', highlighting);
+            if (previousObject) viewport.removeChild(previousObject.sprite);
+            viewport.addChild(buildingObject.sprite);
+            viewport.drag({ pressDrag: false });
         }
     });
 }

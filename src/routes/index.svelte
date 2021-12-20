@@ -661,9 +661,3 @@ import Icon from '$components/Icon.svelte';
         </div>
     </div>
 </footer>
-
-<style>
-    #svelte {
-        overflow-x: none;
-    }
-</style>
