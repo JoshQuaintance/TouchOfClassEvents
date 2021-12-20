@@ -29,7 +29,7 @@ export default class App {
     private static _resources: PIXI_Utils.Dict<LoaderResource>;
     private static _border: Graphics;
     private static _mode: AppMode;
-    private static _mode_event = new EventTarget();
+    private static _mode_event = new globalThis.EventTarget();
     private static _build_object: string;
     private static _previous_object: string;
     private static _PIXI: typeof PIXI;
