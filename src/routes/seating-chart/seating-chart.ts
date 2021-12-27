@@ -4,15 +4,7 @@
  */
 import '$utils/pixi-ssr-shim';
 import type * as PIXI from 'pixi.js';
-import {
-    DisplayObject,
-    Container as PIXIContainer,
-    Application,
-    Graphics,
-    Sprite,
-    InteractionManager,
-    InteractionEvent
-} from 'pixi.js';
+import { Application, Graphics } from 'pixi.js';
 
 import { Viewport } from 'pixi-viewport';
 
@@ -20,8 +12,7 @@ import App from './utils/App';
 import { percent } from '$utils/math';
 import Container from './utils/Container';
 import Spawner from './utils/Spawner';
-import { checkIfBeyondWorld } from './utils/extras';
-import type { DraggingSprite } from './utils/extras';
+import initEventListeners from './utils/initEventListeners';
 
 export async function init() {
     return new Promise((resolve, reject) => {
@@ -134,43 +125,7 @@ export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> 
     const tableSpawner = createSpawner('table');
     const circularTableSpawner = createSpawner('circular_table');
 
-    function highlighting(e: InteractionEvent) {
-        const sprite: DraggingSprite = Spawner.getSpawner(App.build_object + '-spawner').sprite as DraggingSprite;
-        const viewport = App.viewport;
-        let { x, y } = e.data.getLocalPosition(viewport);
-        if (sprite.dragging) {
-            if (!checkIfBeyondWorld(sprite, x, y)) {
-                sprite.position.x += x - sprite.dragging.x;
-                sprite.position.y += y - sprite.dragging.y;
-                sprite.dragging = { x, y };
-            }
-        } else {
-            sprite.position.x = x;
-            sprite.position.y = y;
-        }
-    }
-
     app.stage.addChild(spawnerContainer.it);
 
-    App.mode_event.addEventListener('app-mode-changed', (e: CustomEventInit) => {
-        const mode = e.detail.mode;
-
-        if (mode == 'view') {
-            viewport.on('pointermove', () => {});
-            viewport.drag({});
-            let buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
-
-            viewport.removeChild(buildingObject.sprite);
-        }
-
-        if (mode == 'build') {
-            let buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
-            let previousObject = Spawner.getSpawner(App.previous_object + '-spawner');
-
-            viewport.on('pointermove', highlighting);
-            if (previousObject) viewport.removeChild(previousObject.sprite);
-            viewport.addChild(buildingObject.sprite);
-            viewport.drag({ pressDrag: false });
-        }
-    });
+    initEventListeners();
 }

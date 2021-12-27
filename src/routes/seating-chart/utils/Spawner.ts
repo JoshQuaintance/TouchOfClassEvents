@@ -4,7 +4,7 @@
  */
 import type { DraggingSprite } from './extras';
 
-import { Sprite, InteractionEvent, Texture } from 'pixi.js';
+import { Sprite, InteractionEvent, Texture, Text, TextStyle } from 'pixi.js';
 import App from './App';
 import { checkIfBeyondWorld } from './extras';
 
@@ -35,6 +35,10 @@ export default class Spawner {
     }
 
     private spawnObject(xCoords: number, yCoords: number) {
+        const clone = new SpawnedObject(this.createClone(), {
+            type: this._name
+        });
+
         function onDragMove(e: InteractionEvent) {
             const sprite: DraggingSprite = e.currentTarget as DraggingSprite;
             const viewport = App.viewport;
@@ -54,6 +58,17 @@ export default class Spawner {
             const sprite: DraggingSprite = e.currentTarget as DraggingSprite;
             const viewport = App.viewport;
 
+            if (App.mode.startsWith('options-')) {
+                App.new_app_event({
+                    event: App.mode as `options-${string}`,
+                    additional: {
+                        spawnedObject: clone
+                    }
+                });
+
+                return;
+            }
+
             sprite.data = e.data;
             sprite.alpha = 0.5;
             let { x, y } = e.data.getLocalPosition(viewport);
@@ -72,8 +87,6 @@ export default class Spawner {
             if (App.mode != 'build') App.viewport.drag();
         }
 
-        const clone = new SpawnedObject(this.createClone());
-
         clone.sprite.anchor.set(0.5);
         clone.sprite.x = xCoords;
         clone.sprite.y = yCoords;
@@ -87,14 +100,14 @@ export default class Spawner {
         clone.sprite.on('pointerup', onDragEnd);
         clone.sprite.on('pointerupoutside', onDragEnd);
 
-        App.new_app_event = {
+        App.new_app_event({
             event: 'spawn-object',
             additional: {
                 sprite: clone.sprite,
-                coords: {x: clone.sprite.x, y: clone.sprite.y},
+                coords: { x: clone.sprite.x, y: clone.sprite.y },
                 parent: clone.sprite.parent
             }
-        }
+        });
 
         return true;
     }
@@ -122,20 +135,93 @@ export default class Spawner {
         return Spawner.spawners[name];
     }
 }
+interface SpawnedObjectOptions {
+    type: string;
+    label?: string;
+}
 
 class SpawnedObject {
     private _sprite: Sprite;
-    private _objectName: string;
+    private _labelText: string;
+    private _label: Text | null;
+    private _objectType: string;
+    private _isSeat: boolean;
+    private _isTable: boolean;
+    private _canHoldAmount: number;
+    private _canHoldType: string;
 
-    constructor(sprite: Sprite) {
+    constructor(sprite: Sprite, options?: SpawnedObjectOptions) {
+        const { label, type } = options;
+
         this._sprite = sprite;
+        this._objectType = type;
+        this._isSeat = false;
+        this._isTable = false;
+
+        this._labelText = label || '';
+
+        this.setLabel('Test123');
     }
 
-    get name() {
-        return this._objectName;
+    get isSeat() {
+        return this._isSeat;
+    }
+
+    get isTable() {
+        return this._isTable;
+    }
+
+    get type() {
+        return this._objectType;
+    }
+
+    get label() {
+        return this._label;
     }
 
     get sprite() {
         return this._sprite;
+    }
+
+    setLabel(text: string, style?: TextStyle) {
+        if (this._label) {
+            this._sprite.removeChild(this._label);
+            this._label = null;
+        }
+
+        this._labelText = text;
+
+        const defaultStyle = new TextStyle({
+            align: 'center',
+            fontSize: '150px'
+        });
+
+        const label = new Text(text, style || defaultStyle);
+
+        label.anchor.set(0.5);
+
+        this._label = label;
+        this._sprite.addChild(label);
+    }
+
+    makeNormalObject() {
+        this._isSeat = false;
+        this._isTable = false;
+    }
+
+    makeSeat(capacity?: number) {
+        if (this._isTable) return Error('This object is already a table. Make it a normal object first!');
+
+        this._canHoldAmount = capacity || 1;
+        this._canHoldType = 'person';
+        this._isSeat = true;
+    }
+
+    makeTable(capacity?: number) {
+        if (this._isSeat) return Error('This object is already a seat. Make it a normal object first!');
+
+        this._canHoldAmount = capacity || 1;
+        this._canHoldType = 'seat';
+        this._isTable = true;
     }
 }

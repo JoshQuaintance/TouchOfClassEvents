@@ -1,8 +1,8 @@
 /**
  * Location: src/routes/seating-chart/utils/App.ts
- * Description: This class will act as a way for every part of 
+ * Description: This class will act as a way for every part of
  * the seating chart have access to the pixi.js application
- */     
+ */
 
 import type {
     Application,
@@ -16,7 +16,7 @@ import type {
 import type * as PIXI from 'pixi.js';
 import type { Viewport } from 'pixi-viewport';
 
-export type AppMode = 'view' | 'build';
+export type AppMode = 'view' | 'build' | `options-${string}`;
 
 interface SpawnObjectEvent {
     sprite: Sprite;
@@ -25,8 +25,8 @@ interface SpawnObjectEvent {
 }
 interface AppEvent {
     undone?: boolean;
-    event: 'spawn-object' | 'delete-object' | 'resize-object';
-    additional: SpawnObjectEvent | {};
+    event: `${string}-object` | `options-${string}`;
+    additional?: SpawnObjectEvent | {};
 }
 
 export default class App {
@@ -35,7 +35,7 @@ export default class App {
     private static _resources: PIXI_Utils.Dict<LoaderResource>;
     private static _border: Graphics;
     private static _mode: AppMode;
-    private static _mode_event: EventTarget;
+    private static _event_medium: EventTarget;
     private static _build_object: string;
     private static _previous_object: string;
     private static _PIXI: typeof PIXI;
@@ -44,7 +44,7 @@ export default class App {
     static parentEl: HTMLDivElement;
 
     static set setEventTarget(eventTarget: EventTarget) {
-        this._mode_event = eventTarget;
+        this._event_medium = eventTarget;
     }
 
     static undo_prev_event() {
@@ -71,6 +71,8 @@ export default class App {
     }
 
     static set mode(m: AppMode) {
+        if (m != 'view') this.mode = 'view';
+
         this._mode = m;
 
         let newEvent = new CustomEvent('app-mode-changed', {
@@ -78,7 +80,7 @@ export default class App {
                 mode: this._mode
             }
         });
-        this._mode_event.dispatchEvent(newEvent);
+        this._event_medium.dispatchEvent(newEvent);
     }
 
     static set build_object(obj: string) {
@@ -95,7 +97,15 @@ export default class App {
         this._border = b;
     }
 
-    static set new_app_event(event: AppEvent) {
+    static new_app_event(event: AppEvent) {
+        let newEvent = new CustomEvent(event.event, {
+            detail: {
+                additional: event.additional
+            }
+        });
+
+        this._event_medium.dispatchEvent(newEvent);
+
         this._previous_app_events.unshift(event);
     }
 
@@ -103,8 +113,8 @@ export default class App {
         this._PIXI = pixi;
     }
 
-    static get mode_event() {
-        return this._mode_event;
+    static get event_medium() {
+        return this._event_medium;
     }
 
     static get viewport() {

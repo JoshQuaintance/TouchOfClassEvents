@@ -2,16 +2,25 @@
     File Location: src/routes/seating-chart/index.svelte
     Description: Seating chart
 -->
-
 <script lang="ts">
     import '$utils/pixi-ssr-shim';
     import { onMount } from 'svelte';
     import App from './utils/App';
     import { run } from './seating-chart';
     import { percent } from '$utils/math';
-    import BuildingObject from './utils/BuildingObject.svelte';
+    import BuildingObject from './components/BuildingObject.svelte';
+    import OptionsButton from './components/OptionsButton.svelte';
+    import { Dialog, Modal } from 'attractions';
+    import { openModal, dialogUsed } from './utils/localStores';
+    import LabelChangeDialog from './dialogs/LabelChangeDialog.svelte';
 
     let el: HTMLDivElement;
+
+    const dialogs = {
+        LabelChangeDialog: LabelChangeDialog
+    };
+
+    let test123;
 
     onMount(async () => {
         //@ts-ignore
@@ -30,10 +39,18 @@
 
         window.addEventListener('keyup', (e) => {
             if (e.key == 'Escape') App.mode = 'view';
-            if (e.key == 'z' && e.ctrlKey) App.undo_prev_event()
+            if (e.key == 'z' && e.ctrlKey) App.undo_prev_event();
+        });
+        console.log(test123);
+
+
+        App.event_medium.addEventListener('options-add-label', (e: CustomEventInit) => {
+            console.log(test123);
         });
     });
 </script>
+
+<svelte:component this={dialogs[$dialogUsed]} bind:this={test123}/>
 
 <div class="relative flex flex-col items-center justify-around">
     <div bind:this={el} />
@@ -49,5 +66,32 @@
         <BuildingObject src="seat" name="seat" />
         <BuildingObject src="table" name="table" />
         <BuildingObject src="circular_table" name="circular_table" />
+    </div>
+    <div
+        class="
+        options
+        fixed top-0 left-2
+        flex flex-col justify-even
+        cursor-pointer
+        w-fit h-fit text-lg
+        "
+    >
+        <OptionsButton icon="cog" tooltip="Settings" event="settings" />
+
+        <OptionsButton icon="pencil" tooltip="Edit" event="edit" />
+
+        <OptionsButton icon="form-textbox" tooltip="Add/Edit Label" event="add-label" />
+
+        <OptionsButton icon="arrow-top-left-bottom-right" tooltip="Resize Object" event="resize" />
+
+        <style>
+            .options hr {
+                margin: 0.5rem 0;
+            }
+
+            .options .iconify:hover {
+                opacity: 50%;
+            }
+        </style>
     </div>
 </div>
