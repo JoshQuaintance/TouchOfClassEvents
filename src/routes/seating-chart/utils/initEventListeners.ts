@@ -6,7 +6,7 @@ import type { InteractionEvent } from 'pixi.js';
 import App from './App';
 import { checkIfBeyondWorld } from './extras';
 import type { DraggingSprite } from './extras';
-import Spawner from './Spawner';
+import Spawner, { SpawnedObject } from './Spawner';
 import { dialogUsed, openModal } from './localStores';
 
 export default function initEventListeners() {
@@ -16,7 +16,7 @@ export default function initEventListeners() {
     App.event_medium.addEventListener('app-mode-changed', (e: CustomEventInit) => {
         const mode = e.detail.mode;
 
-        console.log(mode);
+        // console.log(mode);
 
         if (mode == 'view') {
             viewport.drag({});
@@ -54,11 +54,21 @@ export default function initEventListeners() {
     });
 
     App.event_medium.addEventListener('options-add-label', (e: CustomEventInit) => {
-        const spawnedObject = e.detail.additional.spawnedObject;
+        const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
 
-        dialogUsed.set('LabelChangedDialog');
+        
+        dialogUsed.set('LabelChangeDialog');
         openModal.set(true);
+        
+        App.event_medium.addEventListener('label-change-input', (e: CustomEventInit) => {
+            console.log(spawnedObject)
+            const newLabel: string = e.detail.additional.label;
 
-        console.log(spawnedObject);
+            spawnedObject.setLabel(newLabel);
+        });
     });
+
+    App.event_medium.addEventListener('options-resize', (e: CustomEventInit) => {
+
+    })
 }

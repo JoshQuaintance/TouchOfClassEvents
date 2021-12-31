@@ -16,13 +16,15 @@
 
     function triggerEvent() {
         App.mode = `options-${event}`;
+
+
     }
 </script>
 
 <div class="option-container relative" bind:clientWidth={contWidth}>
     <Divider />
-    <span on:click={triggerEvent}>
-        <Icon {icon} class="peer" />
+    <span on:click={triggerEvent} class="peer">
+        <Icon {icon} />
     </span>
     <span
         class="invisible peer-hover:visible text-cameo-pink-lightest bg-red-500 absolute whitespace-nowrap rounded px-[.25rem] font-bold"

@@ -9,6 +9,7 @@ import App from './App';
 
 interface DraggingSprite extends Sprite {
     dragging: { x: number; y: number };
+    pointerInSprite?: boolean;
     data?: InteractionData;
 }
 

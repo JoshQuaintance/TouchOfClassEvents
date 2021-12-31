@@ -15,12 +15,11 @@
     import LabelChangeDialog from './dialogs/LabelChangeDialog.svelte';
 
     let el: HTMLDivElement;
+    let modeReceiver = 'view';
 
     const dialogs = {
         LabelChangeDialog: LabelChangeDialog
     };
-
-    let test123;
 
     onMount(async () => {
         //@ts-ignore
@@ -41,16 +40,29 @@
             if (e.key == 'Escape') App.mode = 'view';
             if (e.key == 'z' && e.ctrlKey) App.undo_prev_event();
         });
-        console.log(test123);
 
-
-        App.event_medium.addEventListener('options-add-label', (e: CustomEventInit) => {
-            console.log(test123);
-        });
+        App.event_medium.addEventListener('app-mode-changed', (e: CustomEventInit) => (modeReceiver = e.detail.mode.replace('options-', '').replace('-', ' ')));
     });
+
+    $: currentMode = modeReceiver;
+
 </script>
 
-<svelte:component this={dialogs[$dialogUsed]} bind:this={test123}/>
+<span class="fixed right-2" style="right: .5rem; z-index: 100;">
+    {currentMode}
+</span>
+
+<Modal bind:open={$openModal} let:closeCallback>
+    <svelte:component
+        this={dialogs[$dialogUsed]}
+        closeCallback={() => {
+            openModal.set(false);
+            App.mode = 'view';
+
+            closeCallback();
+        }}
+    />
+</Modal>
 
 <div class="relative flex flex-col items-center justify-around">
     <div bind:this={el} />

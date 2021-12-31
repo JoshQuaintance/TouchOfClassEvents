@@ -25,7 +25,7 @@ interface SpawnObjectEvent {
 }
 interface AppEvent {
     undone?: boolean;
-    event: `${string}-object` | `options-${string}`;
+    event: string;
     additional?: SpawnObjectEvent | {};
 }
 

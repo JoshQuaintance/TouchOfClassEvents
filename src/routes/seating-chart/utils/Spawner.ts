@@ -43,6 +43,7 @@ export default class Spawner {
             const sprite: DraggingSprite = e.currentTarget as DraggingSprite;
             const viewport = App.viewport;
 
+
             if (sprite.dragging) {
                 let { x, y } = e.data.getLocalPosition(viewport);
 
@@ -86,7 +87,6 @@ export default class Spawner {
             clone.sprite.cursor = 'grab';
             if (App.mode != 'build') App.viewport.drag();
         }
-
         clone.sprite.anchor.set(0.5);
         clone.sprite.x = xCoords;
         clone.sprite.y = yCoords;
@@ -108,7 +108,6 @@ export default class Spawner {
                 parent: clone.sprite.parent
             }
         });
-
         return true;
     }
 
@@ -140,7 +139,7 @@ interface SpawnedObjectOptions {
     label?: string;
 }
 
-class SpawnedObject {
+export class SpawnedObject {
     private _sprite: Sprite;
     private _labelText: string;
     private _label: Text | null;
@@ -193,6 +192,8 @@ class SpawnedObject {
 
         const defaultStyle = new TextStyle({
             align: 'center',
+            wordWrap: true,
+            wordWrapWidth: this._sprite.width,
             fontSize: '150px'
         });
 
