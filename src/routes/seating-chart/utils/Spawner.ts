@@ -31,7 +31,7 @@ export default class Spawner {
         App.app.renderer.plugins.interaction.setCursorMode('pointer');
         let { x, y } = e.data.getLocalPosition(App.viewport);
 
-        this.spawnObject(x, y);
+        if (!checkIfBeyondWorld(null, x, y)) this.spawnObject(x, y);
     }
 
     private spawnObject(xCoords: number, yCoords: number) {
@@ -42,7 +42,6 @@ export default class Spawner {
         function onDragMove(e: InteractionEvent) {
             const sprite: DraggingSprite = e.currentTarget as DraggingSprite;
             const viewport = App.viewport;
-
 
             if (sprite.dragging) {
                 let { x, y } = e.data.getLocalPosition(viewport);

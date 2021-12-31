@@ -30,21 +30,21 @@ export async function init() {
         const viewport = new Viewport({
             screenWidth: app.view.width,
             screenHeight: percent(88, app.view.height),
-            worldWidth: window.innerWidth * 6,
-            worldHeight: window.innerHeight * 6,
+            worldWidth: 9600,
+            worldHeight: 8600,
             passiveWheel: false,
 
             interaction: app.renderer.plugins.interaction
         });
 
         viewport.drag({}).pinch().wheel({}).decelerate();
-        viewport.clampZoom({ minScale: 0.15, maxScale: 3 });
+        viewport.clampZoom({ minScale: 0.08, maxScale: 3 });
         viewport.clamp({
             underflow: 'center',
             top: -viewport.worldHeight * 0.016,
-            left: -viewport.worldWidth * 0.01,
+            left: -viewport.worldWidth * 0.016,
             bottom: viewport.worldHeight * 1.016,
-            right: viewport.worldWidth * 1.01
+            right: viewport.worldWidth * 1.016
         });
 
         viewport.fit(false, viewport.screenWidth, viewport.screenHeight);

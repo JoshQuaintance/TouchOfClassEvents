@@ -14,6 +14,17 @@ interface DraggingSprite extends Sprite {
 }
 
 export function checkIfBeyondWorld(sprite: DraggingSprite, x: number, y: any) {
+    if (sprite == null) {
+        if (
+            x > App.viewport.worldWidth - App.border.line.width / 2 ||
+            x < 0 + App.border.line.width / 2 ||
+            y > App.viewport.worldHeight - App.border.line.width / 2 ||
+            x < 0 + App.border.line.width / 2
+        )
+            return true;
+        return false;
+    }
+
     let spriteMoveX = sprite.position.x + (x - sprite.dragging.x);
     let spriteMoveY = sprite.position.y + (y - sprite.dragging.y);
 

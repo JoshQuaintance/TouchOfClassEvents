@@ -11,7 +11,7 @@
     import BuildingObject from './components/BuildingObject.svelte';
     import OptionsButton from './components/OptionsButton.svelte';
     import { Dialog, Modal } from 'attractions';
-    import { openModal, dialogUsed } from './utils/localStores';
+    import { openModal, dialogUsed, hintText } from './utils/localStores';
     import LabelChangeDialog from './dialogs/LabelChangeDialog.svelte';
 
     let el: HTMLDivElement;
@@ -29,11 +29,27 @@
         run(el, PIXI);
 
         window.addEventListener('resize', () => {
-            App.app.destroy(true);
-            App.app = null;
-            App.viewport = null;
+            // App.app.destroy(true);
+            // App.app = null;
+            // App.viewport = null;
+            const app = App.app;
+            const viewport = App.viewport;
 
-            run(el, PIXI);
+            app.resize();
+
+            console.log(viewport.worldWidth, window.innerWidth * 6, window.innerWidth, app.view.width);
+
+            viewport.resize(
+                App.app.view.width,
+                percent(88, App.app.view.height),
+                9600,
+                9600
+            );
+
+
+            viewport.fit(false, viewport.screenWidth, viewport.screenHeight);
+
+            // run(el, PIXI);
         });
 
         window.addEventListener('keyup', (e) => {
@@ -41,11 +57,14 @@
             if (e.key == 'z' && e.ctrlKey) App.undo_prev_event();
         });
 
-        App.event_medium.addEventListener('app-mode-changed', (e: CustomEventInit) => (modeReceiver = e.detail.mode.replace('options-', '').replace('-', ' ')));
+        App.event_medium.addEventListener(
+            'app-mode-changed',
+            (e: CustomEventInit) => (modeReceiver = e.detail.mode.replace('options-', '').replace('-', ' '))
+        );
     });
 
     $: currentMode = modeReceiver;
-
+    $: hintTextDynamic = $hintText;
 </script>
 
 <span class="fixed right-2" style="right: .5rem; z-index: 100;">
@@ -65,6 +84,15 @@
 </Modal>
 
 <div class="relative flex flex-col items-center justify-around">
+    {#if hintTextDynamic != ''}
+        <span
+            class="fixed bg-white bg-opacity-75 px-2"
+            style="z-index:100 !important; top:.25rem; padding-left: .5rem; padding-right: .5rem; "
+        >
+            {hintTextDynamic}
+        </span>
+    {/if}
+
     <div bind:this={el} />
 
     <div

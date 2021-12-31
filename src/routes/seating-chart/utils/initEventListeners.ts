@@ -2,12 +2,13 @@
  * Location: src/routes/seating-chart/utils/initEventListeners.ts
  * Description: Initializes all the event listeners attached to the app events
  */
-import type { InteractionEvent } from 'pixi.js';
+import { Graphics, InteractionEvent, Rectangle } from 'pixi.js';
 import App from './App';
 import { checkIfBeyondWorld } from './extras';
 import type { DraggingSprite } from './extras';
 import Spawner, { SpawnedObject } from './Spawner';
-import { dialogUsed, openModal } from './localStores';
+import { dialogUsed, hintText, openModal } from './localStores';
+import { percent } from '$utils/math';
 
 export default function initEventListeners() {
     const app = App.app;
@@ -19,6 +20,7 @@ export default function initEventListeners() {
         // console.log(mode);
 
         if (mode == 'view') {
+            hintText.set('');
             viewport.drag({});
             let buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
 
@@ -51,17 +53,20 @@ export default function initEventListeners() {
             viewport.addChild(buildingObject.sprite);
             viewport.drag({ pressDrag: false });
         }
+
+        if (mode == 'options-resize') {
+            hintText.set('Select an object to resize');
+        }
     });
 
     App.event_medium.addEventListener('options-add-label', (e: CustomEventInit) => {
         const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
 
-        
         dialogUsed.set('LabelChangeDialog');
         openModal.set(true);
-        
+
         App.event_medium.addEventListener('label-change-input', (e: CustomEventInit) => {
-            console.log(spawnedObject)
+            console.log(spawnedObject);
             const newLabel: string = e.detail.additional.label;
 
             spawnedObject.setLabel(newLabel);
@@ -69,6 +74,74 @@ export default function initEventListeners() {
     });
 
     App.event_medium.addEventListener('options-resize', (e: CustomEventInit) => {
+        const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
+        const objectSpawner: Spawner = Spawner.getSpawner(spawnedObject.type);
+        const { x, y } = spawnedObject.sprite.getLocalBounds();
 
-    })
+        App.mode = 'options-resizing';
+        viewport.drag({ pressDrag: false });
+        hintText.set('');
+
+        let resizer = new Graphics();
+
+        let resizerWidth = 150;
+
+        resizer
+            .beginFill(0xdea3f8)
+            .drawRect(Math.abs(x) - resizerWidth, Math.abs(y) - resizerWidth, resizerWidth, resizerWidth)
+            .endFill();
+
+        resizer.zIndex = 100;
+        resizer.interactive = true;
+        resizer.buttonMode = true;
+        resizer.cursor = 'nwse-resize';
+
+        spawnedObject.sprite.addChild(resizer);
+
+        resizer.on('pointerdown', dragStart);
+        resizer.on('pointermove', dragMove);
+        resizer.on('pointerup', dragEnd);
+
+        function dragStart(e: InteractionEvent) {
+            const sprite: DraggingSprite = spawnedObject.sprite as DraggingSprite;
+            const viewport = App.viewport;
+
+            sprite.data = e.data;
+            sprite.alpha = 0.5;
+            let { x, y } = e.data.getLocalPosition(viewport);
+            sprite.dragging = { x, y };
+            viewport.drag({ pressDrag: false });
+        }
+
+        function dragMove(e: InteractionEvent) {
+            const sprite: DraggingSprite = spawnedObject.sprite as DraggingSprite;
+            const viewport = App.viewport;
+
+            if (sprite.dragging) {
+                let { x, y } = e.data.getLocalPosition(viewport);
+
+                if (
+                    sprite.width + x - sprite.dragging.x > percent(35, objectSpawner.sprite.width) &&
+                    sprite.height + y - sprite.dragging.y > percent(35, objectSpawner.sprite.height)
+                ) {
+                    sprite.width += x - sprite.dragging.x;
+                    sprite.height += y - sprite.dragging.y;
+                    sprite.dragging = { x, y };
+                } else {
+                    sprite.width = sprite.width;
+                    sprite.height = sprite.height;
+                    sprite.dragging = { x, y };
+                }
+            }
+        }
+
+        function dragEnd(e: InteractionEvent) {
+            const sprite: DraggingSprite = spawnedObject.sprite as DraggingSprite;
+
+            sprite.alpha = 1;
+            sprite.dragging = null;
+            sprite.data = null;
+            if (App.mode != 'build') App.viewport.drag();
+        }
+    });
 }
