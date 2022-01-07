@@ -14,6 +14,8 @@
             }
         });
 
+        value = '';
+
         closeCallback();
     }
 </script>

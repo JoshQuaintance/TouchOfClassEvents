@@ -70,12 +70,22 @@ export default function initEventListeners() {
             const newLabel: string = e.detail.additional.label;
 
             spawnedObject.setLabel(newLabel);
+
+            // Remove the event listener so that this element doesn't change label when a different object is changing label
+            App.event_medium.removeEventListener('label-change-input', (e: CustomEventInit) => {
+                console.log(spawnedObject);
+                const newLabel: string = e.detail.additional.label;
+    
+                spawnedObject.setLabel(newLabel);
+            });
         });
+
+        
     });
 
     App.event_medium.addEventListener('options-resize', (e: CustomEventInit) => {
         const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
-        const objectSpawner: Spawner = Spawner.getSpawner(spawnedObject.type);
+        const objectSpawner: Spawner = Spawner.getSpawner(spawnedObject.parentType);
         const { x, y } = spawnedObject.sprite.getLocalBounds();
 
         App.mode = 'options-resizing';

@@ -36,7 +36,7 @@ export default class Spawner {
 
     private spawnObject(xCoords: number, yCoords: number) {
         const clone = new SpawnedObject(this.createClone(), {
-            type: this._name
+            parentType: this._name
         });
 
         function onDragMove(e: InteractionEvent) {
@@ -134,7 +134,7 @@ export default class Spawner {
     }
 }
 interface SpawnedObjectOptions {
-    type: string;
+    parentType: string;
     label?: string;
 }
 
@@ -142,19 +142,19 @@ export class SpawnedObject {
     private _sprite: Sprite;
     private _labelText: string;
     private _label: Text | null;
-    private _objectType: string;
     private _isSeat: boolean;
     private _isTable: boolean;
+    private _parentType: string;
     private _canHoldAmount: number;
     private _canHoldType: string;
 
     constructor(sprite: Sprite, options?: SpawnedObjectOptions) {
-        const { label, type } = options;
+        const { label, parentType } = options;
 
         this._sprite = sprite;
-        this._objectType = type;
         this._isSeat = false;
         this._isTable = false;
+        this._parentType = parentType;
 
         this._labelText = label || '';
 
@@ -168,9 +168,9 @@ export class SpawnedObject {
     get isTable() {
         return this._isTable;
     }
-
-    get type() {
-        return this._objectType;
+    
+    get parentType() {
+        return this._parentType;
     }
 
     get label() {
@@ -182,6 +182,7 @@ export class SpawnedObject {
     }
 
     setLabel(text: string, style?: TextStyle) {
+        console.log('setLabel', this)
         if (this._label) {
             this._sprite.removeChild(this._label);
             this._label = null;
@@ -202,6 +203,10 @@ export class SpawnedObject {
 
         this._label = label;
         this._sprite.addChild(label);
+    }
+
+    clone() {
+        console.error("NOT IMPLEMENTED")
     }
 
     makeNormalObject() {
