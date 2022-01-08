@@ -21,6 +21,7 @@ interface UserProfile {
 
 export const headerHeight = writable(0);
 export const pageLoaded = writable(false);
+export const mainSnackbarController = writable(null);
 
 export const isSignedIn = writable(false);
 export const user: Writable<UserProfile | {}> = writable({});

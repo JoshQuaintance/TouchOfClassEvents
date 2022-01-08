@@ -4,11 +4,12 @@
  -->
 <script context="module">
     export const load = async ({ page, session }) => {
+        console.log(session?.locals.isSignedIn)
+        isSignedIn.set(session?.locals.isSignedIn || false);
         pageLoaded.set(false);
         return {
             props: {
-                key: page.path,
-                userIsSignedIn: session?.locals.isSignedIn || false
+                key: page.path
             }
         };
     };
@@ -17,21 +18,23 @@
 <script lang="ts">
     import 'material-icons/iconfont/outlined.css';
     import PageTransitions from '$components/PageTransitions.svelte';
-    import { headerHeight, isSignedIn, pageLoaded, user } from '$utils/stores';
+    import { headerHeight, isSignedIn, mainSnackbarController, pageLoaded, user } from '$utils/stores';
 
     import Nav from '../components/Nav.svelte';
     import { beforeUpdate, onMount } from 'svelte';
     import Spinner from '$components/Spinner.svelte';
     import { initGAPI } from '$utils/gapi';
+    import { SnackbarContainer } from 'attractions';
 
     export let key;
-    export let userIsSignedIn;
+    let snackbarController;
 
     beforeUpdate(() => pageLoaded.set(true));
     onMount(async () => {
         pageLoaded.set(true);
 
         initGAPI(getUser);
+        mainSnackbarController.set(snackbarController);
 
         function getUser(GoogleAuthClient) {
             /**
@@ -49,13 +52,24 @@
 {#if !$pageLoaded}
     <Spinner />
 {:else}
-    <Nav {userIsSignedIn} />
+    <SnackbarContainer bind:this={snackbarController}>
+        <style>
+            .snackbar-stack {
+                @apply left-5 bottom-5 !important;
+            }
 
-    <div style="margin-top: {$headerHeight}px;" />
+            /* .snackbar {
+            @apply bg-red-500 !important;
+        } */
+        </style>
+        <Nav />
 
-    <PageTransitions refresh={key}>
-        <slot />
-    </PageTransitions>
+        <div style="margin-top: {$headerHeight}px;" />
+
+        <PageTransitions refresh={key}>
+            <slot />
+        </PageTransitions>
+    </SnackbarContainer>
 {/if}
 
 <style global lang="postcss">

@@ -8,7 +8,8 @@
     import { page } from '$app/stores';
     import Icon from '$components/Icon.svelte';
 
-    export let userIsSignedIn;
+    $: userIsSignedIn = $isSignedIn;
+    $: console.log(userIsSignedIn, 'userSignedIn')
 </script>
 
 <div class="header-container fixed top-0 z-[101] w-screen" bind:clientHeight={$headerHeight}>
@@ -115,7 +116,9 @@
                 signed in or in sign-up page
              -->
             {#if !userIsSignedIn}
-                <div class="hidden lg:flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-2.5 -ml-8">
+                <div
+                    class="hidden lg:flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-2.5 -ml-8"
+                >
                     <a
                         href="log-in"
                         class="inline-block focus-visible:ring ring-indigo-300 text-gray-500 hover:text-indigo-500 active:text-indigo-600 text-sm md:text-base font-semibold text-center transition duration-100"
@@ -136,38 +139,6 @@
                     padding-right: +300%;
                 }
             </style>
-            <!-- <DropdownShell let:toggle>
-                <Button
-                    on:click={toggle}
-                    class="inline-flex items-center lg:hidden bg-gray-200 hover:bg-gray-300 focus-visible:ring ring-indigo-300 text-gray-500 active:text-gray-700 text-sm md:text-base font-semibold rounded-lg gap-2 px-2.5 py-2"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                        <path
-                            fill-rule="evenodd"
-                            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                            clip-rule="evenodd"
-                        />
-                    </svg>
-
-                    Menu
-                </Button>
-                <Dropdown>
-                    <div class="menu">
-                        <a
-                            href="#"
-                            class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent mt-10 mb-7"
-                        >
-                            Make a reservation
-                        </a>
-                        <a
-                            href="#"
-                            class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent"
-                        >
-                            Create an Event
-                        </a>
-                    </div>
-                </Dropdown>
-            </DropdownShell> -->
 
             <!-- login and sign-up - end -->
         </header>
