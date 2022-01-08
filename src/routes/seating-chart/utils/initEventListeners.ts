@@ -17,6 +17,11 @@ export default function initEventListeners() {
     App.event_medium.addEventListener('app-mode-changed', (e: CustomEventInit) => {
         const mode = e.detail.mode;
 
+        if (mode == 'save') {
+            // TODO: Save the seating chart
+
+            App.mode = 'view';
+        }
         // console.log(mode);
 
         if (mode == 'view') {
@@ -65,22 +70,16 @@ export default function initEventListeners() {
         dialogUsed.set('LabelChangeDialog');
         openModal.set(true);
 
-        App.event_medium.addEventListener('label-change-input', (e: CustomEventInit) => {
-            console.log(spawnedObject);
+        function handleLabelChange(e: CustomEventInit) {
             const newLabel: string = e.detail.additional.label;
 
             spawnedObject.setLabel(newLabel);
 
             // Remove the event listener so that this element doesn't change label when a different object is changing label
-            App.event_medium.removeEventListener('label-change-input', (e: CustomEventInit) => {
-                console.log(spawnedObject);
-                const newLabel: string = e.detail.additional.label;
-    
-                spawnedObject.setLabel(newLabel);
-            });
-        });
+            App.event_medium.removeEventListener('label-change-input', handleLabelChange);
+        }
 
-        
+        App.event_medium.addEventListener('label-change-input', handleLabelChange);
     });
 
     App.event_medium.addEventListener('options-resize', (e: CustomEventInit) => {

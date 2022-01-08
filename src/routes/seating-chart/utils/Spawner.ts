@@ -182,7 +182,6 @@ export class SpawnedObject {
     }
 
     setLabel(text: string, style?: TextStyle) {
-        console.log('setLabel', this)
         if (this._label) {
             this._sprite.removeChild(this._label);
             this._label = null;
@@ -190,10 +189,11 @@ export class SpawnedObject {
 
         this._labelText = text;
 
+        
         const defaultStyle = new TextStyle({
             align: 'center',
             wordWrap: true,
-            wordWrapWidth: this._sprite.width,
+            wordWrapWidth: this._sprite.width + 400,
             fontSize: '150px'
         });
 

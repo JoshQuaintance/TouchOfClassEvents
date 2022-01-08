@@ -118,7 +118,7 @@
     >
         <OptionsButton icon="cog" tooltip="Settings" event="settings" />
 
-        <OptionsButton icon="pencil" tooltip="Edit" event="edit" />
+        <OptionsButton icon="content-save" tooltip="Save" event="save" />
 
         <OptionsButton icon="form-textbox" tooltip="Add/Edit Label" event="add-label" />
 
