@@ -3,11 +3,12 @@
     Description: Layout that will be used for all routes
  -->
 <script context="module">
-    export const load = async ({ page }) => {
+    export const load = async ({ page, session }) => {
         pageLoaded.set(false);
         return {
             props: {
-                key: page.path
+                key: page.path,
+                userIsSignedIn: session?.locals.isSignedIn || false
             }
         };
     };
@@ -24,6 +25,7 @@
     import { initGAPI } from '$utils/gapi';
 
     export let key;
+    export let userIsSignedIn;
 
     beforeUpdate(() => pageLoaded.set(true));
     onMount(async () => {
@@ -47,7 +49,7 @@
 {#if !$pageLoaded}
     <Spinner />
 {:else}
-    <Nav />
+    <Nav {userIsSignedIn} />
 
     <div style="margin-top: {$headerHeight}px;" />
 

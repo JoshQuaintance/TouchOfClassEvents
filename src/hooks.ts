@@ -51,15 +51,14 @@ export async function handle({ request, resolve }) {
 export async function getSession(req) {
     const locals = req.locals;
 
-    if (!locals.isSignedIn)
-        return {
-            ...req.headers,
-            body: {
-                ...req.body
-            },
-            locals
-        };
-
     isSignedIn.set(locals.isSignedIn);
     user.set(locals.user);
+
+    return {
+        ...req.headers,
+        body: {
+            ...req.body
+        },
+        locals
+    };
 }

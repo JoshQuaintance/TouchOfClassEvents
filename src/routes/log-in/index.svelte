@@ -1,8 +1,6 @@
 <script context="module">
-    import { get } from 'svelte/store';
-
     export async function load({ session }) {
-        if (session?.locals.user.isSignedIn) {
+        if (session?.locals.isSignedIn) {
             return {
                 status: 302,
                 redirect: '/'
@@ -26,7 +24,7 @@
 
     let userEmail;
     let userPass;
-    let showSnackbar;
+    let snackbarController;
 
     async function clickLogin(event) {
         const User = {
@@ -42,8 +40,8 @@
         let res = await x.json();
 
         if (res.code == 'user-cred-invalid') {
-            showSnackbar.showSnackbar({
-                props: { text: 'No User Found' },
+            snackbarController.showSnackbar({
+                props: { text: 'No User Found', class: 'bg-red-500' },
                 component: undefined,
                 duration: 2000
             });
@@ -55,7 +53,7 @@
     }
 
     function show() {
-        showSnackbar.showSnackbar({
+        snackbarController.showSnackbar({
             props: { text: 'No User Found', class: 'bg-red-500' },
             component: undefined,
             duration: 50000
@@ -63,7 +61,7 @@
     }
 </script>
 
-<SnackbarContainer bind:this={showSnackbar}>
+<SnackbarContainer bind:this={snackbarController}>
     <style>
         .snackbar-stack {
             @apply left-5 bottom-5 !important;
@@ -91,7 +89,7 @@
                             withItem
                             required
                             autofocus
-                            class="relative"
+                            class="relative outline-none"
                             bind:value={userEmail}
                         >
                             <Icon

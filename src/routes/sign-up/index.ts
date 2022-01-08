@@ -72,8 +72,10 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
         return {
             status: 201,
             headers,
-            message: 'Successfully created a new user',
-            code: 'user-created'
+            body: {
+                message: 'Successfully created a new user',
+                code: 'user-created'
+            }
         };
     } catch (err) {
         return {

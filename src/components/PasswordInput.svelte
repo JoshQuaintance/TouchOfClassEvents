@@ -26,7 +26,7 @@
     }
 </script>
 
-<TextField placeholder="**********" label="Password*" outline withItem required bind:value {id} class="relative">
+<TextField placeholder="**********" label="Password*" outline withItem required bind:value {id} class="relative outline-none">
     <Icon icon="key" scale={1.2} class="absolute top-[50%] transform-gpu translate-y-[-50%] translate-x-2" />
 
     <i on:click={togglePasswordState}>

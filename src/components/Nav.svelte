@@ -8,7 +8,7 @@
     import { page } from '$app/stores';
     import Icon from '$components/Icon.svelte';
 
-    let userSignedIn = $isSignedIn;
+    export let userIsSignedIn;
 </script>
 
 <div class="header-container fixed top-0 z-[101] w-screen" bind:clientHeight={$headerHeight}>
@@ -90,6 +90,16 @@
                     About
                 </Button>
 
+                {#if userIsSignedIn}
+                    <Button
+                        href="/dashboard"
+                        noPrefetch
+                        class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent"
+                    >
+                        Dashboard
+                    </Button>
+                {/if}
+
                 <style>
                     input[type='button'] {
                         border: none;
@@ -104,7 +114,7 @@
                 won't show if the user is 
                 signed in or in sign-up page
              -->
-            {#if !userSignedIn || $page.path == '/sign-up'}
+            {#if !userIsSignedIn}
                 <div class="hidden lg:flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-2.5 -ml-8">
                     <a
                         href="log-in"
@@ -119,6 +129,7 @@
                     </a>
                 </div>
             {/if}
+
             <style>
                 .menu {
                     margin-top: +100%;
