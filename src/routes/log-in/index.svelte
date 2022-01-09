@@ -17,7 +17,8 @@
     import { Divider, Snackbar, SnackbarContainer, TextField, Button } from 'attractions';
     import Icon from '$components/Icon.svelte';
     import PasswordInput from '$components/PasswordInput.svelte';
-    import GoogleAuth from '$components/GoogleAuth.svelte'; ``
+    import GoogleAuth from '$components/GoogleAuth.svelte';
+
     import { user, isSignedIn } from '$utils/stores';
 
     onMount(async () => {});
@@ -48,7 +49,7 @@
         }
 
         if (res.code == 'user-cred-valid') {
-            goto('/');
+            location.reload();
         }
     }
 

@@ -14,17 +14,8 @@
             }
         }
         goto('/');
-    });
 
-    $: if ($pageLoaded)
-        get(mainSnackbarController).showSnackbar({
-            props: {
-                text: 'Signed Out!',
-                class: 'bg-green-500'
-            },
-            component: undefined,
-            duration: 4000
-        });
+    });
 </script>
 
 <div>

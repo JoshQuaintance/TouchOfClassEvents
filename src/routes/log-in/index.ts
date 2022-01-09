@@ -23,7 +23,7 @@ export async function post(req) {
         return {
             status: 404,
             body: {
-                code: 'user-cred-invalid'
+                code: 'user-not-found'
             }
         };
 
@@ -47,7 +47,7 @@ export async function post(req) {
         })
     };
     return {
-        status: 302,
+        status: 200,
         headers,
         body: {
             message: 'User Exist',

@@ -7,7 +7,7 @@ import { isSignedIn, user } from '$utils/stores';
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ request, resolve }) {
     const cookies = cookie.parse(request.headers.cookie || '');
-
+    
     const loggingOut = request.path == '/sign-out';
 
     let additionalHeaders = {};
@@ -68,7 +68,6 @@ export async function handle({ request, resolve }) {
 /** @type {import('@sveltejs/kit').GetSession} */
 export async function getSession(req) {
     const { locals } = req;
-    console.log(req);
 
     isSignedIn.set(locals.isSignedIn || false);
     user.set(locals.user);

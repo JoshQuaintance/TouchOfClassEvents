@@ -4,7 +4,7 @@
  -->
 <script context="module">
     export const load = async ({ page, session }) => {
-        console.log(session?.locals.isSignedIn)
+        console.log(session?.locals.isSignedIn);
         isSignedIn.set(session?.locals.isSignedIn || false);
         pageLoaded.set(false);
         return {
@@ -28,13 +28,13 @@
 
     export let key;
     let snackbarController;
-
+    
     beforeUpdate(() => pageLoaded.set(true));
     onMount(async () => {
+        mainSnackbarController.set(snackbarController);
         pageLoaded.set(true);
 
         initGAPI(getUser);
-        mainSnackbarController.set(snackbarController);
 
         function getUser(GoogleAuthClient) {
             /**
@@ -48,11 +48,11 @@
     });
 </script>
 
-<!-- Load the spinner if the page is not fully mounted yet -->
-{#if !$pageLoaded}
-    <Spinner />
-{:else}
-    <SnackbarContainer bind:this={snackbarController}>
+<SnackbarContainer bind:this={snackbarController}>
+    <!-- Load the spinner if the page is not fully mounted yet -->
+    {#if !$pageLoaded}
+        <Spinner />
+    {:else}
         <style>
             .snackbar-stack {
                 @apply left-5 bottom-5 !important;
@@ -69,8 +69,8 @@
         <PageTransitions refresh={key}>
             <slot />
         </PageTransitions>
-    </SnackbarContainer>
-{/if}
+    {/if}
+</SnackbarContainer>
 
 <style global lang="postcss">
     @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
