@@ -4,7 +4,7 @@
  -->
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { user } from '$utils/stores';
+    import { pageLoaded, user } from '$utils/stores';
     import { initGAPI } from '$utils/gapi';
     import { checkIfUserExist } from '$utils/db';
 
@@ -37,6 +37,7 @@
                     const email = profile.getEmail();
 
                     const userExist = await checkIfUserExist(email);
+                    pageLoaded.set(false);
 
                     // If user exist by email
                     if (userExist == 1) {
@@ -52,11 +53,11 @@
                         });
                     }
 
-                    // If user doesn't exist 
+                    // If user doesn't exist
                     if (userExist == 0) {
-                        
-
                     }
+
+                    location.replace('/');
                 });
             } catch (e) {
                 // If the user closes the popup
@@ -96,8 +97,7 @@
     gap-2
     px-8
     py-3
-"
->
+">
     <img src="images/google-logo.svg" alt="Google" />
 
     Continue with Google

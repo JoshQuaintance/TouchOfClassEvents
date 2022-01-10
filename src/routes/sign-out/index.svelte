@@ -1,18 +1,16 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-    import { goto } from '$app/navigation';
-    import { mainSnackbarController, pageLoaded } from '$utils/stores';
-    import { get } from 'svelte/store';
+    import { onMount, tick } from 'svelte';
     import { initGAPI } from '$utils/gapi';
 
-    onMount(() => {
-        initGAPI(getUser);
+    onMount(async () => {
+        await tick();
+        initGAPI(runAfterGAPI);
 
-        function getUser(GoogleAuthClient) {
+        function runAfterGAPI(GoogleAuthClient: { signOut: () => void; }) {
             GoogleAuthClient.signOut();
+            location.replace('/');
         }
 
-        location.replace('/');
     });
 </script>
 

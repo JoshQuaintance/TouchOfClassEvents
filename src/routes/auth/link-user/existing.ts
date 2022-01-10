@@ -15,11 +15,17 @@ async function linkWithGoogle(User: mongoose_T.Model<any, {}, {}, {}>, code: str
     const googleOAuth2Client = new google.auth.OAuth2(
         '481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com',
         import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET'] as string,
-        'localhost:3000'
+        import.meta.env['VITE_ENVIRONMENT'] == 'DEV' ? 'localhost:3000' : 'touch-of-class-events.vercel.app'
     );
 
     // Get the user's access and refresh token from the server
-    const getUserLink = `https://oauth2.googleapis.com/token?code=${code}&redirect_uri=http://localhost:3000&client_id=481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com&client_secret=${process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET']}&scope=&grant_type=authorization_code`;
+    const getUserLink = `https://oauth2.googleapis.com/token?code=${code}&redirect_uri=${
+        import.meta.env['VITE_ENVIRONMENT'] == 'DEV'
+            ? 'http://localhost:3000'
+            : 'https://touch-of-class-events.vercel.app'
+    }&client_id=481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com&client_secret=${
+        process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET']
+    }&scope=&grant_type=authorization_code`;
 
     const res = await fetch(getUserLink, {
         method: 'POST',
