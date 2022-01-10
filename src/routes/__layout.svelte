@@ -3,13 +3,13 @@
     Description: Layout that will be used for all routes
  -->
 <script context="module">
-    export const load = async ({ page, session }) => {
+    export const load = async ({ url, session }) => {
         console.log(session?.locals.isSignedIn);
         isSignedIn.set(session?.locals.isSignedIn || false);
         pageLoaded.set(false);
         return {
             props: {
-                key: page.path
+                key: url.path
             }
         };
     };
