@@ -7,14 +7,14 @@ import { isSignedIn, user } from '$utils/stores';
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ request, resolve }) {
     const cookies = cookie.parse(request.headers.cookie || '');
-    
-    const loggingOut = request.url.pathname == '/sign-out';
+
+    console.log(request);
+    const loggingOut = request.path == '/sign-out';
 
     let additionalHeaders = {};
 
     if (loggingOut && cookies.jwt) {
         cookies.jwt = null;
-
         additionalHeaders['Set-Cookie'] = cookie.serialize('jwt', 'signed-out', {
             httpOnly: true,
             sameSite: 'lax',
