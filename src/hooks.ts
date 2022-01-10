@@ -8,6 +8,7 @@ import { isSignedIn, user } from '$utils/stores';
 export async function handle({ request, resolve }) {
     const cookies = cookie.parse(request.headers.cookie || '');
 
+    console.log(request);
     const loggingOut = (request?.url.pathname || request?.path) == '/sign-out';
 
     let additionalHeaders = {};
