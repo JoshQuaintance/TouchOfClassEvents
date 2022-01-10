@@ -29,7 +29,7 @@ fs.readFile('./node_modules/@pixi/polyfill/dist/cjs/polyfill.js', (err, data) =>
 
     fs.writeFile(
         './node_modules/pixi-viewport/dist/cjs/viewport.js',
-        'let let self = globalThis.self;\n' + data,
+        'let self = globalThis.self;\n' + data,
         (err, file) => {
             if (err) throw err;
             console.log('Rewrite of @pixi/polyfill successfully!');

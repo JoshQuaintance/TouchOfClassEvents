@@ -13,8 +13,8 @@
                 GoogleAuthClient.signOut();
             }
         }
-        goto('/');
 
+        location.replace('/');
     });
 </script>
 

@@ -1,4 +1,3 @@
-import { append } from 'svelte/internal';
 import { connectToDB } from '$utils/db';
 import type bcrypt_T from 'bcrypt';
 import * as cookie from 'cookie';
