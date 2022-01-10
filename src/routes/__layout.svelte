@@ -4,7 +4,6 @@
  -->
 <script context="module">
     export const load = async ({ url, session }) => {
-        console.log(session?.locals.isSignedIn);
         isSignedIn.set(session?.locals.isSignedIn || false);
         pageLoaded.set(false);
         return {
@@ -28,7 +27,7 @@
 
     export let key;
     let snackbarController;
-    
+
     beforeUpdate(() => pageLoaded.set(true));
     onMount(async () => {
         mainSnackbarController.set(snackbarController);
@@ -40,7 +39,7 @@
             /**
              * TODO: CHANGE THIS TO GETTING JWT TOKEN PAYLOAD
              */
-            if (GoogleAuthClient.isSignedIn.get()) {
+            if (GoogleAuthClient.isSignedIn.get() && $isSignedIn == false) {
                 user.set(GoogleAuthClient.currentUser.get());
                 isSignedIn.set(true);
             }
