@@ -9,9 +9,7 @@
         initGAPI(getUser);
 
         function getUser(GoogleAuthClient) {
-            if (GoogleAuthClient.isSignedIn.get()) {
-                GoogleAuthClient.signOut();
-            }
+            GoogleAuthClient.signOut();
         }
 
         location.replace('/');
