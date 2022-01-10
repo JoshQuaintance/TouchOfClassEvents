@@ -1,10 +1,9 @@
 import { connectToDB } from '$utils/db';
-import type bcrypt_T from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import * as cookie from 'cookie';
 import { generateJWT } from '$auth-utils';
 
 export async function post(req) {
-    const bcrypt: typeof bcrypt_T = await import('bcrypt');
     const { mongoose, schemas } = await connectToDB();
     const { UserSchema } = await schemas;
 

@@ -5,7 +5,7 @@
 
 import type { ServerRequest } from '@sveltejs/kit/types/hooks';
 import type { DefaultBody } from '@sveltejs/kit/types/endpoint';
-import type bcrypt_T from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import type uuid_T from 'uuid';
 import type crypto_T from 'crypto';
 
@@ -20,7 +20,6 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
      * are being used client side because it might cause some issues
      * being used client side
      */
-    const bcrypt: typeof bcrypt_T = await import('bcrypt');
     const uuid: typeof uuid_T = await import('uuid');
     const crypto: typeof crypto_T = await import('crypto');
 
