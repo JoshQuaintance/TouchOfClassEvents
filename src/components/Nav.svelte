@@ -51,7 +51,7 @@
             <!-- nav - start -->
             <nav
                 class="
-                w-full
+                w-full overflow-y-auto
                 menu-nav
                 lg:flex z-20
                 justify-around

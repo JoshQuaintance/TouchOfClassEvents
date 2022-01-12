@@ -128,4 +128,6 @@ export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> 
     app.stage.addChild(spawnerContainer.it);
 
     initEventListeners();
+
+    
 }

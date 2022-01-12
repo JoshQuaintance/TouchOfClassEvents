@@ -147,18 +147,35 @@ export class SpawnedObject {
     private _parentType: string;
     private _canHoldAmount: number;
     private _canHoldType: string;
+    private static _spawnedObjectsStore = [];
 
-    constructor(sprite: Sprite, options?: SpawnedObjectOptions) {
-        const { label, parentType } = options;
+    constructor(data: Sprite, options?: SpawnedObjectOptions) {
+        
+        if (data instanceof Sprite) {
+            const { label, parentType } = options;
+            this._sprite = data;
+            this._isSeat = false;
+            this._isTable = false;
+            this._parentType = parentType;
+            this._labelText = label || '';
+        }
+ 
+    }
 
-        this._sprite = sprite;
-        this._isSeat = false;
-        this._isTable = false;
-        this._parentType = parentType;
+    static get allSpawnedObjects() {
+        return this._spawnedObjectsStore;
+    }
 
-        this._labelText = label || '';
+    static set addSpawnedObject(obj: SpawnedObject) {
+        this._spawnedObjectsStore.push(obj);
+    }
 
-        this.setLabel('Test123');
+    private get spawnedObjectData() {
+        return {
+            label: this._label,
+            isSeat: this._isSeat,
+            isTable: this._isTable
+        };
     }
 
     get isSeat() {
@@ -168,7 +185,7 @@ export class SpawnedObject {
     get isTable() {
         return this._isTable;
     }
-    
+
     get parentType() {
         return this._parentType;
     }
@@ -189,7 +206,6 @@ export class SpawnedObject {
 
         this._labelText = text;
 
-        
         const defaultStyle = new TextStyle({
             align: 'center',
             wordWrap: true,
@@ -206,7 +222,7 @@ export class SpawnedObject {
     }
 
     clone() {
-        console.error("NOT IMPLEMENTED")
+        console.error('NOT IMPLEMENTED');
     }
 
     makeNormalObject() {
