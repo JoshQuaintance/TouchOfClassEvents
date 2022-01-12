@@ -7,14 +7,17 @@ import type { DraggingSprite } from './extras';
 import { Sprite, InteractionEvent, Texture, Text, TextStyle } from 'pixi.js';
 import App from './App';
 import { checkIfBeyondWorld } from './extras';
+import type { Viewport } from 'pixi-viewport';
 
 export default class Spawner {
     private _sprite: Sprite;
     private _name: string;
+    private _textureSrc: string;
 
     private static spawners = {};
 
     constructor(src: Texture, name: string) {
+        this._textureSrc = src.textureCacheIds[0];
         this._sprite = new Sprite(src);
         this._name = name;
 
@@ -27,7 +30,7 @@ export default class Spawner {
         this._sprite.on('pointerdown', (e) => this.clicked(e));
     }
 
-    private clicked(e) {
+    private clicked(e: { data: { getLocalPosition: (arg0: Viewport) => { x: any; y: any } } }) {
         App.app.renderer.plugins.interaction.setCursorMode('pointer');
         let { x, y } = e.data.getLocalPosition(App.viewport);
 
@@ -91,6 +94,9 @@ export default class Spawner {
         clone.sprite.y = yCoords;
 
         App.viewport.addChild(clone.sprite);
+
+        SpawnedObject.addSpawnedObject(clone);
+
         clone.sprite.interactive = true;
         clone.sprite.cursor = 'grab';
 
@@ -107,11 +113,12 @@ export default class Spawner {
                 parent: clone.sprite.parent
             }
         });
+
         return true;
     }
 
     private createClone(): Sprite {
-        let clone = new Sprite(this._sprite.texture);
+        const clone = new Sprite(this._sprite.texture);
         clone.scale = this._sprite.scale;
 
         return clone;
@@ -150,7 +157,6 @@ export class SpawnedObject {
     private static _spawnedObjectsStore = [];
 
     constructor(data: Sprite, options?: SpawnedObjectOptions) {
-        
         if (data instanceof Sprite) {
             const { label, parentType } = options;
             this._sprite = data;
@@ -159,22 +165,31 @@ export class SpawnedObject {
             this._parentType = parentType;
             this._labelText = label || '';
         }
- 
     }
 
     static get allSpawnedObjects() {
         return this._spawnedObjectsStore;
     }
 
-    static set addSpawnedObject(obj: SpawnedObject) {
+    static addSpawnedObject(obj: SpawnedObject) {
         this._spawnedObjectsStore.push(obj);
+    }
+
+    static removeSpawnedObject(obj: SpawnedObject) {
+        let index = this._spawnedObjectsStore.indexOf(obj);
+        this._spawnedObjectsStore.splice(index, 1);
     }
 
     private get spawnedObjectData() {
         return {
-            label: this._label,
+            label: this._labelText,
             isSeat: this._isSeat,
-            isTable: this._isTable
+            isTable: this._isTable,
+            width: this._sprite.width,
+            height: this._sprite.height,
+            holdAmount: this._canHoldAmount,
+            canHoldType: this._canHoldType,
+            texture: this._sprite.texture.textureCacheIds[0]
         };
     }
 

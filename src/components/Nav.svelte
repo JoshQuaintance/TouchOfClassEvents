@@ -30,7 +30,7 @@
         <header class="flex justify-between items-center px-4 md:px-8 py-2 md:py-4 w-screen">
             <!-- logo - start -->
             <a href="/" class="inline-flex items-center text-black-800 md:text-3xl font-bold gap-2.5" aria-label="logo">
-                <img src="images/full-logo.svg" alt="logo" class="w-[135px] md:w-[175px]" />
+                <img src="/images/full-logo.svg" alt="logo" class="w-[135px] md:w-[175px]" />
             </a>
             <!-- logo - end -->
 

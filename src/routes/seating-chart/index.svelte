@@ -13,12 +13,14 @@
     import { Dialog, Modal } from 'attractions';
     import { openModal, dialogUsed, hintText } from './utils/localStores';
     import LabelChangeDialog from './dialogs/LabelChangeDialog.svelte';
+    import ConfirmDeletion from './dialogs/ConfirmDeletion.svelte';
 
     let el: HTMLDivElement;
     let modeReceiver = 'view';
 
     const dialogs = {
-        LabelChangeDialog: LabelChangeDialog
+        LabelChangeDialog,
+        ConfirmDeletion
     };
 
     onMount(async () => {
@@ -39,13 +41,7 @@
 
             console.log(viewport.worldWidth, window.innerWidth * 6, window.innerWidth, app.view.width);
 
-            viewport.resize(
-                App.app.view.width,
-                percent(88, App.app.view.height),
-                9600,
-                9600
-            );
-
+            viewport.resize(App.app.view.width, percent(88, App.app.view.height), 9600, 9600);
 
             viewport.fit(false, viewport.screenWidth, viewport.screenHeight);
 
@@ -55,6 +51,7 @@
         window.addEventListener('keyup', (e) => {
             if (e.key == 'Escape') App.mode = 'view';
             if (e.key == 'z' && e.ctrlKey) App.undo_prev_event();
+            if (e.key == 's' && e.ctrlKey) App.save_seating_chart();
         });
 
         App.event_medium.addEventListener(
@@ -79,16 +76,14 @@
             App.mode = 'view';
 
             closeCallback();
-        }}
-    />
+        }} />
 </Modal>
 
 <div class="relative flex flex-col items-center justify-around">
     {#if hintTextDynamic != ''}
         <span
             class="fixed bg-white bg-opacity-75 px-2"
-            style="z-index:100 !important; top:.25rem; padding-left: .5rem; padding-right: .5rem; "
-        >
+            style="z-index:100 !important; top:.25rem; padding-left: .5rem; padding-right: .5rem; ">
             {hintTextDynamic}
         </span>
     {/if}
@@ -101,8 +96,7 @@
         bottom-0 fixed w-screen 
         flex flex-row justify-around items-center
         bg-red-500"
-        style="bottom: 0; height: {percent(12, window.innerHeight)}px"
-    >
+        style="bottom: 0; height: {percent(12, window.innerHeight)}px">
         <BuildingObject src="seat" name="seat" />
         <BuildingObject src="table" name="table" />
         <BuildingObject src="circular_table" name="circular_table" />
@@ -114,11 +108,12 @@
         flex flex-col justify-even
         cursor-pointer
         w-fit h-fit text-lg
-        "
-    >
+        ">
         <OptionsButton icon="cog" tooltip="Settings" event="settings" />
 
         <OptionsButton icon="content-save" tooltip="Save" event="save" />
+
+        <OptionsButton icon="delete-outline" tooltip="Delete" event="delete" />
 
         <OptionsButton icon="form-textbox" tooltip="Add/Edit Label" event="add-label" />
 

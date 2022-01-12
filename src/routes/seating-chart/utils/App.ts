@@ -47,6 +47,10 @@ export default class App {
         this._event_medium = eventTarget;
     }
 
+    static save_seating_chart() {
+        console.error("NOT IMPLEMENTED");
+    }
+
     static undo_prev_event() {
         if (this._previous_app_events.length == 0) return;
 
@@ -56,6 +60,12 @@ export default class App {
             const { sprite, parent } = prevEvent.additional as SpawnObjectEvent;
 
             parent.removeChild(sprite);
+        }
+
+        if (prevEvent.event == 'delete-object') {
+            const { sprite, parent } = prevEvent.additional as SpawnObjectEvent;
+
+            (parent as Container).addChild(sprite);
         }
 
         prevEvent.undone = true;

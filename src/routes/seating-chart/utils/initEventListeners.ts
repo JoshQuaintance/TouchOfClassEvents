@@ -13,6 +13,7 @@ import { percent } from '$utils/math';
 export default function initEventListeners() {
     const app = App.app;
     const viewport = App.viewport;
+    const shared = {};
 
     App.event_medium.addEventListener('app-mode-changed', (e: CustomEventInit) => {
         const mode = e.detail.mode;
@@ -28,6 +29,12 @@ export default function initEventListeners() {
             hintText.set('');
             viewport.drag({});
             let buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
+
+            if (shared['resizing']) {
+                const { spawnedObject, resizer } = shared['resizing'];
+
+                spawnedObject.sprite.removeChild(resizer);
+            }
 
             if (buildingObject) viewport.removeChild(buildingObject.sprite);
         }
@@ -62,6 +69,34 @@ export default function initEventListeners() {
         if (mode == 'options-resize') {
             hintText.set('Select an object to resize');
         }
+
+        if (mode == 'options-delete') hintText.set('Select an object to delete');
+    });
+
+    App.event_medium.addEventListener('options-delete', (e: CustomEventInit) => {
+        const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
+
+        hintText.set('');
+        dialogUsed.set('ConfirmDeletion');
+
+        openModal.set(true);
+
+        function handleDeletion(e: CustomEventInit) {
+            
+            App.new_app_event({
+                event: 'delete-object',
+                additional: {
+                    sprite: spawnedObject.sprite,
+                    coords: { x: spawnedObject.sprite.x, y: spawnedObject.sprite.y },
+                    parent: spawnedObject.sprite.parent
+                }
+            });
+            spawnedObject.sprite.parent.removeChild(spawnedObject.sprite);
+
+            App.event_medium.removeEventListener('deletion-confirmed', handleDeletion);
+        }
+
+        App.event_medium.addEventListener('deletion-confirmed', handleDeletion);
     });
 
     App.event_medium.addEventListener('options-add-label', (e: CustomEventInit) => {
@@ -106,6 +141,10 @@ export default function initEventListeners() {
         resizer.cursor = 'nwse-resize';
 
         spawnedObject.sprite.addChild(resizer);
+        shared['resizing'] = {
+            spawnedObject,
+            resizer
+        };
 
         resizer.on('pointerdown', dragStart);
         resizer.on('pointermove', dragMove);

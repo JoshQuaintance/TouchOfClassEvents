@@ -40,7 +40,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
                     code: 'user-not-exist'
                 }
             };
-            
+
         // Then use the username given to check existence
         let userDataWithNickname = await User.findOne({ nickname });
 
