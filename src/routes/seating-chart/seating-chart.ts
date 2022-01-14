@@ -121,13 +121,11 @@ export async function run(el: HTMLDivElement): Promise<void> {
 
     app.stage.addChild(spawnerContainer.it);
 
-    initEventListeners();   
+    initEventListeners();
 
     if (App.imported_data.length > 0) {
         for (let item of App.imported_data) {
             const newObject = new SpawnedObject(item);
-
-            newObject.sprite
         }
     }
 }
