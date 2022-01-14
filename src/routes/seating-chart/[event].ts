@@ -29,7 +29,7 @@ export async function post(request) {
 
         const body = JSON.parse(content as string);
         const { date, title, host, details } = body;
-        const Event = mongoose.models.Event || mongoose.model('Event', EventSchema);
+        const Event = mongoose.models.Event || mongoose.model('Events', EventSchema);
 
         try {
             const event_id = uuidv4();
