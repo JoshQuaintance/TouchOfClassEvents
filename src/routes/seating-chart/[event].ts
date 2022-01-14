@@ -1,6 +1,6 @@
 /**
  * File Location: 'routes/seating-chart/[event].ts'
-*/
+ */
 
 import type uuid_T from 'uuid';
 import { connectToDB } from '$utils/db';
@@ -73,6 +73,7 @@ export async function post(request) {
             };
         }
     } else {
+        if (event == 'save') return {};
         const { mongoose, schemas } = await connectToDB();
         const { EventSchema } = await schemas;
 
