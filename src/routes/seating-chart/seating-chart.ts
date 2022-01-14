@@ -126,6 +126,8 @@ export async function run(el: HTMLDivElement): Promise<void> {
     if (App.imported_data.length > 0) {
         for (let item of App.imported_data) {
             const newObject = new SpawnedObject(item);
+
+            newObject.sprite
         }
     }
 }

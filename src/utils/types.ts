@@ -1,3 +1,5 @@
+import { Sprite } from 'pixi.js';
+
 export type Base64 = string;
 export type UUID = string;
 
@@ -19,6 +21,19 @@ export interface DatabaseUser {
     password: string;
     connections?: Array<GoogleConnection | FacebookConnection>;
 }
+
+export interface SpawnedObjectData {
+    label: string;
+    isSeat: boolean;
+    isTable: boolean;
+    width: number;
+    height: number;
+    coords: { x: number; y: number };
+    holdAmount: number;
+    canHoldType: string;
+    texture: string;
+}
+
 export interface EventData {
     event_id: UUID;
     title: string;

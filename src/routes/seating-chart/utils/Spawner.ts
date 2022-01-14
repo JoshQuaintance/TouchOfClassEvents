@@ -8,6 +8,8 @@ import { Sprite, InteractionEvent, Texture, Text, TextStyle } from 'pixi.js';
 import App from './App';
 import { checkIfBeyondWorld } from './extras';
 import type { Viewport } from 'pixi-viewport';
+import type { SpawnedObjectData } from '$utils/types';
+
 
 export default class Spawner {
     private _sprite: Sprite;
@@ -156,7 +158,7 @@ export class SpawnedObject {
     private _canHoldType: string;
     private static _spawnedObjectsStore = [];
 
-    constructor(data: Sprite, options?: SpawnedObjectOptions) {
+    constructor(data: Sprite | SpawnedObjectData, options?: SpawnedObjectOptions) {
         if (data instanceof Sprite) {
             const { label, parentType } = options;
             this._sprite = data;
@@ -165,6 +167,12 @@ export class SpawnedObject {
             this._parentType = parentType;
             this._labelText = label || '';
         }
+
+        if (typeof data == SpawnedObjectData) {
+
+        }
+
+
     }
 
     static get allSpawnedObjects() {
@@ -180,7 +188,7 @@ export class SpawnedObject {
         this._spawnedObjectsStore.splice(index, 1);
     }
 
-    private get spawnedObjectData() {
+    private get spawnedObjectData(): SpawnedObjectData {
         return {
             label: this._labelText,
             isSeat: this._isSeat,
