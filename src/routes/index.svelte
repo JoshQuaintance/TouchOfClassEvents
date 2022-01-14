@@ -309,9 +309,9 @@
             <!-- product - start -->
             <a href="#" class="group h-80 flex items-end bg-gray-100 rounded-lg overflow-hidden shadow-lg relative p-4">
                 <img
-                    src="https://images.unsplash.com/photo-1620243318482-fdd2affd7a38?auto=format&q=75&fit=crop&w=750"
+                    src="/images/wedding-seating-chart.png"
                     loading="lazy"
-                    alt="Photo by Fakurian Design"
+                    alt="Seating chart example of a wedding event"
                     class="w-full h-full object-cover object-center absolute inset-0 transform group-hover:scale-110 transition duration-200"
                 />
 
