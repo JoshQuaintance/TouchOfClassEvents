@@ -28,6 +28,7 @@ export async function handle({ request, resolve }) {
         iat: number;
     }
 
+    request.locals.seating_chart_data = null;
     request.locals.snackbarQueue = [];
     request.locals.user = {};
 

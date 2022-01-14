@@ -187,6 +187,7 @@ export class SpawnedObject {
             isTable: this._isTable,
             width: this._sprite.width,
             height: this._sprite.height,
+            coords: { x: this._sprite.x, y: this._sprite.y },
             holdAmount: this._canHoldAmount,
             canHoldType: this._canHoldType,
             texture: this._sprite.texture.textureCacheIds[0]

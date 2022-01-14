@@ -2,6 +2,16 @@
     File Location: src/routes/seating-chart/index.svelte
     Description: Seating chart
 -->
+<script context="module">
+    export async function load({ session }) {
+        return {
+            props: {
+                seating_chart_data: session.locals.seating_chart_data || []
+            }
+        };
+    }
+</script>
+
 <script lang="ts">
     import '$utils/pixi-ssr-shim';
     import { onMount } from 'svelte';
@@ -15,6 +25,7 @@
     import LabelChangeDialog from './dialogs/LabelChangeDialog.svelte';
     import ConfirmDeletion from './dialogs/ConfirmDeletion.svelte';
 
+    export let seating_chart_data;
     let el: HTMLDivElement;
     let modeReceiver = 'view';
 
@@ -27,6 +38,7 @@
         //@ts-ignore
         const PIXI = await import('pixi.js');
 
+        App.import_data(seating_chart_data);
         App.setEventTarget = new EventTarget();
         run(el, PIXI);
 

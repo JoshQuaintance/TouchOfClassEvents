@@ -26,5 +26,5 @@ export interface EventData {
     host: string;
     details: string;
     createdBy: UUID;
-    seating_chart_data: {};
+    seating_chart_data: [];
 }

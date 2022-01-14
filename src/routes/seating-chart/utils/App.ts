@@ -29,6 +29,11 @@ interface AppEvent {
     additional?: SpawnObjectEvent | {};
 }
 
+/**
+ * Fully static class to let every part of the
+ * seating chart application can access these properties
+ * without passing in variables here and there
+ */
 export default class App {
     private static _viewport: Viewport;
     private static _app: Application;
@@ -41,16 +46,26 @@ export default class App {
     private static _PIXI: typeof PIXI;
     private static _previous_app_events: AppEvent[] = [];
     private static _undone_app_events: AppEvent[] = [];
+    private static _seating_chart_data: [] = [];
     static parentEl: HTMLDivElement;
 
+    // If there is data to be used for the seating chart
+    static import_data(data: []) {
+        this._seating_chart_data = [...data];
+    }
+
+    // Used to initialize the event medium when DOM is loaded
+    // because this file cannot reference it directly
     static set setEventTarget(eventTarget: EventTarget) {
         this._event_medium = eventTarget;
     }
 
+    // ! Implement saving
     static save_seating_chart() {
-        console.error("NOT IMPLEMENTED");
+        console.error('NOT IMPLEMENTED');
     }
 
+    // If the user decides to undo an event (building a new object or deleting one)
     static undo_prev_event() {
         if (this._previous_app_events.length == 0) return;
 
@@ -121,6 +136,14 @@ export default class App {
 
     static set PIXI(pixi: typeof PIXI) {
         this._PIXI = pixi;
+    }
+
+    /**
+     * Getters
+     */
+
+    static get imported_data() {
+        return this._seating_chart_data;
     }
 
     static get event_medium() {

@@ -29,9 +29,9 @@ export async function post(request) {
 
         const body = JSON.parse(content as string);
         const { date, title, host, details } = body;
+        const Event = mongoose.models.Event || mongoose.model('Event', EventSchema);
 
         try {
-            const Event = mongoose.models.Event || mongoose.model('Event', EventSchema);
             const event_id = uuidv4();
 
             const newEvent = new Event({
@@ -41,7 +41,7 @@ export async function post(request) {
                 host,
                 details,
                 createdBy: locals.user.uid,
-                seating_chart_data: {}
+                seating_chart_data: []
             });
 
             await newEvent.save((err: any) => {
@@ -69,5 +69,29 @@ export async function post(request) {
                 }
             };
         }
+    } else {
+        const { mongoose, schemas } = await connectToDB();
+        const { EventSchema } = await schemas;
+
+        const Event = mongoose.models.Event || mongoose.model('Event', EventSchema);
+
+        let eventLookup = await Event.findOne({ event });
+
+        if (!eventLookup)
+            return {
+                status: 404,
+                body: {
+                    message: 'Cannot find event with id of ' + event
+                }
+            };
+
+        locals.seating_chart_data = eventLookup.seating_chart_data;
+
+        return {
+            status: 201,
+            body: {
+                message: 'Event found, transferring data!'
+            }
+        };
     }
 }
