@@ -25,8 +25,8 @@
         <Icon {icon} />
     </span>
     <span
-        class="invisible peer-hover:visible text-cameo-pink-lightest bg-red-500 absolute whitespace-nowrap rounded px-[.25rem] font-bold left-[calc(100% + .5rem)]"
-        style="top: 50%; transform: translateY(-50%); margin-top: .5rem;"
+        class="invisible peer-hover:visible text-cameo-pink-lightest bg-red-500 absolute whitespace-nowrap rounded px-[.25rem] font-bold"
+        style="top: 50%; transform: translateY(-50%); margin-top: .5rem; left: calc(100% + .5rem)"
         bind:this={tooltipEl}
     >
         {tooltip}
