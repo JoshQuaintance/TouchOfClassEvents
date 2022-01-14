@@ -69,8 +69,6 @@ export default class App {
             new_data.push(spawnedObject.spawnedObjectData);
         });
 
-        if (new_data == this._seating_chart_data) return;
-
         this._seating_chart_data = [...new_data];
         let event_id = window.location.pathname.replace('/seating-chart/', '');
 

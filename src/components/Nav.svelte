@@ -77,7 +77,7 @@
                     href="/events/search"
                     noPrefetch
                     class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
-                    Make a reservation
+                    Lookup Events
                 </Button>
 
                 <Button

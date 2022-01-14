@@ -24,10 +24,10 @@ export async function post(req) {
                 code: 'user-not-found'
             }
         };
-        
+
     //Checks if the encrypted password matches what is in the database
     const validatePass = await bcrypt.compare(password, userData.password);
-    
+
     if (!validatePass) {
         return {
             status: 403,
@@ -39,7 +39,7 @@ export async function post(req) {
 
     const payload = {
         email,
-        nickname,
+        nickname: userData.nickname,
         uid: userData.uid
     };
 

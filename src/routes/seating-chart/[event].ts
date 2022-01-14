@@ -16,7 +16,7 @@ export async function post(request) {
     let { event } = params;
     // If the event param (which is seating-chart/new)
     if (event == 'new') {
-        // If user isn't signed in, forbade from creating one
+        // If user isn't signed in, forbid from creating one
         if (!locals.isSignedIn)
             return {
                 status: 403,
@@ -31,8 +31,8 @@ export async function post(request) {
         const { EventSchema } = await schemas;
 
         const body = JSON.parse(content as string);
-        const { date, title, host, details } = body;
         const Event = mongoose.models.Events || mongoose.model('Events', EventSchema);
+        let { date, title, host, details } = body;
 
         try {
             const event_id = uuidv4();
@@ -41,7 +41,7 @@ export async function post(request) {
                 event_id,
                 date: new Date(date),
                 title,
-                host,
+                host: host || locals.user.nickname,
                 details,
                 createdBy: locals.user.uid,
                 seating_chart_data: []

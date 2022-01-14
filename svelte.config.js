@@ -26,10 +26,11 @@ const config = {
         adapter: vercel(),
         vite: {
             ssr: {
+                // TODO: Make sure pixijs is no external ONLY on dev mode
                 noExternal: ['dayjs', 'pixi.js']
             },
             optimizeDeps: {
-                exclude: ['bcrypt', 'pixi.js']
+                exclude: []
             },
             resolve: {
                 alias: {
