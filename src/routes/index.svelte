@@ -20,6 +20,7 @@
     class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-10 flex justify-center items-center"
     style="height: calc(100vh - {$headerHeight}px) !important;"
 >
+    <!-- Home page -->
     <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
         <div class="max-w-3xl flex flex-col items-center text-center">
             <p class="text-indigo-500 md:text-lg xl:text-xl font-semibold mb-4 md:mb-6" />
@@ -292,14 +293,14 @@
 
 <div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
     <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
-        <!-- text - start -->
+        <!-- Seating chart -->
         <div class="mb-10 md:mb-16">
             <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">
                 Example Seating Charts
             </h2>
 
             <p class="max-w-screen-md text-gray-500 md:text-lg text-center mx-auto">
-                Using our seating chart creater you can map out your events seats easily and you can easily then
+                Using our seating chart creater you can map out your events seats easily and you can then easily
                 identify who is sitting where. Just like in the examples below.
             </p>
         </div>
@@ -513,7 +514,7 @@
 
                         <div>
                             <a
-                                href="#"
+                                href="pricing"
                                 class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
                                 >Pricing</a
                             >

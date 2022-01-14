@@ -1,3 +1,8 @@
+/**
+ * File Location: 'routes/log-in/index.ts'
+ * Description: Endpoint for user log-in information
+ */
+
 import { connectToDB } from '$utils/db';
 import bcrypt from 'bcryptjs';
 import * as cookie from 'cookie';
@@ -11,7 +16,7 @@ export async function post(req) {
     const User = mongoose.models.Users || mongoose.model('Users', UserSchema);
 
     const userData = await User.findOne({ email });
-
+    //Checks if the user input information for an email
     if (!userData)
         return {
             status: 404,
@@ -19,9 +24,10 @@ export async function post(req) {
                 code: 'user-not-found'
             }
         };
-
+        
+    //Checks if the encrypted password matches what is in the database
     const validatePass = await bcrypt.compare(password, userData.password);
-
+    
     if (!validatePass) {
         return {
             status: 403,
@@ -37,6 +43,7 @@ export async function post(req) {
         uid: userData.uid
     };
 
+    //Creates cookies on the website to keep a user logged in
     const headers = {
         'Set-Cookie': cookie.serialize('jwt', await generateJWT(payload), {
             httpOnly: true,

@@ -44,9 +44,6 @@
         initGAPI(getUser);
 
         function getUser(GoogleAuthClient) {
-            /**
-             * TODO: CHANGE THIS TO GETTING JWT TOKEN PAYLOAD
-             */
             if (GoogleAuthClient.isSignedIn.get() && $isSignedIn == false) {
                 user.set(GoogleAuthClient.currentUser.get());
                 isSignedIn.set(true);

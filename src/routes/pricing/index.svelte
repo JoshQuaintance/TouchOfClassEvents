@@ -3,6 +3,10 @@
     This file is the location where pricing information is located
  -->
 
+ <svelte:head>
+  <title>Pricing - Touch Of Class Events</title>
+</svelte:head>
+
  <div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
     <div class="max-w-screen-xl px-4 md:px-8 mx-auto">
       <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-8 xl:mb-12">Pick your plan</h2>

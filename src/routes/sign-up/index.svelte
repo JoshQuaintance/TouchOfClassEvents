@@ -3,6 +3,7 @@
     Description: This file will render what's displayed on '/sign-up' page
 -->
 <script context="module">
+    //Redirects user to home page
     export async function load({ session }) {
         if (session?.locals.isSignedIn) {
             return {
@@ -32,9 +33,9 @@
     let snackbarController;
 
     async function emailSignUp() {
-        // (userEmail = 'hasianjoshua@gmail.com'), (nickname = 'Catalactics'), (userPass = 'test123');
         let userExist = await checkIfUserExist(userEmail, nickname);
-
+ 
+        //Checks if the user does not exist 
         if (userExist == 0) {
             const res = await fetch('/sign-up', {
                 method: 'POST',
@@ -47,6 +48,7 @@
 
             let serialized = await res.json();
 
+            //Shows that user has been created
             if (serialized.code == 'user-created') {
                 snackbarController.showSnackbar({
                     props: {
@@ -63,6 +65,7 @@
             }
         }
 
+        //Checks if the user exists through email
         if (userExist == 1) {
             snackbarController.showSnackbar({
                 props: {
@@ -90,9 +93,6 @@
             @apply left-5 bottom-5 !important;
         }
 
-        /* .snackbar {
-            @apply bg-red-500 !important;
-        } */
     </style>
     <div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
         <div class="max-w-screen-2xl px-4 md:px-8 mx-auto ">
@@ -100,6 +100,7 @@
 
             <form class="max-w-lg border rounded-lg mx-auto bg-white" on:submit|preventDefault>
                 <div class="flex flex-col gap-4 p-4 md:p-8">
+                    
                     <div>
                         <TextField
                             type="email"
@@ -156,6 +157,7 @@
 
                     <span class="text-red-600 italic text-right">* required</span>
 
+                    <!-- Sign up field -->
                     <button
                         on:click={emailSignUp}
                         class="
@@ -174,47 +176,18 @@
                         transition
                         duration-100
                         px-8
-                        py-3
-                    "
+                        py-3"
                     >
                         Sign Up
                     </button>
 
                     <Divider class="bg-white text-gray-400 text-sm relative px-4" text="Sign Up with social" />
 
-                    <!-- Deactivated for now, if we have time implement facebook oauth -->
-                    <!-- <button
-                    class="
-                        flex
-                        justify-center
-                        items-center
-                        bg-blue-500
-                        hover:bg-blue-600
-                        active:bg-blue-700
-                        focus-visible:ring
-                        ring-blue-300
-                        text-white text-sm
-                        md:text-base
-                        font-semibold
-                        text-center
-                        rounded-lg
-                        outline-none
-                        transition
-                        duration-100
-                        gap-2
-                        px-8
-                        py-3
-                    "
-                >
-                    <img src="images/facebook-logo.svg" alt="Facebook" />
-
-                    Continue with Facebook
-                </button> -->
-
                     <GoogleAuth />
                 </div>
 
                 <div class="flex justify-center items-center bg-gray-100 p-4">
+                    <!-- Link to login page -->
                     <p class="text-gray-500 text-sm text-center">
                         Already have an account?
                         <a

@@ -1,3 +1,7 @@
+/**
+ * File Location: 'routes/seating-chart/[event].ts'
+*/
+
 import type uuid_T from 'uuid';
 import { connectToDB } from '$utils/db';
 import { get as getStore } from 'svelte/store';

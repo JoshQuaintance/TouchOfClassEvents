@@ -1,4 +1,9 @@
+<!-- 
+    File Location: 'routes/log-in/index.svelte'
+    This file is the location where log-in information is located
+ -->
 <script context="module">
+    //Redirects user back to home page if they are already logged in
     export async function load({ session }) {
         if (session?.locals.isSignedIn) {
             return {
@@ -13,13 +18,10 @@
 
 <script>
     import { onMount } from 'svelte';
-    import { goto } from '$app/navigation';
     import { Divider, Snackbar, SnackbarContainer, TextField, Button } from 'attractions';
     import Icon from '$components/Icon.svelte';
     import PasswordInput from '$components/PasswordInput.svelte';
     import GoogleAuth from '$components/GoogleAuth.svelte';
-
-    import { user, isSignedIn } from '$utils/stores';
 
     onMount(async () => {});
 
@@ -27,6 +29,7 @@
     let userPass;
     let snackbarController;
 
+    //This function sends the log in request and processes if the request is valid
     async function clickLogin(event) {
         const User = {
             email: userEmail,
@@ -62,6 +65,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Log In - Touch Of Class Events</title>
+</svelte:head>
+
 <SnackbarContainer bind:this={snackbarController}>
     <style>
         .snackbar-stack {
@@ -69,14 +76,13 @@
         }
     </style>
 
-    <button on:click={show}>PRESS MEE DADDY</button>
-
     <div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
         <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
             <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-8">Login</h2>
 
             <form class="bg-white max-w-lg border rounded-lg mx-auto" on:submit|preventDefault>
                 <div class="flex flex-col gap-4 p-4 md:p-8">
+                    <!-- Input user email -->
                     <div>
                         <TextField
                             type="text"
@@ -95,7 +101,7 @@
                             />
                         </TextField>
                     </div>
-
+                    <!-- Input user password -->
                     <div>
                         <PasswordInput bind:value={userPass} id="sign-in-password" />
                     </div>
@@ -124,40 +130,13 @@
                     >
 
                     <Divider class="bg-white text-gray-400 text-sm relative px-4" text="Log in with social" />
-
-                    <!-- Deactivated for now, if we have time implement facebook oauth -->
-
-                    <!-- <button
-                    class="flex justify-center items-center bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus-visible:ring ring-blue-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 gap-2 px-8 py-3"
-                >
-                    <svg
-                        class="w-5 h-5 flex-shrink-0"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M12 0C5.37273 0 0 5.37273 0 12C0 18.0164 4.43182 22.9838 10.2065 23.8516V15.1805H7.23764V12.0262H10.2065V9.92727C10.2065 6.45218 11.8996 4.92655 14.7878 4.92655C16.1711 4.92655 16.9025 5.02909 17.2489 5.076V7.82945H15.2787C14.0525 7.82945 13.6244 8.99182 13.6244 10.302V12.0262H17.2178L16.7302 15.1805H13.6244V23.8773C19.4815 23.0825 24 18.0747 24 12C24 5.37273 18.6273 0 12 0Z"
-                            fill="white"
-                        />
-                    </svg>
-
-                    Continue with Facebook
-                </button> -->
-
+                    <!-- Allows user to log in through google -->
                     <GoogleAuth />
                 </div>
 
                 <div class="flex justify-center items-center bg-gray-100 p-4">
+                    <!-- Link to sign up page -->
                     <p class="text-gray-500 text-sm text-center">
-                        Forgot your password? <a
-                            href="#"
-                            class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 transition duration-100"
-                            >Reset password</a
-                        >
-                        <br />
                         Don't have an account?
                         <a
                             href="sign-up"

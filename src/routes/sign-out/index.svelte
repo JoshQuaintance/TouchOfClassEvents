@@ -1,3 +1,10 @@
+<!-- 
+    File Location: 'routes/sign-out/index.svelte'
+    This file is the location where sign-out information is located
+ -->
+<svelte:head>
+    <title>Sign Out - Touch Of Class Events</title>
+</svelte:head>
 <script lang="ts">
     import { onMount, tick } from 'svelte';
     import { initGAPI } from '$utils/gapi';
