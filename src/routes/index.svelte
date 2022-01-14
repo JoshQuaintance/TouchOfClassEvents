@@ -7,7 +7,6 @@
     import { Button } from 'attractions';
     import { headerHeight } from '$utils/stores';
     import Icon from '$components/Icon.svelte';
-
 </script>
 
 <svelte:head>
@@ -42,6 +41,7 @@
                     transition-all ease-in-out
                     bg-indigo-500
                     "
+                    href="/events/new"
                     style="background-color: rgba(99, 102, 241, 1) !important">Start now</Button
                 >
 
@@ -69,8 +69,7 @@
             </h2>
 
             <p class="max-w-screen-md text-gray-500 md:text-lg text-center mx-auto">
-                This is a section of some simple filler text, also known as placeholder text. It shares some
-                characteristics of a real written text but is random or otherwise generated.
+                At Touch of Class Events we believe in working with and for you to give you the best experience possible, because of this we offer a number of features including.
             </p>
         </div>
         <!-- text - end -->
@@ -98,15 +97,10 @@
                 </div>
 
                 <div>
-                    <h3 class="text-lg md:text-xl font-semibold mb-2">Growth</h3>
+                    <h3 class="text-lg md:text-xl font-semibold mb-2">Changelog</h3>
                     <p class="text-gray-500 mb-2">
-                        Filler text is dummy text which has no meaning however looks very similar to real text.
+                        We update the changes made to our site on our changelog that is visable to all of our users.
                     </p>
-                    <a
-                        href="#"
-                        class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 font-bold transition duration-100"
-                        >More</a
-                    >
                 </div>
             </div>
             <!-- feature - end -->
@@ -135,48 +129,8 @@
                 <div>
                     <h3 class="text-lg md:text-xl font-semibold mb-2">Security</h3>
                     <p class="text-gray-500 mb-2">
-                        Filler text is dummy text which has no meaning however looks very similar to real text.
+                        We use password encrytion to protect our users information and encryt all user data in our database.
                     </p>
-                    <a
-                        href="#"
-                        class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 font-bold transition duration-100"
-                        >More</a
-                    >
-                </div>
-            </div>
-            <!-- feature - end -->
-
-            <!-- feature - start -->
-            <div class="flex gap-4 md:gap-6">
-                <div
-                    class="w-12 md:w-14 h-12 md:h-14 flex justify-center items-center flex-shrink-0 bg-indigo-500 text-white rounded-lg md:rounded-xl shadow-lg"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="w-6 h-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
-                        />
-                    </svg>
-                </div>
-
-                <div>
-                    <h3 class="text-lg md:text-xl font-semibold mb-2">Cloud</h3>
-                    <p class="text-gray-500 mb-2">
-                        Filler text is dummy text which has no meaning however looks very similar to real text.
-                    </p>
-                    <a
-                        href="#"
-                        class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 font-bold transition duration-100"
-                        >More</a
-                    >
                 </div>
             </div>
             <!-- feature - end -->
@@ -205,13 +159,8 @@
                 <div>
                     <h3 class="text-lg md:text-xl font-semibold mb-2">Speed</h3>
                     <p class="text-gray-500 mb-2">
-                        Filler text is dummy text which has no meaning however looks very similar to real text.
+                        Our website is optimised for speed and effiencey allowing you to quickly and painlessly create a seating chart.
                     </p>
-                    <a
-                        href="#"
-                        class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 font-bold transition duration-100"
-                        >More</a
-                    >
                 </div>
             </div>
             <!-- feature - end -->
@@ -240,48 +189,8 @@
                 <div>
                     <h3 class="text-lg md:text-xl font-semibold mb-2">Support</h3>
                     <p class="text-gray-500 mb-2">
-                        Filler text is dummy text which has no meaning however looks very similar to real text.
+                        We have several ways in whicth you may contact us and 24/7 customer support to help you at all times of the day. We always respond quickly.
                     </p>
-                    <a
-                        href="#"
-                        class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 font-bold transition duration-100"
-                        >More</a
-                    >
-                </div>
-            </div>
-            <!-- feature - end -->
-
-            <!-- feature - start -->
-            <div class="flex gap-4 md:gap-6">
-                <div
-                    class="w-12 md:w-14 h-12 md:h-14 flex justify-center items-center flex-shrink-0 bg-indigo-500 text-white rounded-lg md:rounded-xl shadow-lg"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="w-6 h-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                        />
-                    </svg>
-                </div>
-
-                <div>
-                    <h3 class="text-lg md:text-xl font-semibold mb-2">Dark Mode</h3>
-                    <p class="text-gray-500 mb-2">
-                        Filler text is dummy text which has no meaning however looks very similar to real text.
-                    </p>
-                    <a
-                        href="#"
-                        class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 font-bold transition duration-100"
-                        >More</a
-                    >
                 </div>
             </div>
             <!-- feature - end -->
@@ -369,7 +278,7 @@
             <!-- question - start -->
             <div class="bg-gray-100 rounded-lg p-5">
                 <div class="flex justify-between items-center border-b gap-4 pb-4 mb-4">
-                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">Question one?</h3>
+                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">How do I drag my objects on my seating chart?</h3>
 
                     <span
                         class="w-8 h-8 inline-flex justify-center items-center flex-shrink-0 bg-gray-300 text-gray-500 rounded-full"
@@ -385,8 +294,7 @@
                 </div>
 
                 <p class="text-gray-500">
-                    This is a section of some simple filler text, also known as placeholder text. It shares some
-                    characteristics of a real written text but is random or otherwise generated.
+                    Simply press escape and this will put you in view mode allowing you to drag placed objects. This is visable in the top right corner of your screen.
                 </p>
             </div>
             <!-- question - end -->
@@ -394,7 +302,7 @@
             <!-- question - start -->
             <div class="bg-gray-100 rounded-lg p-5">
                 <div class="flex justify-between items-center border-b gap-4 pb-4 mb-4">
-                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">Queston two?</h3>
+                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">Why cant I make a seating chart?</h3>
 
                     <span
                         class="w-8 h-8 inline-flex justify-center items-center flex-shrink-0 bg-gray-300 text-gray-500 rounded-full"
@@ -410,8 +318,7 @@
                 </div>
 
                 <p class="text-gray-500">
-                    This is a section of some simple filler text, also known as placeholder text. It shares some
-                    characteristics of a real written text but is random or otherwise generated.
+                    Make sure the device you are attempting to create a seating chart on is a computer, we have disabled the ability to create seating charts using mobile due to the small screen however you can still view them and make resevations.
                 </p>
             </div>
             <!-- question - end -->
@@ -419,7 +326,7 @@
             <!-- question - start -->
             <div class="bg-gray-100 rounded-lg p-5">
                 <div class="flex justify-between items-center border-b gap-4 pb-4 mb-4">
-                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">Question three?</h3>
+                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">How do I contact Touch of Class events directly?</h3>
 
                     <span
                         class="w-8 h-8 inline-flex justify-center items-center flex-shrink-0 bg-gray-300 text-gray-500 rounded-full"
@@ -435,8 +342,7 @@
                 </div>
 
                 <p class="text-gray-500">
-                    This is a section of some simple filler text, also known as placeholder text. It shares some
-                    characteristics of a real written text but is random or otherwise generated.
+                    Please see our about page which contains our company email and Facebook page as well as our staffs emails titles and Facebook pages.
                 </p>
             </div>
             <!-- question - end -->
@@ -444,7 +350,7 @@
             <!-- question - start -->
             <div class="bg-gray-100 rounded-lg p-5">
                 <div class="flex justify-between items-center border-b gap-4 pb-4 mb-4">
-                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">Question four?</h3>
+                    <h3 class="text-indigo-500 sm:text-lg md:text-xl font-semibold">I tried to zoom out and lost my seating chart?</h3>
 
                     <span
                         class="w-8 h-8 inline-flex justify-center items-center flex-shrink-0 bg-gray-300 text-gray-500 rounded-full"
@@ -460,8 +366,7 @@
                 </div>
 
                 <p class="text-gray-500">
-                    This is a section of some simple filler text, also known as placeholder text. It shares some
-                    characteristics of a real written text but is random or otherwise generated.
+                   make sure you are zooming in and out using your mouse and not crt+ or crt- as this will scale the page. Your chart will not be removed or lost you will just have to find where it was on the canvas.
                 </p>
             </div>
             <!-- question - end -->
@@ -486,7 +391,9 @@
                     <!-- logo - end -->
 
                     <p class="text-gray-500 sm:pr-8">
-                        Filler text is dummy text which has no meaning however looks very similar to real text.
+                        &nbsp; &nbsp; &nbsp; Touch of Class Events looks forward to working for and aiding you in the process of
+                        designing a seating chart and allowing for reservations to be made for your seating chart. If
+                        you have any questions, requests or needs please hit the contact link.
                     </p>
                 </div>
 
@@ -497,7 +404,7 @@
                     <nav class="flex flex-col gap-4">
                         <div>
                             <a
-                                href="#"
+                                href="about"
                                 class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
                                 >Overview</a
                             >
@@ -505,7 +412,7 @@
 
                         <div>
                             <a
-                                href="#"
+                                href="/#faqs"
                                 class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
                                 >Solutions</a
                             >
@@ -513,17 +420,9 @@
 
                         <div>
                             <a
-                                href="#"
+                                href="pricing"
                                 class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
                                 >Pricing</a
-                            >
-                        </div>
-
-                        <div>
-                            <a
-                                href="#"
-                                class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
-                                >Customers</a
                             >
                         </div>
                     </nav>
@@ -561,25 +460,9 @@
                     <nav class="flex flex-col gap-4">
                         <div>
                             <a
-                                href="#"
+                                href="about/"
                                 class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
                                 >Contact</a
-                            >
-                        </div>
-
-                        <div>
-                            <a
-                                href="#"
-                                class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
-                                >Changelog</a
-                            >
-                        </div>
-
-                        <div>
-                            <a
-                                href=""
-                                class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
-                                >Chat</a
                             >
                         </div>
 
@@ -596,38 +479,6 @@
                                 href="/changelog"
                                 class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
                                 >Changelog</a
-                            >
-                        </div>
-                    </nav>
-                </div>
-                <!-- nav - end -->
-
-                <!-- nav - start -->
-                <div>
-                    <div class="text-gray-800 font-bold tracking-widest uppercase mb-4">Legal</div>
-
-                    <nav class="flex flex-col gap-4">
-                        <div>
-                            <a
-                                href="#"
-                                class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
-                                >Terms of Service</a
-                            >
-                        </div>
-
-                        <div>
-                            <a
-                                href="#"
-                                class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
-                                >Privacy Policy</a
-                            >
-                        </div>
-
-                        <div>
-                            <a
-                                href="#"
-                                class="text-gray-500 hover:text-indigo-500 active:text-indigo-600 transition duration-100"
-                                >Cookie settings</a
                             >
                         </div>
                     </nav>

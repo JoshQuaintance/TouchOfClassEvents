@@ -91,14 +91,6 @@
 
                 <Button
                     on:click={toggleNav}
-                    href="/pricing"
-                    noPrefetch
-                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
-                    Pricing
-                </Button>
-
-                <Button
-                    on:click={toggleNav}
                     href="/about"
                     noPrefetch
                     class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
