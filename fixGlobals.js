@@ -28,7 +28,7 @@ fs.readFile('./node_modules/@pixi/polyfill/dist/cjs/polyfill.js', (err, data) =>
         return console.log('viewport.js already rewritten');
 
     fs.writeFile(
-        './node_modules/pixi-viewport/dist/cjs/viewport.js',
+        './node_modules/@pixi/polyfill/dist/cjs/polyfill.js',
         'let self = globalThis.self;\n' + data,
         (err, file) => {
             if (err) throw err;
