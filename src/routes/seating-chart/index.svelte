@@ -35,12 +35,10 @@
     };
 
     onMount(async () => {
-        //@ts-ignore
-        const PIXI = await import('pixi.js');
 
         App.import_data(seating_chart_data);
         App.setEventTarget = new EventTarget();
-        run(el, PIXI);
+        run(el);
 
         window.addEventListener('resize', () => {
             const app = App.app;

@@ -5,19 +5,16 @@
 import '$utils/pixi-ssr-shim';
 import type * as PIXI from 'pixi.js';
 import { Application, Graphics } from 'pixi.js';
-
 import { Viewport } from 'pixi-viewport';
 
 import App from './utils/App';
 import { percent } from '$utils/math';
 import Container from './utils/Container';
-import Spawner from './utils/Spawner';
+import Spawner, { SpawnedObject } from './utils/Spawner';
 import initEventListeners from './utils/initEventListeners';
 
 export async function init() {
     return new Promise((resolve, reject) => {
-        // const { Graphics } = App.PIXI;
-
         const app = new Application({
             backgroundColor: 0xfaf0f2,
             resizeTo: window,
@@ -88,10 +85,7 @@ export async function init() {
     });
 }
 
-export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> {
-    // Put the dynamically imported PIXI into the class
-    // App.PIXI = pixi;
-
+export async function run(el: HTMLDivElement): Promise<void> {
     try {
         await init();
     } catch (e: any) {
@@ -127,7 +121,11 @@ export async function run(el: HTMLDivElement, pixi: typeof PIXI): Promise<void> 
 
     app.stage.addChild(spawnerContainer.it);
 
-    initEventListeners();
+    initEventListeners();   
 
-    
+    if (App.imported_data.length > 0) {
+        for (let item of App.imported_data) {
+            const newObject = new SpawnedObject(item);
+        }
+    }
 }
