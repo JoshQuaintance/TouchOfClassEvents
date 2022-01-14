@@ -15,6 +15,8 @@ import type {
 } from 'pixi.js';
 import type * as PIXI from 'pixi.js';
 import type { Viewport } from 'pixi-viewport';
+import { SpawnedObject } from './Spawner';
+import type { SpawnedObjectData } from '$utils/types';
 
 export type AppMode = 'view' | 'build' | `options-${string}`;
 
@@ -46,12 +48,12 @@ export default class App {
     private static _PIXI: typeof PIXI;
     private static _previous_app_events: AppEvent[] = [];
     private static _undone_app_events: AppEvent[] = [];
-    private static _seating_chart_data: [] = [];
+    private static _seating_chart_data: SpawnedObjectData[] = [];
     static parentEl: HTMLDivElement;
 
     // If there is data to be used for the seating chart
     static import_data(data: []) {
-        this._seating_chart_data = [...data];
+        this._seating_chart_data = data || [];
     }
 
     // Used to initialize the event medium when DOM is loaded
@@ -60,9 +62,24 @@ export default class App {
         this._event_medium = eventTarget;
     }
 
-    // ! Implement saving
     static save_seating_chart() {
-        console.error('NOT IMPLEMENTED');
+        let new_data: SpawnedObjectData[] = [];
+        SpawnedObject.allSpawnedObjects.forEach((spawnedObject) => {
+            new_data.push(spawnedObject.spawnedObjectData);
+        });
+
+        if (new_data == this._seating_chart_data) return;
+
+        this._seating_chart_data = [...new_data];
+        let event_id = window.location.pathname.replace('/seating-chart/', '');
+
+        fetch('/seating-chart/save', {
+            method: 'POST',
+            body: JSON.stringify({
+                data: this._seating_chart_data,
+                event_id
+            })
+        });
     }
 
     // If the user decides to undo an event (building a new object or deleting one)

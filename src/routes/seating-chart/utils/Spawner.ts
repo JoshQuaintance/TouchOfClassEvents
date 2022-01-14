@@ -10,7 +10,6 @@ import { checkIfBeyondWorld } from './extras';
 import type { Viewport } from 'pixi-viewport';
 import type { SpawnedObjectData } from '$utils/types';
 
-
 export default class Spawner {
     private _sprite: Sprite;
     private _name: string;
@@ -168,11 +167,23 @@ export class SpawnedObject {
             this._labelText = label || '';
         }
 
-        if (typeof data == SpawnedObjectData) {
+        if ((data as SpawnedObjectData).discriminator === 'spawned-object-data') {
+            const { label, isSeat, isTable, width, height, coords, holdAmount, canHoldType, texture } =
+                data as SpawnedObjectData;
 
+            this._sprite = new Sprite(App.resources[texture].texture);
+            this.setLabel(label);
+            this._isSeat = isSeat;
+            this._isTable = isTable;
+            this._sprite.width = width;
+            this._sprite.height = height;
+            this._sprite.x = coords.x;
+            this._sprite.y = coords.y;
+            this._canHoldAmount = holdAmount;
+            this._canHoldType = canHoldType;
+
+            App.viewport.addChild(this._sprite);
         }
-
-
     }
 
     static get allSpawnedObjects() {
@@ -188,8 +199,9 @@ export class SpawnedObject {
         this._spawnedObjectsStore.splice(index, 1);
     }
 
-    private get spawnedObjectData(): SpawnedObjectData {
+    get spawnedObjectData(): SpawnedObjectData {
         return {
+            discriminator: 'spawned-object-data',
             label: this._labelText,
             isSeat: this._isSeat,
             isTable: this._isTable,

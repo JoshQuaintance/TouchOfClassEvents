@@ -18,10 +18,12 @@ export default function initEventListeners() {
     App.event_medium.addEventListener('app-mode-changed', (e: CustomEventInit) => {
         const mode = e.detail.mode;
 
-        if (mode == 'save') {
+        if (mode == 'options-save') {
             // TODO: Save the seating chart
 
             App.mode = 'view';
+
+            App.save_seating_chart();
         }
         // console.log(mode);
 
