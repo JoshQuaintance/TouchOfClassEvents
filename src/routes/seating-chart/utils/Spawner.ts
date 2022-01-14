@@ -231,6 +231,7 @@ export class SpawnedObject {
                 _this.sprite.cursor = 'grab';
                 if (App.mode != 'build') App.viewport.drag();
             }
+            _this.sprite.anchor.set(0.5);
 
             _this.sprite.interactive = true;
             _this.sprite.cursor = 'grab';
