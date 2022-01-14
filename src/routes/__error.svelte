@@ -16,6 +16,8 @@
 
     export let error;
     export let status;
+
+    console.log(error, status)
 </script>
 
 <div class="error-page bg-cameo-pink-lightest w-screen h-screen top-0 fixed left-0 z-[100] overflow-hidden">

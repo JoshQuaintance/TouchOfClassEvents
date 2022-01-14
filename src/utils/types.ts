@@ -23,6 +23,7 @@ export interface DatabaseUser {
 }
 
 export interface SpawnedObjectData {
+    discriminator: 'spawned-object-data';
     label: string;
     isSeat: boolean;
     isTable: boolean;
