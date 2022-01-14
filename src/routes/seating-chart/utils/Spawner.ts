@@ -3,6 +3,7 @@
  * Description: A Spawner class that will be able to spawn objects
  */
 import type { DraggingSprite } from './extras';
+import '$utils/pixi-ssr-shim';
 
 import { Sprite, InteractionEvent, Texture, Text, TextStyle } from 'pixi.js';
 import App from './App';

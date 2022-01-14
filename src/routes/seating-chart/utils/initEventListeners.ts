@@ -2,6 +2,8 @@
  * Location: src/routes/seating-chart/utils/initEventListeners.ts
  * Description: Initializes all the event listeners attached to the app events
  */
+import '$utils/pixi-ssr-shim';
+
 import { Graphics, InteractionEvent, Rectangle } from 'pixi.js';
 import App from './App';
 import { checkIfBeyondWorld } from './extras';

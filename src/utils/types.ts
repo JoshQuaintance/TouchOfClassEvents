@@ -1,5 +1,3 @@
-import { Sprite } from 'pixi.js';
-
 export type Base64 = string;
 export type UUID = string;
 

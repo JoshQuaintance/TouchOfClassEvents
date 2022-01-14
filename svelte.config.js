@@ -26,10 +26,10 @@ const config = {
         adapter: vercel(),
         vite: {
             ssr: {
-                noExternal: ['dayjs']
+                noExternal: ['dayjs', 'pixi.js']
             },
             optimizeDeps: {
-                exclude: ['bcrypt']
+                exclude: ['bcrypt', 'pixi.js']
             },
             resolve: {
                 alias: {

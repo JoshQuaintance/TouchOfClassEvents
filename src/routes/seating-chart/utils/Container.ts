@@ -1,7 +1,8 @@
 /**
  * Location: src/routes/seating-chart/utils/Container.ts
- * Description: Custom Container class 
+ * Description: Custom Container class
  */
+import '$utils/pixi-ssr-shim';
 
 import { Container as PIXI_Container, DisplayObject } from 'pixi.js';
 import type { Sprite } from '@pixi/sprite';

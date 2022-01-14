@@ -3,6 +3,7 @@
  * Description: This class will act as a way for every part of
  * the seating chart have access to the pixi.js application
  */
+import '$utils/pixi-ssr-shim';
 
 import type {
     Application,
