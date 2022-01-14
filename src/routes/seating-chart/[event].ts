@@ -2,7 +2,6 @@ import type uuid_T from 'uuid';
 import { connectToDB } from '$utils/db';
 import { get as getStore } from 'svelte/store';
 
-
 export async function post(request) {
     // Dynamically imported
     const uuid: typeof uuid_T = await import('uuid');
@@ -41,9 +40,26 @@ export async function post(request) {
                 title,
                 host,
                 details,
-                createdBy: locals.uid
-
+                createdBy: locals.user.uid,
+                seating_chart_data: {}
             });
+
+            await newEvent.save((err: any) => {
+                if (err)
+                    throw {
+                        status: 500,
+                        message: 'Error saving new event data',
+                        err
+                    };
+            });
+
+            return {
+                status: 201,
+                body: {
+                    message: 'Event Created',
+                    event_id
+                }
+            };
         } catch (err) {
             return {
                 status: err.status || 500,

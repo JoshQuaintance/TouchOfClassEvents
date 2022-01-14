@@ -28,6 +28,7 @@ export async function handle({ request, resolve }) {
         iat: number;
     }
 
+    request.locals.snackbarQueue = [];
     request.locals.user = {};
 
     if (!cookies.jwt) {

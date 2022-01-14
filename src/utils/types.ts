@@ -19,7 +19,6 @@ export interface DatabaseUser {
     password: string;
     connections?: Array<GoogleConnection | FacebookConnection>;
 }
-
 export interface EventData {
     event_id: UUID;
     title: string;
@@ -27,4 +26,5 @@ export interface EventData {
     host: string;
     details: string;
     createdBy: UUID;
+    seating_chart_data: {};
 }

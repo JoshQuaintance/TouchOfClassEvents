@@ -8,7 +8,8 @@
         pageLoaded.set(false);
         return {
             props: {
-                key: url.path
+                key: url.path,
+                snackbarQueue: session?.locals.snackbarQueue || []
             }
         };
     };
@@ -26,12 +27,19 @@
     import { SnackbarContainer } from 'attractions';
 
     export let key;
+    export let snackbarQueue: [];
     let snackbarController;
 
     beforeUpdate(() => pageLoaded.set(true));
     onMount(async () => {
         mainSnackbarController.set(snackbarController);
         pageLoaded.set(true);
+        
+        if (snackbarQueue?.length > 0)
+            [...snackbarQueue].forEach((item: any) => {
+                snackbarController.showSnackbar(item);
+                snackbarQueue.pop();
+            });
 
         initGAPI(getUser);
 
@@ -52,8 +60,6 @@
         .snackbar-stack {
             @apply left-5 bottom-5 !important;
         }
-
-
     </style>
     <!-- Load the spinner if the page is not fully mounted yet -->
     {#if !$pageLoaded}

@@ -29,7 +29,8 @@ async function initSchemas() {
         date: { type: Date, required: true },
         host: { type: String, required: true },
         details: { type: String, required: true },
-        createdBy: { type: String, required: true }
+        createdBy: { type: String, required: true },
+        seating_chart_data: { type: {}, required: true }
     });
 
     return {
@@ -40,7 +41,7 @@ async function initSchemas() {
 
 export async function connectToDB(): Promise<{
     mongoose: typeof mongoose;
-    schemas: Promise<{ UserSchema: mongoose.Schema, EventSchema: mongoose.Schema }>;
+    schemas: Promise<{ UserSchema: mongoose.Schema; EventSchema: mongoose.Schema }>;
 }> {
     // Before connecting, always check if somehow the database is already connected
     if (mongoose.connection.readyState != 1) await mongoose.connect(import.meta.env['VITE_SECRET_MONGO_URI'] as string);
