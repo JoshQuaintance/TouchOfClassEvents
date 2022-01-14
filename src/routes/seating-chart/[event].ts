@@ -73,7 +73,7 @@ export async function post(request) {
         const { mongoose, schemas } = await connectToDB();
         const { EventSchema } = await schemas;
 
-        const Event = mongoose.models.Event || mongoose.model('Event', EventSchema);
+        const Event = mongoose.models.Event || mongoose.model('Events', EventSchema);
 
         let eventLookup = await Event.findOne({ event });
 
