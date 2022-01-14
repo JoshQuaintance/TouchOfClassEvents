@@ -25,6 +25,9 @@ const config = {
         target: '#svelte',
         adapter: vercel(),
         vite: {
+            ssr: {
+                noExternal: ['dayjs']
+            },
             optimizeDeps: {
                 exclude: ['bcrypt']
             },

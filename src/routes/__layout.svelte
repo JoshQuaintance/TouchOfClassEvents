@@ -48,19 +48,17 @@
 </script>
 
 <SnackbarContainer bind:this={snackbarController}>
+    <style>
+        .snackbar-stack {
+            @apply left-5 bottom-5 !important;
+        }
+
+
+    </style>
     <!-- Load the spinner if the page is not fully mounted yet -->
     {#if !$pageLoaded}
         <Spinner />
     {:else}
-        <style>
-            .snackbar-stack {
-                @apply left-5 bottom-5 !important;
-            }
-
-            /* .snackbar {
-            @apply bg-red-500 !important;
-        } */
-        </style>
         <Nav />
 
         <div style="margin-top: {$headerHeight}px;" />

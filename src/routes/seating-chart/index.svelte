@@ -31,15 +31,10 @@
         run(el, PIXI);
 
         window.addEventListener('resize', () => {
-            // App.app.destroy(true);
-            // App.app = null;
-            // App.viewport = null;
             const app = App.app;
             const viewport = App.viewport;
 
             app.resize();
-
-            console.log(viewport.worldWidth, window.innerWidth * 6, window.innerWidth, app.view.width);
 
             viewport.resize(App.app.view.width, percent(88, App.app.view.height), 9600, 9600);
 

@@ -10,11 +10,6 @@ export async function post(req) {
     const { email, nickname, password } = JSON.parse(req.body);
     const User = mongoose.models.Users || mongoose.model('Users', UserSchema);
 
-    const payload = {
-        email,
-        nickname
-    };
-
     const userData = await User.findOne({ email });
 
     if (!userData)
@@ -35,6 +30,12 @@ export async function post(req) {
             }
         };
     }
+
+    const payload = {
+        email,
+        nickname,
+        uid: userData.uid
+    };
 
     const headers = {
         'Set-Cookie': cookie.serialize('jwt', await generateJWT(payload), {

@@ -75,7 +75,7 @@
 
                 <Button
                     on:click={toggleNav}
-                    href="#"
+                    href="/events/search"
                     noPrefetch
                     class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
                     Make a reservation
@@ -83,7 +83,7 @@
 
                 <Button
                     on:click={toggleNav}
-                    href="#"
+                    href="/events/new"
                     noPrefetch
                     class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
                     Create an Event
@@ -129,13 +129,13 @@
                 {#if !userIsSignedIn}
                     <div class="flex flex-col lg:flex-row justify-start gap-2.5 lg:ml-16">
                         <a
-                            href="log-in"
+                            href="/log-in"
                             class="inline-block focus-visible:ring ring-indigo-300 text-gray-500 hover:text-indigo-500 active:text-indigo-600 text-sm md:text-base font-semibold text-center transition duration-100"
                             ><Button rectangle>Log in</Button>
                         </a>
 
                         <a
-                            href="sign-up"
+                            href="/sign-up"
                             class="inline-block focus-visible:ring ring-indigo-300 text-sm md:text-base font-semibold text-center transition duration-100"
                             ><Button filled rectangle class="text-white px-[1.4rem]">Sign up</Button>
                         </a>

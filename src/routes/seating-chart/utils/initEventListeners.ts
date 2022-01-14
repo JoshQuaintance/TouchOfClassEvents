@@ -66,9 +66,7 @@ export default function initEventListeners() {
             viewport.drag({ pressDrag: false });
         }
 
-        if (mode == 'options-resize') {
-            hintText.set('Select an object to resize');
-        }
+        if (mode == 'options-resize') hintText.set('Select an object to resize');
 
         if (mode == 'options-delete') hintText.set('Select an object to delete');
     });
@@ -82,7 +80,6 @@ export default function initEventListeners() {
         openModal.set(true);
 
         function handleDeletion(e: CustomEventInit) {
-            
             App.new_app_event({
                 event: 'delete-object',
                 additional: {

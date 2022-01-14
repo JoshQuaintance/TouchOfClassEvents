@@ -4,7 +4,7 @@
  */
 
 import mongoose from 'mongoose';
-import type { DatabaseUser, GoogleConnection, FacebookConnection } from '$utils/types';
+import type { DatabaseUser, GoogleConnection, FacebookConnection, EventData } from '$utils/types';
 
 /**
  * This is where all the schemas for the database will
@@ -23,14 +23,24 @@ async function initSchemas() {
         connections: { type: Array<GoogleConnection | FacebookConnection>(), default: [] }
     });
 
+    const EventSchema: mongoose.Schema<EventData> = new mongoose.Schema({
+        event_id: { type: String, required: true, unique: true },
+        title: { type: String, required: true },
+        date: { type: Date, required: true },
+        host: { type: String, required: true },
+        details: { type: String, required: true },
+        createdBy: { type: String, required: true }
+    });
+
     return {
-        UserSchema
+        UserSchema,
+        EventSchema
     };
 }
 
 export async function connectToDB(): Promise<{
     mongoose: typeof mongoose;
-    schemas: Promise<{ UserSchema: mongoose.Schema }>;
+    schemas: Promise<{ UserSchema: mongoose.Schema, EventSchema: mongoose.Schema }>;
 }> {
     // Before connecting, always check if somehow the database is already connected
     if (mongoose.connection.readyState != 1) await mongoose.connect(import.meta.env['VITE_SECRET_MONGO_URI'] as string);

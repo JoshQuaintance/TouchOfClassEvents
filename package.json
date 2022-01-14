@@ -12,6 +12,7 @@
         "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
     },
     "devDependencies": {
+        "@beyonk/svelte-datepicker": "^11.0.2",
         "@iconify/svelte": "^2.1.0",
         "@sveltejs/adapter-vercel": "next",
         "@sveltejs/kit": "next",
@@ -48,7 +49,6 @@
         "sass": "^1.43.2",
         "svelte": "^3.42.6",
         "svelte-awesome": "^2.4.2",
-        "svelte-calendar": "^3.1.6",
         "svelte-check": "^2.2.6",
         "svelte-preprocess": "^4.9.7",
         "svelte-typewriter": "^3.0.0-alpha.5",

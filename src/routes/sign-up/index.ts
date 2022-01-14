@@ -44,7 +44,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
             password: hashedPassword
         });
 
-        await newUser.save((err) => {
+        await newUser.save((err: any) => {
             if (err)
                 throw {
                     status: 500,
@@ -55,7 +55,8 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
 
         const payload = {
             email,
-            nickname
+            nickname,
+            uid
         };
 
         // Make header to set a cookie (which is going to be jwt)

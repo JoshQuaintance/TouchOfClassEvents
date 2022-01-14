@@ -19,3 +19,12 @@ export interface DatabaseUser {
     password: string;
     connections?: Array<GoogleConnection | FacebookConnection>;
 }
+
+export interface EventData {
+    event_id: UUID;
+    title: string;
+    date: Date;
+    host: string;
+    details: string;
+    createdBy: UUID;
+}

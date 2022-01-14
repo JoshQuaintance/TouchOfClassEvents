@@ -67,10 +67,6 @@
         .snackbar-stack {
             @apply left-5 bottom-5 !important;
         }
-
-        /* .snackbar {
-            @apply bg-red-500 !important;
-        } */
     </style>
 
     <button on:click={show}>PRESS MEE DADDY</button>
