@@ -14,5 +14,4 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
     let eventLookupRegX = new RegExp('-' + event_id);
     let updateEventData = await Event.findOneAndUpdate({ event_id: { $regex: eventLookupRegX } }, { seating_chart_data: data });
 
-    console.log(updateEventData);
 }

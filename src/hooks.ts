@@ -37,8 +37,6 @@ export async function handle({ request, resolve }) {
 
         let response = await resolve(request);
 
-        // console.log(response);
-
         return {
             ...response,
             headers: {

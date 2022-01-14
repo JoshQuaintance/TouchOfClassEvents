@@ -27,7 +27,6 @@ export default function initEventListeners() {
 
             App.save_seating_chart();
         }
-        // console.log(mode);
 
         if (mode == 'view') {
             hintText.set('');

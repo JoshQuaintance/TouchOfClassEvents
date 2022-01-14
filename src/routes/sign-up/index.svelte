@@ -34,8 +34,8 @@
 
     async function emailSignUp() {
         let userExist = await checkIfUserExist(userEmail, nickname);
- 
-        //Checks if the user does not exist 
+
+        //Checks if the user does not exist
         if (userExist == 0) {
             const res = await fetch('/sign-up', {
                 method: 'POST',
@@ -78,9 +78,7 @@
         }
     }
 
-    onMount(() => {
-        console.log($user);
-    });
+    onMount(() => {});
 </script>
 
 <svelte:head>
@@ -92,7 +90,6 @@
         .snackbar-stack {
             @apply left-5 bottom-5 !important;
         }
-
     </style>
     <div class="bg-cameo-pink-lightest py-6 sm:py-8 lg:py-12">
         <div class="max-w-screen-2xl px-4 md:px-8 mx-auto ">
@@ -100,7 +97,6 @@
 
             <form class="max-w-lg border rounded-lg mx-auto bg-white" on:submit|preventDefault>
                 <div class="flex flex-col gap-4 p-4 md:p-8">
-                    
                     <div>
                         <TextField
                             type="email"
@@ -111,12 +107,10 @@
                             required
                             autofocus
                             class="relative outline-none"
-                            bind:value={userEmail}
-                        >
+                            bind:value={userEmail}>
                             <Icon
                                 icon="email"
-                                class="absolute left-0 top-[50%] transform-gpu translate-y-[-50%] translate-x-2 "
-                            />
+                                class="absolute left-0 top-[50%] transform-gpu translate-y-[-50%] translate-x-2 " />
                         </TextField>
                     </div>
 
@@ -129,12 +123,10 @@
                             withItem
                             required
                             bind:value={nickname}
-                            class="relative outline-none"
-                        >
+                            class="relative outline-none">
                             <Icon
                                 icon="at"
-                                class="absolute left-0 top-[50%] transform-gpu translate-y-[-50%] translate-x-2 "
-                            />
+                                class="absolute left-0 top-[50%] transform-gpu translate-y-[-50%] translate-x-2 " />
                         </TextField>
                     </div>
 
@@ -176,8 +168,7 @@
                         transition
                         duration-100
                         px-8
-                        py-3"
-                    >
+                        py-3">
                         Sign Up
                     </button>
 
@@ -193,8 +184,7 @@
                         <a
                             href="/log-in"
                             class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 transition duration-100"
-                            >Login</a
-                        >
+                            >Login</a>
                     </p>
                 </div>
             </form>

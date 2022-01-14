@@ -172,6 +172,7 @@ export class SpawnedObject {
             const { label, isSeat, isTable, width, height, coords, holdAmount, canHoldType, texture } =
                 data as SpawnedObjectData;
 
+            let _this = this;
             this._sprite = new Sprite(App.resources[texture].texture);
             this.setLabel(label);
             this._isSeat = isSeat;
@@ -182,6 +183,62 @@ export class SpawnedObject {
             this._sprite.y = coords.y;
             this._canHoldAmount = holdAmount;
             this._canHoldType = canHoldType;
+
+            function onDragMove(e: InteractionEvent) {
+                const sprite: DraggingSprite = e.currentTarget as DraggingSprite;
+                const viewport = App.viewport;
+
+                if (sprite.dragging) {
+                    let { x, y } = e.data.getLocalPosition(viewport);
+
+                    if (!checkIfBeyondWorld(sprite, x, y)) {
+                        sprite.position.x += x - sprite.dragging.x;
+                        sprite.position.y += y - sprite.dragging.y;
+                        sprite.dragging = { x, y };
+                    }
+                }
+            }
+
+            function onDragStart(e: InteractionEvent) {
+                const sprite: DraggingSprite = e.currentTarget as DraggingSprite;
+                const viewport = App.viewport;
+
+                if (App.mode.startsWith('options-')) {
+                    App.new_app_event({
+                        event: App.mode as `options-${string}`,
+                        additional: {
+                            spawnedObject: _this
+                        }
+                    });
+
+                    return;
+                }
+
+                sprite.data = e.data;
+                sprite.alpha = 0.5;
+                let { x, y } = e.data.getLocalPosition(viewport);
+                sprite.dragging = { x, y };
+                _this.sprite.cursor = 'grabbing';
+                viewport.drag({ pressDrag: false });
+            }
+
+            function onDragEnd(e: InteractionEvent) {
+                const sprite: DraggingSprite = e.currentTarget as DraggingSprite;
+
+                sprite.alpha = 1;
+                sprite.dragging = null;
+                sprite.data = null;
+                _this.sprite.cursor = 'grab';
+                if (App.mode != 'build') App.viewport.drag();
+            }
+
+            _this.sprite.interactive = true;
+            _this.sprite.cursor = 'grab';
+
+            _this.sprite.on('pointerdown', onDragStart);
+            _this.sprite.on('pointermove', onDragMove);
+            _this.sprite.on('pointerup', onDragEnd);
+            _this.sprite.on('pointerupoutside', onDragEnd);
 
             App.viewport.addChild(this._sprite);
         }

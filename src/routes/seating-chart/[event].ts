@@ -82,7 +82,6 @@ export async function post(request) {
 
         let eventLookup = await Event.findOne({ event_id: { $regex: eventRegX } });
 
-        // console.log('params', params, 'locals',locals)
         if (!eventLookup)
             return {
                 status: 404,

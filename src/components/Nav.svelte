@@ -11,7 +11,6 @@
     let navEl: HTMLElement;
 
     $: userIsSignedIn = $isSignedIn;
-    $: console.log(userIsSignedIn, 'userSignedIn');
 
     function toggleNav() {
         navEl.classList.toggle('opened');
