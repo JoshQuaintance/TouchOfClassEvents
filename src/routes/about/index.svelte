@@ -73,7 +73,7 @@
                 emailLink="22.Ethan.Napier@sidneycityschools.org"
                 facebookLink="ethan.napier.1029"
             />
-            <!-- <PersonCard src="images/David.jpg" name="David Crosslin" role="Html and CSS Programmer" emailLink="22.David.Crosslin@sidneycityschools.org" facebookLink="churchcatdavid"/> -->
+             <PersonCard src="images/David.jpg" name="David Crosslin" role="Html and CSS Programmer" emailLink="22.David.Crosslin@sidneycityschools.org" facebookLink="churchcatdavid"/> 
         </div>
     </div>
 </div>
