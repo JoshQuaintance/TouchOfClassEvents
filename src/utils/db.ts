@@ -30,7 +30,7 @@ async function initSchemas() {
         host: { type: String, required: true },
         details: { type: String, required: true },
         createdBy: { type: String, required: true },
-        seating_chart_data: { type: [], required: true, default: [] }
+        seating_chart_data: { type: [], required: true, default: [] },
     });
 
     return {

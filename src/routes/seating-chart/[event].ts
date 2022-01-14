@@ -10,7 +10,6 @@ export async function post(request) {
     let { params, locals } = request;
 
     let { event } = params;
-
     // If the event param (which is seating-chart/new)
     if (event == 'new') {
         // If user isn't signed in, forbade from creating one
@@ -29,7 +28,7 @@ export async function post(request) {
 
         const body = JSON.parse(content as string);
         const { date, title, host, details } = body;
-        const Event = mongoose.models.Event || mongoose.model('Events', EventSchema);
+        const Event = mongoose.models.Events || mongoose.model('Events', EventSchema);
 
         try {
             const event_id = uuidv4();
@@ -73,10 +72,13 @@ export async function post(request) {
         const { mongoose, schemas } = await connectToDB();
         const { EventSchema } = await schemas;
 
-        const Event = mongoose.models.Event || mongoose.model('Events', EventSchema);
+        const Event = mongoose.models.Events || mongoose.model('Events', EventSchema);
 
-        let eventLookup = await Event.findOne({ event });
+        let eventRegX = new RegExp('-' + event);
 
+        let eventLookup = await Event.findOne({ event_id: { $regex: eventRegX } });
+
+        // console.log('params', params, 'locals',locals)
         if (!eventLookup)
             return {
                 status: 404,
@@ -90,7 +92,8 @@ export async function post(request) {
         return {
             status: 201,
             body: {
-                message: 'Event found, transferring data!'
+                message: 'Event found, transferring data!',
+                seating_chart_data: eventLookup.seating_chart_data
             }
         };
     }

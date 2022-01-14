@@ -38,16 +38,6 @@
         host,
         details;
 
-    const theme = {
-        calendar: {
-            width: '30rem',
-            font: {
-                regular: '1.5rem',
-                large: '10rem;'
-            }
-        }
-    };
-
     async function submitNewEvent() {
         if (!date)
             return $mainSnackbarController.showSnackbar({

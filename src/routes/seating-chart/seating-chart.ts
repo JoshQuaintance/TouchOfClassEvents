@@ -67,7 +67,7 @@ export async function init() {
         /**
          * Preload Resources
          */
-        app.loader.baseUrl = 'images';
+        app.loader.baseUrl = '/images';
         app.loader.add('seat', 'seat.svg');
         app.loader.add('table', 'table.svg');
         app.loader.add('circular_table', 'circular_table.svg');
@@ -125,7 +125,7 @@ export async function run(el: HTMLDivElement): Promise<void> {
 
     if (App.imported_data.length > 0) {
         for (let item of App.imported_data) {
-            const newObject = new SpawnedObject(item);
+            new SpawnedObject(item);
         }
     }
 }

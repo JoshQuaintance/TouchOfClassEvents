@@ -199,7 +199,7 @@ export class SpawnedObject {
         this._spawnedObjectsStore.splice(index, 1);
     }
 
-    private get spawnedObjectData(): SpawnedObjectData {
+    get spawnedObjectData(): SpawnedObjectData {
         return {
             discriminator: 'spawned-object-data',
             label: this._labelText,

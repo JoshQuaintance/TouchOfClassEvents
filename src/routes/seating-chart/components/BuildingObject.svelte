@@ -19,7 +19,7 @@
 
 <div class="obj-container relative group">
     <img
-        src="images/{src}.svg"
+        src="/images/{src}.svg"
         alt={name}
         style="height:{percent(65, percent(12, window.innerHeight))}px;"
         class="cursor-pointer peer"
