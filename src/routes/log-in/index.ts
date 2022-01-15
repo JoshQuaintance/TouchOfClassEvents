@@ -48,7 +48,7 @@ export async function post(req) {
             };
         }
 
-        if (!validatePass && !onlyLinkedWithGoogle) {
+        if (!validatePass && !onlyLinkedWithGoogle && userData.connections.length == 0) {
             return {
                 status: 403,
                 body: {

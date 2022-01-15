@@ -124,32 +124,14 @@
                         if (res.code == 'social-link-success') {
                             $mainSnackbarController.showSnackbar({
                                 props: {
-                                    text: 'New account created and linked! Logging you in...',
+                                    text: 'Account Linked! Logging you in....',
                                     class: 'bg-green-500'
                                 },
                                 component: undefined,
                                 duration: 5000
                             });
 
-                            let logUserIn = await fetch('/log-in', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    email,
-                                    password: ''
-                                })
-                            });
-
-                            if ((await logUserIn.json()).code == 'user-cred-valid') {
-                                $mainSnackbarController.showSnackbar({
-                                    props: {
-                                        text: 'Logged in!',
-                                        class: 'bg-green-500'
-                                    },
-                                    component: undefined,
-                                    duration: 5000
-                                });
-                                location.replace('/');
-                            }
+                            location.replace('/');
                         }
                     }
                 });
