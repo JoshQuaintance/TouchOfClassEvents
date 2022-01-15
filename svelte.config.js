@@ -26,7 +26,7 @@ const config = {
         adapter: vercel(),
         vite: {
             ssr: {
-                noExternal: ['dayjs'].concat(process.env.NODE_ENV === 'development' ? ['pixi.js'] : [])
+                noExternal: ['dayjs'].concat(process.env.NODE_ENV === 'development' ? [] : ['pixi.js'])
             },
             optimizeDeps: {
                 exclude: []
