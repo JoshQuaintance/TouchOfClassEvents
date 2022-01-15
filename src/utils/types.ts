@@ -1,8 +1,6 @@
 export type Base64 = string;
 export type UUID = string;
 
-export interface FacebookConnection {}
-
 export interface GoogleConnection {
     connection: 'google';
     id: string;
@@ -17,7 +15,8 @@ export interface DatabaseUser {
     email: string;
     nickname: string;
     password: string;
-    connections?: Array<GoogleConnection | FacebookConnection>;
+    connections?: Array<GoogleConnection>;
+    noPass: boolean;
 }
 
 export interface SpawnedObjectData {

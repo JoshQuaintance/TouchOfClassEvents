@@ -48,6 +48,7 @@
                 component: undefined,
                 duration: 5000
             });
+
         const getMetadata = await fetch('/seating-chart/new', {
             method: 'POST',
             body: JSON.stringify({

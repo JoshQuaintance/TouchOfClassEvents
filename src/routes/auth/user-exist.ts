@@ -7,6 +7,7 @@ import type { ServerRequest } from '@sveltejs/kit/types/hooks';
 import type { DefaultBody } from '@sveltejs/kit/types/endpoint';
 
 import { connectToDB } from '$utils/db';
+import type { DatabaseUser, GoogleConnection } from '$utils/types';
 
 export async function post(req: ServerRequest<Record<string, any>, DefaultBody>) {
     const { mongoose, schemas } = await connectToDB();
@@ -21,9 +22,17 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
             Responses that are not errors are going to have codes to represent the responses
         */
         // First, check if user exist using the email given
-        let userDataWithEmail = await User.findOne({ email });
+        let userDataWithEmail: DatabaseUser | null = await User.findOne({ email });
 
-        if (userDataWithEmail)
+        if (userDataWithEmail) {
+            if (userDataWithEmail.connections.map((conn: GoogleConnection) => conn.connection == 'google').length > 0)
+                return {
+                    status: 200,
+                    body: {
+                        message: `User with '${email}' already exists with the google connection`,
+                        code: 'user-email-exists-with-google-connection'
+                    }
+                };
             return {
                 status: 200,
                 body: {
@@ -31,6 +40,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
                     code: 'user-email-exist'
                 }
             };
+        }
 
         if (!nickname)
             return {

@@ -4,7 +4,7 @@
  -->
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { pageLoaded, user } from '$utils/stores';
+    import { mainSnackbarController, pageLoaded, user } from '$utils/stores';
     import { initGAPI } from '$utils/gapi';
     import { checkIfUserExist } from '$utils/db';
 
@@ -39,9 +39,45 @@
                     const userExist = await checkIfUserExist(email);
                     pageLoaded.set(false);
 
+                    if (userExist == 3) {
+                        $mainSnackbarController.showSnackbar({
+                            props: {
+                                text: 'User found in our database with connection! Logging you in...',
+                                class: 'bg-green-500'
+                            },
+                            component: undefined,
+                            duration: 5000
+                        });
+
+                        let logUserIn = await fetch('/log-in', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                email,
+                                password: ''
+                            })
+                        });
+
+                        let res = await logUserIn.json();
+
+                        console.log(res)
+
+                        if (res.code == 'user-cred-valid') {
+                            location.replace('/');
+                        }
+                    }
+
                     // If user exist by email
                     if (userExist == 1) {
-                        await fetch('/auth/link-user/existing', {
+                        $mainSnackbarController.showSnackbar({
+                            props: {
+                                text: 'User exists in our database, linking account!',
+                                class: 'bg-blue-500'
+                            },
+                            component: undefined,
+                            duration: 5000
+                        });
+
+                        let linkAccounts = await fetch('/auth/link-user/existing', {
                             method: 'POST',
                             headers: {
                                 'X-Requested-With': 'XMLHttpRequest'
@@ -51,13 +87,18 @@
                                 code
                             })
                         });
+
+                        let res = await linkAccounts.json();
+
+                        if (res.code == 'social-link-success') {
+                        }
                     }
 
                     // If user doesn't exist
                     if (userExist == 0) {
                     }
 
-                    location.replace('/');
+                    // location.replace('/');
                 });
             } catch (e) {
                 // If the user closes the popup

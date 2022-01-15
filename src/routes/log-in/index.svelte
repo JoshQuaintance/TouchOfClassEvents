@@ -23,25 +23,23 @@
     import PasswordInput from '$components/PasswordInput.svelte';
     import GoogleAuth from '$components/GoogleAuth.svelte';
 
-    onMount(async () => {});
-
     let userEmail;
     let userPass;
     let snackbarController;
 
     //This function sends the log in request and processes if the request is valid
     async function clickLogin(event) {
-        const User = {
+        const userData = {
             email: userEmail,
             password: userPass
         };
 
-        let x = await fetch('/log-in', {
+        let checkCredentials = await fetch('/log-in', {
             method: 'POST',
-            body: JSON.stringify(User)
+            body: JSON.stringify(userData)
         });
 
-        let res = await x.json();
+        let res = await checkCredentials.json();
 
         if (res.code == 'user-cred-invalid') {
             snackbarController.showSnackbar({
@@ -54,14 +52,6 @@
         if (res.code == 'user-cred-valid') {
             location.reload();
         }
-    }
-
-    function show() {
-        snackbarController.showSnackbar({
-            props: { text: 'No User Found', class: 'bg-red-500' },
-            component: undefined,
-            duration: 50000
-        });
     }
 </script>
 

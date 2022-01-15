@@ -12,7 +12,7 @@ export async function post(req) {
     const { mongoose, schemas } = await connectToDB();
     const { UserSchema } = await schemas;
 
-    const { email, nickname, password } = JSON.parse(req.body);
+    const { email, password } = JSON.parse(req.body);
     const User = mongoose.models.Users || mongoose.model('Users', UserSchema);
 
     const userData = await User.findOne({ email });
@@ -26,7 +26,10 @@ export async function post(req) {
         };
 
     //Checks if the encrypted password matches what is in the database
-    const validatePass = await bcrypt.compare(password, userData.password);
+    let validatePass = userData.noPass && (await bcrypt.compare('only-linked-with-google', userData.password));
+
+    // if validatePass is nullish, then check the actual password
+    validatePass ||= await bcrypt.compare(password, userData.password);
 
     if (!validatePass) {
         return {

@@ -4,7 +4,7 @@
  */
 
 import mongoose from 'mongoose';
-import type { DatabaseUser, GoogleConnection, FacebookConnection, EventData } from '$utils/types';
+import type { DatabaseUser, GoogleConnection, EventData } from '$utils/types';
 
 /**
  * This is where all the schemas for the database will
@@ -20,7 +20,8 @@ async function initSchemas() {
         email: { type: String, required: true, unique: true },
         nickname: { type: String, required: true, unique: true },
         password: { type: String, required: true },
-        connections: { type: Array<GoogleConnection | FacebookConnection>(), default: [] }
+        connections: { type: Array<GoogleConnection>(), default: [] },
+        noPass: { type: Boolean }
     });
 
     const EventSchema: mongoose.Schema<EventData> = new mongoose.Schema({
@@ -30,7 +31,7 @@ async function initSchemas() {
         host: { type: String, required: true },
         details: { type: String, required: true },
         createdBy: { type: String, required: true },
-        seating_chart_data: { type: [], required: true, default: [] },
+        seating_chart_data: { type: [], required: true, default: [] }
     });
 
     return {
@@ -62,13 +63,14 @@ export async function connectToDB(): Promise<{
  * Returns codes:
  * 0: User doesn't exist,
  * 1: User exist from email,
- * 2: user exist from username
+ * 2: User exist from username
+ * 3: User exists with google connection
  * ```
  *
  * Note: User exist from email code will always precede
  *      user exist form username code
  */
-export function checkIfUserExist(email: string, nickname?: string): Promise<0 | 1 | 2> {
+export function checkIfUserExist(email: string, nickname?: string): Promise<0 | 1 | 2 | 3> {
     return new Promise(async (resolve, reject) => {
         // using http again, hitting the auth endpoint
         // specifically to check if user exist
@@ -86,5 +88,6 @@ export function checkIfUserExist(email: string, nickname?: string): Promise<0 | 
         if (jsonRes.code == 'user-not-exist') return resolve(0);
         if (jsonRes.code == 'user-email-exist') return resolve(1);
         if (jsonRes.code == 'user-nickname-exist') return resolve(2);
+        if (jsonRes.code == 'user-email-exists-with-google-connection') return resolve(3);
     });
 }

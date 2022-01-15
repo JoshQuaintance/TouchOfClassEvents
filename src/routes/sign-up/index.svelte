@@ -78,7 +78,6 @@
         }
     }
 
-    onMount(() => {});
 </script>
 
 <svelte:head>

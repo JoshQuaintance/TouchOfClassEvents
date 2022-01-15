@@ -6,9 +6,10 @@
     export const load = async ({ url, session }) => {
         isSignedIn.set(session?.locals.isSignedIn || false);
         pageLoaded.set(false);
+
         return {
             props: {
-                key: url.path,
+                key: url.pathname,
                 snackbarQueue: session?.locals.snackbarQueue || []
             }
         };
@@ -18,13 +19,21 @@
 <script lang="ts">
     import 'material-icons/iconfont/outlined.css';
     import PageTransitions from '$components/PageTransitions.svelte';
-    import { headerHeight, isSignedIn, mainSnackbarController, pageLoaded, user } from '$utils/stores';
+    import {
+        headerHeight,
+        isSignedIn,
+        mainSnackbarController,
+        pageLoaded,
+        snackbarQueueEventTarget,
+        user
+    } from '$utils/stores';
 
     import Nav from '../components/Nav.svelte';
     import { beforeUpdate, onMount } from 'svelte';
     import Spinner from '$components/Spinner.svelte';
     import { initGAPI } from '$utils/gapi';
     import { SnackbarContainer } from 'attractions';
+    import GoogleAuth from '$components/GoogleAuth.svelte';
 
     export let key;
     export let snackbarQueue: [];
@@ -33,23 +42,36 @@
     beforeUpdate(() => pageLoaded.set(true));
     onMount(async () => {
         mainSnackbarController.set(snackbarController);
+        snackbarQueueEventTarget.set(new EventTarget());
         pageLoaded.set(true);
-        
-        if (snackbarQueue?.length > 0)
+
+        $snackbarQueueEventTarget.addEventListener('new-snackbar', () => {
             [...snackbarQueue].forEach((item: any) => {
                 snackbarController.showSnackbar(item);
                 snackbarQueue.pop();
             });
+        });
 
         initGAPI(getUser);
 
-        function getUser(GoogleAuthClient) {
+        async function getUser(GoogleAuthClient) {
             if (GoogleAuthClient.isSignedIn.get() && $isSignedIn == false) {
-                user.set(GoogleAuthClient.currentUser.get());
-                isSignedIn.set(true);
+                let user = GoogleAuthClient.currentUser.get().getBasicProfile();
+
+                let tryLogUserIn = await fetch('/log-in', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email: user.getEmail(),
+                        password: ''
+                    })
+                });
+
+                if (tryLogUserIn.status == 403) GoogleAuthClient.signOut();
             }
         }
     });
+
+    $: if (snackbarQueue?.length > 0) $snackbarQueueEventTarget.dispatchEvent(new CustomEvent('new-snackbar', {}));
 </script>
 
 <SnackbarContainer bind:this={snackbarController}>
@@ -62,7 +84,10 @@
     {#if !$pageLoaded}
         <Spinner />
     {:else}
-        <Nav />
+        <!-- Do not show the navbar when looking at the seating chart -->
+        {#if !key.startsWith('/seating-chart')}
+            <Nav />
+        {/if}
 
         <div style="margin-top: {$headerHeight}px;" />
 

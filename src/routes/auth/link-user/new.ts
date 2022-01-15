@@ -1,10 +1,5 @@
-/**
- * File Location: src/routes/auth/link-user.ts'
- * Description: Links a social provider to an existing user
- */
-import type { ServerRequest } from '@sveltejs/kit/types/hooks';
 import type { DefaultBody } from '@sveltejs/kit/types/endpoint';
-
+import type { ServerRequest } from '@sveltejs/kit/types/hooks';
 import { connectToDB } from '$utils/db';
 import { linkWithGoogle } from './_linkWithGoogle';
 
@@ -17,7 +12,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
 
     try {
         if (connection == 'google') {
-            let response = await linkWithGoogle(User, code);
+            let response = await linkWithGoogle(User, code, true);
 
             return {
                 status: response.status,

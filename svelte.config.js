@@ -26,8 +26,7 @@ const config = {
         adapter: vercel(),
         vite: {
             ssr: {
-                // TODO: Make sure pixijs is no external ONLY on dev mode
-                noExternal: ['dayjs', 'pixi.js']
+                noExternal: ['dayjs', process.env.NODE_ENV === 'development' ? 'pixi.js' : '']
             },
             optimizeDeps: {
                 exclude: []
