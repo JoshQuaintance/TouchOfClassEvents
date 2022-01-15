@@ -17,44 +17,27 @@ export async function linkWithGoogle(
 ) {
     try {
         const dev = process.env.NODE_ENV == 'development' || false;
-        const googleOAuth2Client = new google.auth.OAuth2(
-            dev
-                ? '293400151061-ro5rj0oq8frd5p7h5urfr1lsteeohuv3.apps.googleusercontent.com'
-                : '481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com',
-            dev
-                ? process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET_DEV']
-                : process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET'],
-            dev ? 'localhost:3000' : 'touch-of-class-events.vercel.app'
+        const googleOAuth2Client = await new google.auth.OAuth2(
+            '481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com',
+            import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET'] as string,
+            dev ? 'http://localhost:3000' : 'https://touch-of-class-events.vercel.app'
         );
 
         // Get the user's access and refresh token from the server
-        const getUserLink = `https://oauth2.googleapis.com/token?code=${code}&redirect_uri=${
-            dev ? 'http://localhost:3000' : 'https://touch-of-class-events.vercel.app'
-        }&client_id=481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com&client_secret=${
-            dev
-                ? process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET_DEV']
-                : process.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET']
-        }&scope=&grant_type=authorization_code`;
+        // const getUserLink = `https://oauth2.googleapis.com/token?code=${code}&redirect_uri=${
+        //     dev ? 'http://localhost:3000' : 'https://touch-of-class-events.vercel.app'
+        // }&client_id=481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com
+        // &client_secret=${import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET'] as string}&scope=&grant_type=authorization_code`;
 
-        // google.options({ auth: googleOAuth2Client });
-        // googleOAuth2Client.getToken(code).then((tokenResponse) => {
-        //     console.log('tokens');
-        //     console.log(tokenResponse.tokens);
-        // });
-
-        // console.log(res);
-        const res = await fetch(getUserLink, {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded'
-            }
-        });
-
-        const { access_token, refresh_token } = await res.json();
+        google.options({ auth: googleOAuth2Client });
+        let response = await googleOAuth2Client.getToken(code)
+        
+        const { access_token, refresh_token } = response.tokens;
 
         // Authorize our google oauth2 client with the access token
         googleOAuth2Client.setCredentials({
-            access_token
+            access_token,
+            refresh_token
         });
 
         // Get the user profile
@@ -112,7 +95,7 @@ export async function linkWithGoogle(
         // Acknowledged is true when the data in the db is updated
         if (updateResponse.acknowledged)
             return {
-                status: 204,
+                status: 200,
                 body: {
                     message: `User with email ${email} linked successfully with Google Sign-In`,
                     code: 'social-link-success'

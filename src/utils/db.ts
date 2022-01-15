@@ -84,6 +84,7 @@ export function checkIfUserExist(email: string, nickname?: string): Promise<0 | 
         });
 
         const jsonRes = await res.json();
+        
 
         if (jsonRes.code == 'user-not-exist') return resolve(0);
         if (jsonRes.code == 'user-email-exist') return resolve(1);

@@ -9,7 +9,7 @@ import crypto from 'crypto';
 
 // putting public key (it should be ok)
 export const PUBLIC_RSA_KEY =
-    'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFxMWNaUHUyWU93TnhGVnhoalN5egpwdjRlc0grODA1TFFYait3blNWdVdEOVRiVStDVlEva3NDblFFWUpzQ2xHRk1JNzMwYkwrellGei9DdU4vd1NZCnQ5bS9LUjVnQW1uOENJaEFINFFqdU1IaDl3Y1EvMzZDanYvdTFtYkdRdFRlS0lWZ0k0dVdkSmR3QUUvUDNKNVYKbHdnaWo3bHBWQzQzei9BWmJlcVhrLzZKVXpPbVJoYW5Qd0NVcEJsUW5hZ3hkSlExakZabHpsQUxJQWl1V1ZITwp0ZUtzdU9BQnpIZlUzbHVuS2NPNHdzZWpzeWlUMzE5bi8vakdwbEJZRDlJWEFNME5HenpKRWNiTE1XdXowTnpVCkxLdUcxTmdrRmtJb1d2Z1BTL3FXRnNDYjV0UVlFMzRDeS9zdzNteTE5SEJEcittUkhtQ09wNzJrckJFWTE3RU4KWndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg';
+    'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF4OTZpNHN2V1ZHOUxxV0lEeDhKSgovU2xsM25vaTkxMVpjZEY0RWtGVlB4Vk8xQlN6NGZWYjhKeDd3NmNLRUVYd3dLOEc1dXppT3VvVnVJNFpoMmR3Cm1LcktkR3hDMnlaZ296YS9PT0VDWjF6OTdPSUpkenBpdG8wQUt3S0F6Y1hKTFl5Y05sMGxKU3dzWFRYRVZFM3EKTVV2dDd3MitqMjNBWFU3T1luc3hBVjgvMCsvaUxWWVRlZitDWXlYeXUvQlFTcjVPOXRSTFozdEkvUHFkc3htQQpEUkRXRExjNFB0NW5HR1M4Ym90enpxQWp4TkRjVUFjcEp1VlhEZTc0cDczOHUydUdXVkFxVXR4UFB3enlpTmVDCjB0WlMrcHhxcGtzTUgwY0RkWkprbFkwRzB4a1pYV0lkYmlubUdwMWhoR3NOSndwY2dzUm0wdFN6a0w2TkFoVzEKcFFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==';
 
 /**
  * Generates a JWT token
@@ -61,15 +61,15 @@ export async function verifyJWT(token: string, jwtVerifyOptions?: VerifyOptions)
  * @param data Data to encrypt
  * @returns Encrypted data in base64 form
  */
-export async function encryptData(data: WithImplicitCoercion<ArrayBuffer | SharedArrayBuffer>) {
+export async function encryptData(data: WithImplicitCoercion<ArrayBuffer | SharedArrayBuffer> | string) {
     const encryptedBuffer = crypto.publicEncrypt(
         {
-            key: PUBLIC_RSA_KEY,
+            key: Buffer.from(PUBLIC_RSA_KEY, 'base64').toString(),
             padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
             // @ts-ignore
             oeapHash: 'sha256'
         },
-        Buffer.from(data)
+        typeof data === 'string' ? Buffer.from(data) : Buffer.from(data)
     );
 
     return Buffer.from(encryptedBuffer).toString('base64');

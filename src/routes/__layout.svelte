@@ -67,6 +67,7 @@
                 });
 
                 if (tryLogUserIn.status == 403) GoogleAuthClient.signOut();
+                else location.reload();
             }
         }
     });

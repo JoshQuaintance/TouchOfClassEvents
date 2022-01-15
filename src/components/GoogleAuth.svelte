@@ -35,6 +35,7 @@
                     const profile = userObject.getBasicProfile();
 
                     const email = profile.getEmail();
+                    const name = profile.getName();
 
                     const userExist = await checkIfUserExist(email);
                     pageLoaded.set(false);
@@ -59,8 +60,6 @@
 
                         let res = await logUserIn.json();
 
-                        console.log(res)
-
                         if (res.code == 'user-cred-valid') {
                             location.replace('/');
                         }
@@ -79,9 +78,6 @@
 
                         let linkAccounts = await fetch('/auth/link-user/existing', {
                             method: 'POST',
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest'
-                            },
                             body: JSON.stringify({
                                 connection: 'google',
                                 code
@@ -91,14 +87,71 @@
                         let res = await linkAccounts.json();
 
                         if (res.code == 'social-link-success') {
+                            $mainSnackbarController.showSnackbar({
+                                props: {
+                                    text: 'Account Linked! Logging you in....',
+                                    class: 'bg-green-500'
+                                },
+                                component: undefined,
+                                duration: 5000
+                            });
+
+                            location.replace('/');
                         }
                     }
 
                     // If user doesn't exist
                     if (userExist == 0) {
-                    }
+                        $mainSnackbarController.showSnackbar({
+                            props: {
+                                text: "Google account isn't linked to any accounts in our database!\nCreating a new account based on Google account",
+                                class: 'bg-blue-500'
+                            },
+                            component: undefined,
+                            duration: 5000
+                        });
 
-                    // location.replace('/');
+                        let createNewUserAndLink = await fetch('/auth/link-user/new', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                connection: 'google',
+                                code
+                            })
+                        });
+
+                        let res = await createNewUserAndLink.json();
+
+                        if (res.code == 'social-link-success') {
+                            $mainSnackbarController.showSnackbar({
+                                props: {
+                                    text: 'New account created and linked! Logging you in...',
+                                    class: 'bg-green-500'
+                                },
+                                component: undefined,
+                                duration: 5000
+                            });
+
+                            let logUserIn = await fetch('/log-in', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    email,
+                                    password: ''
+                                })
+                            });
+
+                            if ((await logUserIn.json()).code == 'user-cred-valid') {
+                                $mainSnackbarController.showSnackbar({
+                                    props: {
+                                        text: 'Logged in!',
+                                        class: 'bg-green-500'
+                                    },
+                                    component: undefined,
+                                    duration: 5000
+                                });
+                                location.replace('/');
+                            }
+                        }
+                    }
                 });
             } catch (e) {
                 // If the user closes the popup

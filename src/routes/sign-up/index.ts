@@ -32,7 +32,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
 
     try {
         // Hash password using 12 rounds of salt
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const hashedPassword = body?.noPass ? await bcrypt.hash('only-linked-with-google', 10) : await bcrypt.hash(password, 12);
 
         const User = mongoose.models.User || mongoose.model('Users', UserSchema);
         const uid = uuidv4();
@@ -41,7 +41,8 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
             uid,
             email: email,
             nickname,
-            password: hashedPassword
+            password: hashedPassword,
+            noPass: body?.noPass || false
         });
 
         await newUser.save((err: any) => {
