@@ -60,7 +60,8 @@ export async function post(req) {
         const payload = {
             email,
             nickname: userData.nickname,
-            uid: userData.uid
+            uid: userData.uid,
+            admin: userData?.admin || false
         };
 
         //Creates cookies on the website to keep a user logged in

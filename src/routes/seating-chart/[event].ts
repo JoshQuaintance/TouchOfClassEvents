@@ -92,12 +92,14 @@ export async function post(request) {
             };
 
         locals.seating_chart_data = eventLookup.seating_chart_data;
+        locals.createdBy = eventLookup.createdBy;
 
         return {
             status: 201,
             body: {
                 message: 'Event found, transferring data!',
-                seating_chart_data: eventLookup.seating_chart_data
+                seating_chart_data: eventLookup.seating_chart_data,
+                createdBy: eventLookup.createdBy
             }
         };
     }

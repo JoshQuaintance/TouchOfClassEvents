@@ -86,7 +86,7 @@
         <Spinner />
     {:else}
         <!-- Do not show the navbar when looking at the seating chart -->
-        {#if !key.startsWith('/seating-chart')}
+        {#if !key.startsWith('/seating-chart') || key.startsWith('/seating-chart/settings')}
             <Nav />
         {/if}
 

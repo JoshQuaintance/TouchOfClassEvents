@@ -80,13 +80,15 @@
                     Lookup Events
                 </Button>
 
-                <Button
-                    on:click={toggleNav}
-                    href="/events/new"
-                    noPrefetch
-                    class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
-                    Create an Event
-                </Button>
+                {#if userIsSignedIn}
+                    <Button
+                        on:click={toggleNav}
+                        href="/events/new"
+                        noPrefetch
+                        class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
+                        Create an Event
+                    </Button>
+                {/if}
 
                 <Button
                     on:click={toggleNav}
@@ -98,11 +100,12 @@
 
                 {#if userIsSignedIn}
                     <Button
-                        on:click={toggleNav}
-                        href="/dashboard"
-                        noPrefetch
+                        on:click={() => {
+                            toggleNav();
+                            location.replace('/sign-out');
+                        }}
                         class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100 focus:bg-transparent">
-                        Dashboard
+                        Sign Out
                     </Button>
                 {/if}
 

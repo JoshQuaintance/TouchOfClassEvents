@@ -58,6 +58,11 @@ export default class App {
         this._seating_chart_data = data || [];
     }
 
+    // Clears the entire application
+    static clearViewport() {
+        this._viewport.removeChildren();
+    }
+
     // Used to initialize the event medium when DOM is loaded
     // because this file cannot reference it directly
     static set setEventTarget(eventTarget: EventTarget) {

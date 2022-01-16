@@ -15,6 +15,7 @@
         return {
             props: {
                 event_id: params?.event,
+                authorized: session.locals.user.admin || (session?.locals.isSignedIn && session?.locals.user.uid == serialized.createdBy),
                 event_data: serialized.seating_chart_data,
                 mobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(session['user-agent'])
             }
@@ -34,13 +35,14 @@
     import { openModal, dialogUsed, hintText } from './utils/localStores';
     import LabelChangeDialog from './dialogs/LabelChangeDialog.svelte';
     import ConfirmDeletion from './dialogs/ConfirmDeletion.svelte';
-    import { isSignedIn } from '$utils/stores';
 
     export let mobile;
     export let event_data;
+    export let event_id: string;
+    export let authorized: boolean;
     let el: HTMLDivElement;
     let modeReceiver = 'view';
-    $: editMode = mobile ? false : $isSignedIn ? true : false;
+    $: editMode = mobile ? false : authorized ? true : false;
 
     const dialogs = {
         LabelChangeDialog,
@@ -51,6 +53,8 @@
         App.editMode = editMode;
         App.import_data(event_data);
         App.setEventTarget = new EventTarget();
+
+        // if (App.app != null) return;
 
         run(el);
 
@@ -129,7 +133,15 @@
         w-fit h-fit text-lg
         ">
         {#if editMode}
-            <OptionsButton icon="cog" tooltip="Settings" event="settings" />
+            <OptionsButton
+                icon="cog"
+                tooltip="Settings"
+                event="settings"
+                customEvent={() => {
+                    App.save_seating_chart();
+                    App.clearViewport();
+                    location.replace('/seating-chart/settings/' + event_id);
+                }} />
 
             <OptionsButton icon="content-save" tooltip="Save" event="save" />
 
@@ -145,6 +157,7 @@
             event="exit"
             customEvent={() => {
                 App.save_seating_chart();
+                App.clearViewport();
                 location.replace('/');
             }} />
         <style>
