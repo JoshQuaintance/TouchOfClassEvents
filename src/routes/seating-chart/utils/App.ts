@@ -50,6 +50,7 @@ export default class App {
     private static _previous_app_events: AppEvent[] = [];
     private static _undone_app_events: AppEvent[] = [];
     private static _seating_chart_data: SpawnedObjectData[] = [];
+    private static _editMode: Boolean;
     static parentEl: HTMLDivElement;
 
     // If there is data to be used for the seating chart
@@ -65,6 +66,7 @@ export default class App {
 
     static save_seating_chart() {
         let new_data: SpawnedObjectData[] = [];
+        console.log(SpawnedObject.allSpawnedObjects);
         SpawnedObject.allSpawnedObjects.forEach((spawnedObject) => {
             new_data.push(spawnedObject.spawnedObjectData);
         });
@@ -109,6 +111,10 @@ export default class App {
 
     static set app(application: Application) {
         this._app = application;
+    }
+
+    static set editMode(m: Boolean) {
+        this._editMode = m || false;
     }
 
     static set mode(m: AppMode) {
@@ -157,6 +163,10 @@ export default class App {
     /**
      * Getters
      */
+
+    static get editMode() {
+        return this._editMode;
+    }
 
     static get imported_data() {
         return this._seating_chart_data;

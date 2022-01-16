@@ -21,7 +21,8 @@ async function initSchemas() {
         nickname: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         connections: { type: Array<GoogleConnection>(), default: [] },
-        noPass: { type: Boolean }
+        noPass: { type: Boolean },
+        admin: { type: Boolean, required: false }
     });
 
     const EventSchema: mongoose.Schema<EventData> = new mongoose.Schema({
@@ -84,7 +85,6 @@ export function checkIfUserExist(email: string, nickname?: string): Promise<0 | 
         });
 
         const jsonRes = await res.json();
-        
 
         if (jsonRes.code == 'user-not-exist') return resolve(0);
         if (jsonRes.code == 'user-email-exist') return resolve(1);

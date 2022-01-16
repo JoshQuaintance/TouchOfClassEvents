@@ -16,7 +16,8 @@ export interface DatabaseUser {
     nickname: string;
     password: string;
     connections?: Array<GoogleConnection>;
-    noPass: boolean;
+    noPass?: boolean;
+    admin?: boolean;
 }
 
 export interface SpawnedObjectData {

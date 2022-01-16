@@ -1,8 +1,22 @@
 <script context="module">
-    export async function load({ params }) {
+    export async function load({ params, session, fetch }) {
+        const getMetadata = await fetch('/seating-chart/' + params?.event, {
+            method: 'POST'
+        });
+
+        const serialized = await getMetadata.json();
+
+        if (getMetadata.status == 404)
+            return {
+                status: 404,
+                error: serialized.message
+            };
+
         return {
             props: {
-                event_id: params?.event
+                event_id: params?.event,
+                event_data: serialized.seating_chart_data,
+                mobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(session['user-agent'])
             }
         };
     }
@@ -20,10 +34,13 @@
     import { openModal, dialogUsed, hintText } from './utils/localStores';
     import LabelChangeDialog from './dialogs/LabelChangeDialog.svelte';
     import ConfirmDeletion from './dialogs/ConfirmDeletion.svelte';
+    import { isSignedIn } from '$utils/stores';
 
-    export let event_id;
+    export let mobile;
+    export let event_data;
     let el: HTMLDivElement;
     let modeReceiver = 'view';
+    $: editMode = mobile ? false : $isSignedIn ? true : false;
 
     const dialogs = {
         LabelChangeDialog,
@@ -31,15 +48,8 @@
     };
 
     onMount(async () => {
-        const getMetadata = await fetch('/seating-chart/' + event_id, {
-            method: 'POST'
-        });
-
-        const serialized = await getMetadata.json();
-
-        let seating_chart_data = serialized.seating_chart_data;
-
-        App.import_data(seating_chart_data);
+        App.editMode = editMode;
+        App.import_data(event_data);
         App.setEventTarget = new EventTarget();
 
         run(el);
@@ -53,7 +63,6 @@
             viewport.resize(App.app.view.width, percent(88, App.app.view.height), 9600, 9600);
 
             viewport.fit(false, viewport.screenWidth, viewport.screenHeight);
-
         });
 
         window.addEventListener('keyup', (e) => {
@@ -98,17 +107,19 @@
 
     <div bind:this={el} />
 
-    <div
-        class="
+    {#if editMode}
+        <div
+            class="
         bottom-bar 
         bottom-0 fixed w-screen 
         flex flex-row justify-around items-center
         bg-red-500"
-        style="bottom: 0; height: {percent(12, window.innerHeight)}px">
-        <BuildingObject src="seat" name="seat" />
-        <BuildingObject src="table" name="table" />
-        <BuildingObject src="circular_table" name="circular_table" />
-    </div>
+            style="bottom: 0; height: {percent(12, window.innerHeight)}px">
+            <BuildingObject src="seat" name="seat" />
+            <BuildingObject src="table" name="table" />
+            <BuildingObject src="circular_table" name="circular_table" />
+        </div>
+    {/if}
     <div
         class="
         options
@@ -117,16 +128,25 @@
         cursor-pointer
         w-fit h-fit text-lg
         ">
-        <OptionsButton icon="cog" tooltip="Settings" event="settings" />
+        {#if editMode}
+            <OptionsButton icon="cog" tooltip="Settings" event="settings" />
 
-        <OptionsButton icon="content-save" tooltip="Save" event="save" />
+            <OptionsButton icon="content-save" tooltip="Save" event="save" />
 
-        <OptionsButton icon="delete-outline" tooltip="Delete" event="delete" />
+            <OptionsButton icon="delete-outline" tooltip="Delete" event="delete" />
 
-        <OptionsButton icon="form-textbox" tooltip="Add/Edit Label" event="add-label" />
+            <OptionsButton icon="form-textbox" tooltip="Add/Edit Label" event="add-label" />
 
-        <OptionsButton icon="arrow-top-left-bottom-right" tooltip="Resize Object" event="resize" />
-
+            <OptionsButton icon="arrow-top-left-bottom-right" tooltip="Resize Object" event="resize" />
+        {/if}
+        <OptionsButton
+            icon="power"
+            tooltip="Exit"
+            event="exit"
+            customEvent={() => {
+                App.save_seating_chart();
+                location.replace('/');
+            }} />
         <style>
             .options hr {
                 margin: 0.5rem 0;
