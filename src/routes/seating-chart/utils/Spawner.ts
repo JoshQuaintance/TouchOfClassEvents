@@ -209,8 +209,11 @@ export class SpawnedObject {
     }
 
     static removeSpawnedObject(obj: SpawnedObject) {
+        console.log(obj)
         let index = this._spawnedObjectsStore.indexOf(obj);
+        console.log(index)
         this._spawnedObjectsStore.splice(index, 1);
+        console.log(this._spawnedObjectsStore)
     }
 
     get spawnedObjectData(): SpawnedObjectData {

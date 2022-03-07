@@ -69,9 +69,11 @@ export default class App {
         this._event_medium = eventTarget;
     }
 
-    static save_seating_chart() {
+    static async save_seating_chart() {
         let new_data: SpawnedObjectData[] = [];
+        
         console.log(SpawnedObject.allSpawnedObjects);
+
         SpawnedObject.allSpawnedObjects.forEach((spawnedObject) => {
             new_data.push(spawnedObject.spawnedObjectData);
         });
@@ -79,7 +81,7 @@ export default class App {
         this._seating_chart_data = [...new_data];
         let event_id = window.location.pathname.replace('/seating-chart/', '');
 
-        fetch('/seating-chart/save', {
+        await fetch('/seating-chart/save', {
             method: 'POST',
             body: JSON.stringify({
                 data: this._seating_chart_data,

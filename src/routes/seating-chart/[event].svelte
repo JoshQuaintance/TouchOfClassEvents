@@ -15,7 +15,9 @@
         return {
             props: {
                 event_id: params?.event,
-                authorized: session.locals.user.admin || (session?.locals.isSignedIn && session?.locals.user.uid == serialized.createdBy),
+                authorized:
+                    session.locals.user.admin ||
+                    (session?.locals.isSignedIn && session?.locals.user.uid == serialized.createdBy),
                 event_data: serialized.seating_chart_data,
                 mobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(session['user-agent'])
             }
@@ -155,8 +157,8 @@
             icon="power"
             tooltip="Exit"
             event="exit"
-            customEvent={() => {
-                App.save_seating_chart();
+            customEvent={async () => {
+                await App.save_seating_chart();
                 App.clearViewport();
                 location.replace('/');
             }} />

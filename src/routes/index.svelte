@@ -212,7 +212,7 @@
                     src="/images/wedding-seating-chart.png"
                     loading="lazy"
                     alt="Seating chart example of a wedding event"
-                    class="w-full h-full object-cover object-center absolute inset-0 transform group-hover:scale-110 transition duration-200" />
+                    class="w-full h-full  object-center absolute inset-0 transform group-hover:scale-110 transition duration-200" />
 
                 <div
                     class="bg-gradient-to-t from-gray-800 via-transparent to-transparent opacity-50 absolute inset-0 pointer-events-none" />
@@ -225,9 +225,11 @@
             <!-- product - end -->
 
             <!-- product - start -->
-            <a href="#" class="group h-80 flex items-end bg-gray-100 rounded-lg overflow-hidden shadow-lg relative p-4">
+            <a
+                href="/seating-chart/9e1df058fd7e"
+                class="group h-80 flex items-end bg-gray-100 rounded-lg overflow-hidden shadow-lg relative p-4">
                 <img
-                    src="https://images.unsplash.com/photo-1620241608701-94ef138c7ec9?auto=format&q=75&fit=crop&w=750"
+                    src="/images/outdoor-seating-chart.png"
                     loading="lazy"
                     alt="Photo by Fakurian Design"
                     class="w-full h-full object-cover object-center absolute inset-0 transform group-hover:scale-110 transition duration-200" />

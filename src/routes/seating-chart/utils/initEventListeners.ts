@@ -21,8 +21,6 @@ export default function initEventListeners() {
         const mode = e.detail.mode;
 
         if (mode == 'options-save') {
-            // TODO: Save the seating chart
-
             App.mode = 'view';
 
             App.save_seating_chart();
@@ -91,6 +89,7 @@ export default function initEventListeners() {
                     parent: spawnedObject.sprite.parent
                 }
             });
+            SpawnedObject.removeSpawnedObject(spawnedObject);
             spawnedObject.sprite.parent.removeChild(spawnedObject.sprite);
 
             App.event_medium.removeEventListener('deletion-confirmed', handleDeletion);
