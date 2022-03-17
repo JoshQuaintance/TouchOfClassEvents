@@ -26,6 +26,7 @@ export async function post(req) {
                 }
             };
 
+        console.log(req)
         //Checks if the encrypted password matches what is in the database
         const validatePass = await bcrypt.compare(password, userData.password);
 
@@ -38,6 +39,7 @@ export async function post(req) {
         if (
             req.headers.referer.replace(req.url.origin, '') == '/log-in' &&
             password != 'only-linked-with-google' &&
+            password != 'GoogleAuth' &&
             onlyLinkedWithGoogle
         ) {
             return {

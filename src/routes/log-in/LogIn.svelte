@@ -3,8 +3,7 @@
     This file is the location where log-in information is located
  -->
 <script>
-    import { onMount } from 'svelte';
-    import { Divider, Snackbar, SnackbarContainer, TextField, Button } from 'attractions';
+    import { Divider, TextField } from 'attractions';
     import Icon from '$components/Icon.svelte';
     import PasswordInput from '$components/PasswordInput.svelte';
     import GoogleAuth from '$components/GoogleAuth.svelte';
@@ -12,10 +11,9 @@
 
     let userEmail;
     let userPass;
-    let snackbarController;
 
     //This function sends the log in request and processes if the request is valid
-    async function clickLogin(event) {
+    async function clickLogin() {
         const userData = {
             email: userEmail,
             password: userPass

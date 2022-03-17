@@ -4,7 +4,6 @@
 
 import type uuid_T from 'uuid';
 import { connectToDB } from '$utils/db';
-import { get as getStore } from 'svelte/store';
 
 export async function post(request) {
     // Dynamically imported
@@ -73,7 +72,39 @@ export async function post(request) {
             };
         }
     } else {
-        if (event == 'save') return {};
+        if (event == 'save') {
+            console.log('y')
+            const { mongoose, schemas } = await connectToDB();
+            const { EventSchema } = await schemas;
+
+            const body = JSON.parse(request.body as string);
+            const { data, event_id } = body;
+
+            const Event = mongoose.models.Events || mongoose.model('Events', EventSchema);
+
+            const eventLookupRegX = new RegExp('-' + event_id);
+            try {
+                const updateEventData = await Event.findOneAndUpdate(
+                    { event_id: { $regex: eventLookupRegX } },
+                    { seating_chart_data: data }
+                );
+            } catch (e: unknown) {
+                return {
+                    status: 500,
+                    body: {
+                        message: "Error occured while updating seating chart!",
+                        error: e
+                    }
+                }
+            }
+
+            return {
+                status: 200,
+                body: {
+                    message: "Update successful!"
+                }
+            }
+        };
         const { mongoose, schemas } = await connectToDB();
         const { EventSchema } = await schemas;
 

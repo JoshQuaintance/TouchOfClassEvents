@@ -4,7 +4,7 @@
  */
 import '$utils/pixi-ssr-shim';
 
-import { Graphics, InteractionEvent, Rectangle } from 'pixi.js';
+import { Graphics, InteractionEvent } from 'pixi.js';
 import App from './App';
 import { checkIfBeyondWorld } from './extras';
 import type { DraggingSprite } from './extras';
@@ -13,7 +13,6 @@ import { dialogUsed, hintText, openModal } from './localStores';
 import { percent } from '$utils/math';
 
 export default function initEventListeners() {
-    const app = App.app;
     const viewport = App.viewport;
     const shared = {};
 
@@ -44,7 +43,7 @@ export default function initEventListeners() {
             const buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
             const previousObject = Spawner.getSpawner(App.previous_object + '-spawner');
 
-            function highlighting(e: InteractionEvent) {
+            viewport.on('pointermove', (e: InteractionEvent) => {
                 const sprite: DraggingSprite = Spawner.getSpawner(App.build_object + '-spawner')
                     .sprite as DraggingSprite;
                 const viewport = App.viewport;
@@ -59,9 +58,7 @@ export default function initEventListeners() {
                     sprite.position.x = x;
                     sprite.position.y = y;
                 }
-            }
-
-            viewport.on('pointermove', highlighting);
+            });
             if (previousObject) viewport.removeChild(previousObject.sprite);
             viewport.addChild(buildingObject.sprite);
             viewport.drag({ pressDrag: false });
@@ -175,7 +172,9 @@ export default function initEventListeners() {
                     sprite.height += y - sprite.dragging.y;
                     sprite.dragging = { x, y };
                 } else {
+                    // eslint-disable no-self-assign
                     sprite.width = sprite.width;
+                    // eslint-disable no-self-assign
                     sprite.height = sprite.height;
                     sprite.dragging = { x, y };
                 }

@@ -34,10 +34,11 @@
     import { percent } from '$utils/math';
     import BuildingObject from './components/BuildingObject.svelte';
     import OptionsButton from './components/OptionsButton.svelte';
-    import { Dialog, Modal } from 'attractions';
+    import { Modal } from 'attractions';
     import { openModal, dialogUsed, hintText } from './utils/localStores';
     import LabelChangeDialog from './dialogs/LabelChangeDialog.svelte';
     import ConfirmDeletion from './dialogs/ConfirmDeletion.svelte';
+import type { CustomEventInitType } from '$utils/stores';
 
     export let mobile;
     export let event_data;
@@ -58,11 +59,6 @@
         App.editMode = editMode;
         App.import_data(event_data);
         App.setEventTarget = new EventTarget();
-
-        console.log('title', title);
-        console.log('yes', event_data);
-
-        // if (App.app != null) return;
 
         run(el);
 
@@ -85,7 +81,7 @@
 
         App.event_medium.addEventListener(
             'app-mode-changed',
-            (e: CustomEventInit) => (modeReceiver = e.detail.mode.replace('options-', '').replace('-', ' '))
+            (e: CustomEventInitType) => (modeReceiver = e.detail.mode.replace('options-', '').replace('-', ' '))
         );
     });
 

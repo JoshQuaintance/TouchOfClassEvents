@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Button, Dialog, Modal, TextField } from 'attractions';
-    import { beforeUpdate, onMount } from 'svelte';
+    import { Button, Dialog, TextField } from 'attractions';
+    import { beforeUpdate } from 'svelte';
     import App from '../utils/App';
     import { openModal } from '../utils/localStores';
 
@@ -20,8 +20,6 @@
 
         closeCallback();
     }
-
-    let modalOpen = $openModal;
 
     beforeUpdate(() => {
         setTimeout(() => {

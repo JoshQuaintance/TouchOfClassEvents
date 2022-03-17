@@ -53,11 +53,14 @@
                             method: 'POST',
                             body: JSON.stringify({
                                 email,
-                                password: ''
+                                password: 'GoogleAuth'
                             })
                         });
+                        console.log('here');
 
                         let res = await logUserIn.json();
+
+                        console.log(res);
 
                         if (res.code == 'user-cred-valid') {
                             location.replace('/');

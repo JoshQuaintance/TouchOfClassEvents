@@ -149,8 +149,8 @@
                 <div>
                     <h3 class="text-lg md:text-xl font-semibold mb-2">Speed</h3>
                     <p class="text-gray-500 mb-2">
-                        Our website is optimized for speed and efficiency allowing you to quickly and painlessly create a
-                        seating chart.
+                        Our website is optimized for speed and efficiency allowing you to quickly and painlessly create
+                        a seating chart.
                     </p>
                 </div>
             </div>

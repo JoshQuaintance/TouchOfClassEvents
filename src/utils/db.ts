@@ -72,7 +72,7 @@ export async function connectToDB(): Promise<{
  *      user exist form username code
  */
 export function checkIfUserExist(email: string, nickname?: string): Promise<0 | 1 | 2 | 3> {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
         // using http again, hitting the auth endpoint
         // specifically to check if user exist
         // endpoint src file located: src/routes/auth/user-exist.ts

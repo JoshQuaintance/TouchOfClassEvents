@@ -7,12 +7,6 @@
 import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 
-interface GoogleUser {
-    getId();
-    isSignedIn();
-    getBasicProfile();
-}
-
 interface UserProfile {
     email: string;
     nickname: string;
@@ -29,3 +23,4 @@ export const newSnackbar = function (item) {
 
 export const isSignedIn = writable(false);
 export const user: Writable<UserProfile | {}> = writable({});
+export interface CustomEventInitType extends CustomEventInit { }

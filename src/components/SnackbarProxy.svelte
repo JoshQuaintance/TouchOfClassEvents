@@ -2,21 +2,22 @@
     import { SnackbarContainer } from 'attractions';
     import { onMount } from 'svelte';
 
-    import { globalSnackbarQueue, snackbarQueueEventTarget } from '$utils/stores';
+    import { CustomEventInitType, globalSnackbarQueue, snackbarQueueEventTarget } from '$utils/stores';
 
-    // $: snackbarQueue = $globalSnackbarQueue;
 
     let containerProxy: SnackbarContainer;
 
     onMount(() => {
         snackbarQueueEventTarget.set(new EventTarget());
 
-        // eslint-disable no-undef
-        $snackbarQueueEventTarget.addEventListener('new-snackbar', (e: CustomEventInit) => {
-            let data = e.detail.data;
+        $snackbarQueueEventTarget.addEventListener(
+            'new-snackbar',
+            (e: CustomEventInitType) => {
+                let data = e.detail.data;
 
-            containerProxy.showSnackbar(data);
-        });
+                containerProxy.showSnackbar(data);
+            }
+        );
     });
 
     $: if ($globalSnackbarQueue.length > 0)

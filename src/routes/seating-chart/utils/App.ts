@@ -79,13 +79,15 @@ export default class App {
         this._seating_chart_data = [...new_data];
         const event_id = window.location.pathname.replace('/seating-chart/', '');
 
-        await fetch('/seating-chart/save', {
+        let res = await fetch('/seating-chart/save', {
             method: 'POST',
             body: JSON.stringify({
                 data: this._seating_chart_data,
                 event_id
             })
         });
+
+        console.log(await res.json())
     }
 
     // If the user decides to undo an event (building a new object or deleting one)
