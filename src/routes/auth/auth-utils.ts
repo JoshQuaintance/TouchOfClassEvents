@@ -66,6 +66,7 @@ export async function encryptData(data: WithImplicitCoercion<ArrayBuffer | Share
         {
             key: Buffer.from(PUBLIC_RSA_KEY, 'base64').toString(),
             padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+            // eslint-disable
             // @ts-ignore
             oeapHash: 'sha256'
         },

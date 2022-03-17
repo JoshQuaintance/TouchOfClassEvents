@@ -6,10 +6,10 @@ This web application was made in participation of a [Business Professionals of A
 
 ## Members
 
-- Quinton Skelly
-- David Crosslin
-- Ethan Napier
-- Joshua Pelealu
+-   Quinton Skelly
+-   David Crosslin
+-   Ethan Napier
+-   Joshua Pelealu
 
 <br>
 
@@ -23,15 +23,15 @@ The web application in this repository is already set to be able to run locally 
 
 If you do not have any of these software needed to run this project, we recommend you to do so.
 
-| Software | Version | Link | Additional Notes |
-| - | - | - | - |
-| Visual Studio Code | `Latest` | https://code.visualstudio.com | Necessary to edit project and extensions used on the project to improve workflow
-| Node.js | `16.x LTS` | https://nodejs.org/ | We used the LTS (Long Term Support) version for Node. Node runs javascript as server side code
-| NPM | `8.x` | https://npmjs.org | We used the pre-installed version that comes with installing nodejs
-| Git | `Latest` | https://git-scm.com | Source Control Manager to keep track changes and progress in the code
-
+| Software           | Version    | Link                          | Additional Notes                                                                               |
+| ------------------ | ---------- | ----------------------------- | ---------------------------------------------------------------------------------------------- |
+| Visual Studio Code | `Latest`   | https://code.visualstudio.com | Necessary to edit project and extensions used on the project to improve workflow               |
+| Node.js            | `16.x LTS` | https://nodejs.org/           | We used the LTS (Long Term Support) version for Node. Node runs javascript as server side code |
+| NPM                | `8.x`      | https://npmjs.org             | We used the pre-installed version that comes with installing nodejs                            |
+| Git                | `Latest`   | https://git-scm.com           | Source Control Manager to keep track changes and progress in the code                          |
 
 ## Cloning the repo
+
 Make sure you have all the software needed! If you do, then clone this repository by:  
 **_Make sure you are in a directory you want to put this project in_**
 
@@ -45,6 +45,7 @@ cd TouchOfClassEvents
 ## Developing
 
 Once you've clone the repo, now you need to install the necessary dependencies to run this project by running:
+
 ```bash
 npm i
 # or
@@ -65,9 +66,10 @@ npm run dev -- --host --open
 
 This will now run the project locally at `localhost:3000` and any changes you made in the code will reflect to what you see in `localhost:3000`. You can start editing the code inside `src/`
 
-
 ## Building
+
 If you want to see a build version of the project you can run
+
 ```bash
 npm run build
 ```

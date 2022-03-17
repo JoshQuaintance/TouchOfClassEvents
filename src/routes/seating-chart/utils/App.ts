@@ -50,7 +50,7 @@ export default class App {
     private static _previous_app_events: AppEvent[] = [];
     private static _undone_app_events: AppEvent[] = [];
     private static _seating_chart_data: SpawnedObjectData[] = [];
-    private static _editMode: Boolean;
+    private static _editMode: boolean;
     static parentEl: HTMLDivElement;
 
     // If there is data to be used for the seating chart
@@ -70,16 +70,14 @@ export default class App {
     }
 
     static async save_seating_chart() {
-        let new_data: SpawnedObjectData[] = [];
-        
-        console.log(SpawnedObject.allSpawnedObjects);
+        const new_data: SpawnedObjectData[] = [];
 
         SpawnedObject.allSpawnedObjects.forEach((spawnedObject) => {
             new_data.push(spawnedObject.spawnedObjectData);
         });
 
         this._seating_chart_data = [...new_data];
-        let event_id = window.location.pathname.replace('/seating-chart/', '');
+        const event_id = window.location.pathname.replace('/seating-chart/', '');
 
         await fetch('/seating-chart/save', {
             method: 'POST',
@@ -94,7 +92,7 @@ export default class App {
     static undo_prev_event() {
         if (this._previous_app_events.length == 0) return;
 
-        let prevEvent = this._previous_app_events.shift();
+        const prevEvent = this._previous_app_events.shift();
 
         if (prevEvent.event == 'spawn-object') {
             const { sprite, parent } = prevEvent.additional as SpawnObjectEvent;
@@ -120,7 +118,7 @@ export default class App {
         this._app = application;
     }
 
-    static set editMode(m: Boolean) {
+    static set editMode(m: boolean) {
         this._editMode = m || false;
     }
 
@@ -129,7 +127,7 @@ export default class App {
 
         this._mode = m;
 
-        let newEvent = new CustomEvent('app-mode-changed', {
+        const newEvent = new CustomEvent('app-mode-changed', {
             detail: {
                 mode: this._mode
             }
@@ -152,7 +150,7 @@ export default class App {
     }
 
     static new_app_event(event: AppEvent) {
-        let newEvent = new CustomEvent(event.event, {
+        const newEvent = new CustomEvent(event.event, {
             detail: {
                 additional: event.additional
             }

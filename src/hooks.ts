@@ -1,6 +1,4 @@
 import * as cookie from 'cookie';
-import { get } from 'svelte/store';
-import type { JwtPayload } from 'jsonwebtoken';
 import { verifyJWT } from '$auth-utils';
 import { isSignedIn, user } from '$utils/stores';
 
@@ -10,7 +8,7 @@ export async function handle({ request, resolve }) {
 
     const loggingOut = (request?.url.pathname || request?.path) == '/sign-out';
 
-    let additionalHeaders = {};
+    const additionalHeaders = {};
 
     if (loggingOut && cookies.jwt) {
         cookies.jwt = null;
@@ -22,12 +20,6 @@ export async function handle({ request, resolve }) {
         });
     }
 
-    interface UserData {
-        nickname: string;
-        email: string;
-        iat: number;
-    }
-
     request.locals.seating_chart_data = null;
     request.locals.snackbarQueue = [];
     request.locals.user = {};
@@ -35,7 +27,7 @@ export async function handle({ request, resolve }) {
     if (!cookies.jwt) {
         request.locals.isSignedIn = false;
 
-        let response = await resolve(request);
+        const response = await resolve(request);
 
         return {
             ...response,

@@ -8,7 +8,7 @@ import type { DefaultBody } from '@sveltejs/kit/types/endpoint';
 import { connectToDB } from '$utils/db';
 import { linkWithGoogle } from './_linkWithGoogle';
 
-export async function post(req: ServerRequest<Record<string, any>, DefaultBody>) {
+export async function post(req: ServerRequest<Record<string, unknown>, DefaultBody>) {
     const { mongoose, schemas } = await connectToDB();
     const { UserSchema } = await schemas;
     const { connection, code } = JSON.parse(req.body as string);
@@ -17,7 +17,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
 
     try {
         if (connection == 'google') {
-            let response = await linkWithGoogle(User, code);
+            const response = await linkWithGoogle(User, code);
 
             return {
                 status: response.status,

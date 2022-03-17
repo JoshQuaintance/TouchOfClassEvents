@@ -94,7 +94,7 @@
                 <div>
                     <h3 class="text-lg md:text-xl font-semibold mb-2">Changelog</h3>
                     <p class="text-gray-500 mb-2">
-                        We update the changes made to our site on our changelog that is visable to all of our users.
+                        We update the changes made to our site on our changelog that is visible to all of our users.
                     </p>
                 </div>
             </div>
@@ -149,7 +149,7 @@
                 <div>
                     <h3 class="text-lg md:text-xl font-semibold mb-2">Speed</h3>
                     <p class="text-gray-500 mb-2">
-                        Our website is optimised for speed and effiencey allowing you to quickly and painlessly create a
+                        Our website is optimized for speed and efficiency allowing you to quickly and painlessly create a
                         seating chart.
                     </p>
                 </div>
@@ -177,7 +177,7 @@
                 <div>
                     <h3 class="text-lg md:text-xl font-semibold mb-2">Support</h3>
                     <p class="text-gray-500 mb-2">
-                        We have several ways in whicth you may contact us and 24/7 customer support to help you at all
+                        We have several ways in which you may contact us and 24/7 customer support to help you at all
                         times of the day. We always respond quickly.
                     </p>
                 </div>
@@ -231,7 +231,7 @@
                 <img
                     src="/images/outdoor-seating-chart.png"
                     loading="lazy"
-                    alt="Photo by Fakurian Design"
+                    alt="Seating chart example of an outdoor event"
                     class="w-full h-full object-cover object-center absolute inset-0 transform group-hover:scale-110 transition duration-200" />
 
                 <div
@@ -377,6 +377,7 @@
                 <div class="col-span-full lg:col-span-2">
                     <!-- logo - start -->
                     <div class="lg:-mt-2 mb-4">
+                        <!-- svelte-ignore a11y-missing-content -->
                         <a
                             href="/"
                             class="inline-flex items-center text-black-800 text-xl md:text-2xl font-bold gap-2"

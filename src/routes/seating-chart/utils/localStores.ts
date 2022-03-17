@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
 
-export let openModal = writable(false);
-export let dialogUsed = writable('TestDialog');
-export let hintText = writable('');
+export const openModal = writable(false);
+export const dialogUsed = writable('TestDialog');
+export const hintText = writable('');

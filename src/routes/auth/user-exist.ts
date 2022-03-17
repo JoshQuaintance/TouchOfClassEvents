@@ -22,7 +22,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
             Responses that are not errors are going to have codes to represent the responses
         */
         // First, check if user exist using the email given
-        let userDataWithEmail: DatabaseUser | null = await User.findOne({ email });
+        const userDataWithEmail: DatabaseUser | null = await User.findOne({ email });
 
         if (userDataWithEmail) {
             if (userDataWithEmail.connections.map((conn: GoogleConnection) => conn.connection == 'google').length > 0)
@@ -52,7 +52,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
             };
 
         // Then use the username given to check existence
-        let userDataWithNickname = await User.findOne({ nickname });
+        const userDataWithNickname = await User.findOne({ nickname });
 
         if (userDataWithNickname)
             return {

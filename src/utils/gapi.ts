@@ -6,8 +6,8 @@
 /**
  * Takes in a callback to run after GAPI is initialized
  * Since the callback will change every time this function is run
- * gapi will only run whatever callback was given last. 
- * 
+ * gapi will only run whatever callback was given last.
+ *
  * ? NOTE:
  * ? This approach can be dangerous, but because our script source is
  * ? a predetermined link, we know exactly what's going to be served,
@@ -25,7 +25,7 @@ export const initGAPI = (callback: (GoogleAuthClient: any) => void | any) => {
 
         gapi.load('auth2', async () => {
             // Check if we have an auth instance yet, otherwise create one
-            let GoogleAuthClient =
+            const GoogleAuthClient =
                 gapi.auth2.getAuthInstance() ||
                 gapi.auth2.init({
                     client_id: '481928203178-8gbnbea8kad8e3rjm0l06ejafno82kl8.apps.googleusercontent.com'

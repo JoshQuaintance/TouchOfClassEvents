@@ -34,7 +34,7 @@ export default class Spawner {
 
     private clicked(e: { data: { getLocalPosition: (arg0: Viewport) => { x: any; y: any } } }) {
         App.app.renderer.plugins.interaction.setCursorMode('pointer');
-        let { x, y } = e.data.getLocalPosition(App.viewport);
+        const { x, y } = e.data.getLocalPosition(App.viewport);
 
         if (!checkIfBeyondWorld(null, x, y)) this.spawnObject(x, y);
     }
@@ -134,7 +134,6 @@ export class SpawnedObject {
 
             this._sprite.anchor.set(0.5);
 
-            console.log(App.editMode);
             if (App.editMode) this.addPointerEvents();
 
             App.viewport.addChild(this._sprite);
@@ -142,14 +141,14 @@ export class SpawnedObject {
     }
 
     addPointerEvents() {
-        let _this = this;
+        const _this = this;
 
         function onDragMove(e: InteractionEvent) {
             const sprite: DraggingSprite = e.currentTarget as DraggingSprite;
             const viewport = App.viewport;
 
             if (sprite.dragging) {
-                let { x, y } = e.data.getLocalPosition(viewport);
+                const { x, y } = e.data.getLocalPosition(viewport);
 
                 if (!checkIfBeyondWorld(sprite, x, y)) {
                     sprite.position.x += x - sprite.dragging.x;
@@ -176,7 +175,7 @@ export class SpawnedObject {
 
             sprite.data = e.data;
             sprite.alpha = 0.5;
-            let { x, y } = e.data.getLocalPosition(viewport);
+            const { x, y } = e.data.getLocalPosition(viewport);
             sprite.dragging = { x, y };
             _this.sprite.cursor = 'grabbing';
             viewport.drag({ pressDrag: false });
@@ -209,11 +208,11 @@ export class SpawnedObject {
     }
 
     static removeSpawnedObject(obj: SpawnedObject) {
-        console.log(obj)
-        let index = this._spawnedObjectsStore.indexOf(obj);
-        console.log(index)
+        console.log(obj);
+        const index = this._spawnedObjectsStore.indexOf(obj);
+        console.log(index);
         this._spawnedObjectsStore.splice(index, 1);
-        console.log(this._spawnedObjectsStore)
+        console.log(this._spawnedObjectsStore);
     }
 
     get spawnedObjectData(): SpawnedObjectData {
@@ -262,7 +261,7 @@ export class SpawnedObject {
         const defaultStyle = new TextStyle({
             align: 'center',
             wordWrap: true,
-            wordWrapWidth: this._sprite.width + 400,
+            wordWrapWidth: this._sprite.width - 100,
             fontSize: '150px'
         });
 

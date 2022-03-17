@@ -11,7 +11,9 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
 
     const Event = mongoose.models.Events || mongoose.model('Events', EventSchema);
 
-    let eventLookupRegX = new RegExp('-' + event_id);
-    let updateEventData = await Event.findOneAndUpdate({ event_id: { $regex: eventLookupRegX } }, { seating_chart_data: data });
-
+    const eventLookupRegX = new RegExp('-' + event_id);
+    const updateEventData = await Event.findOneAndUpdate(
+        { event_id: { $regex: eventLookupRegX } },
+        { seating_chart_data: data }
+    );
 }

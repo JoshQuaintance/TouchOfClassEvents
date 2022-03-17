@@ -19,38 +19,21 @@
 <script lang="ts">
     import 'material-icons/iconfont/outlined.css';
     import PageTransitions from '$components/PageTransitions.svelte';
-    import {
-        headerHeight,
-        isSignedIn,
-        mainSnackbarController,
-        pageLoaded,
-        snackbarQueueEventTarget,
-        user
-    } from '$utils/stores';
+    import { globalSnackbarQueue, headerHeight, isSignedIn, newSnackbar, pageLoaded } from '$utils/stores';
 
-    import Nav from '../components/Nav.svelte';
-    import { beforeUpdate, onMount } from 'svelte';
+    import Nav from '$components/Nav.svelte';
     import Spinner from '$components/Spinner.svelte';
+    import SnackbarProxy from '$components/SnackbarProxy.svelte';
+    import { beforeUpdate, onMount } from 'svelte';
     import { initGAPI } from '$utils/gapi';
-    import { SnackbarContainer } from 'attractions';
-    import GoogleAuth from '$components/GoogleAuth.svelte';
 
     export let key;
-    export let snackbarQueue: [];
-    let snackbarController;
+    export let snackbarQueue: [] = [];
+    globalSnackbarQueue.set(snackbarQueue);
 
     beforeUpdate(() => pageLoaded.set(true));
     onMount(async () => {
-        mainSnackbarController.set(snackbarController);
-        snackbarQueueEventTarget.set(new EventTarget());
         pageLoaded.set(true);
-
-        $snackbarQueueEventTarget.addEventListener('new-snackbar', () => {
-            [...snackbarQueue].forEach((item: any) => {
-                snackbarController.showSnackbar(item);
-                snackbarQueue.pop();
-            });
-        });
 
         initGAPI(getUser);
 
@@ -67,20 +50,24 @@
                 });
 
                 if (tryLogUserIn.status == 403) GoogleAuthClient.signOut();
-                else location.reload();
+                else {
+                    newSnackbar({
+                        props: {
+                            text: `Google Account Signed in found in user database!\n Hello ${user.getName()}`,
+                            class: 'bg-blue-500'
+                        },
+                        component: undefined,
+                        duration: 5000
+                    });
+
+                    location.reload();
+                }
             }
         }
     });
-
-    $: if (snackbarQueue?.length > 0) $snackbarQueueEventTarget.dispatchEvent(new CustomEvent('new-snackbar', {}));
 </script>
 
-<SnackbarContainer bind:this={snackbarController}>
-    <style>
-        .snackbar-stack {
-            @apply left-5 bottom-5 !important;
-        }
-    </style>
+<SnackbarProxy>
     <!-- Load the spinner if the page is not fully mounted yet -->
     {#if !$pageLoaded}
         <Spinner />
@@ -95,7 +82,7 @@
             <slot />
         </PageTransitions>
     {/if}
-</SnackbarContainer>
+</SnackbarProxy>
 
 <style global lang="postcss">
     @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');

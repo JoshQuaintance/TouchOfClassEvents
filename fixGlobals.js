@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * This file is used to fix some modules that doesn't like SSR much
  * and we need to give it the references it needed. I have
@@ -11,14 +12,10 @@ fs.readFile('./node_modules/@pixi/settings/dist/cjs/settings.js', (err, data) =>
 
     if (data.toString().split('\n')[0] == 'let self = globalThis;')
         return console.log('@pixi/settings already rewritten');
-    fs.writeFile(
-        './node_modules/@pixi/settings/dist/cjs/settings.js',
-        'let self = globalThis;\n' + data,
-        (err, file) => {
-            if (err) throw err;
-            console.log('Rewrite of @pixi/settings successful!');
-        }
-    );
+    fs.writeFile('./node_modules/@pixi/settings/dist/cjs/settings.js', 'let self = globalThis;\n' + data, (err) => {
+        if (err) throw err;
+        console.log('Rewrite of @pixi/settings successful!');
+    });
 });
 
 fs.readFile('./node_modules/@pixi/polyfill/dist/cjs/polyfill.js', (err, data) => {
@@ -27,14 +24,10 @@ fs.readFile('./node_modules/@pixi/polyfill/dist/cjs/polyfill.js', (err, data) =>
     if (data.toString().split('\n')[0] == 'let self = globalThis;')
         return console.log('@pixi/polyfill already rewritten');
 
-    fs.writeFile(
-        './node_modules/@pixi/polyfill/dist/cjs/polyfill.js',
-        'let self = globalThis;\n' + data,
-        (err, file) => {
-            if (err) throw err;
-            console.log('Rewrite of @pixi/polyfill successfully!');
-        }
-    );
+    fs.writeFile('./node_modules/@pixi/polyfill/dist/cjs/polyfill.js', 'let self = globalThis;\n' + data, (err) => {
+        if (err) throw err;
+        console.log('Rewrite of @pixi/polyfill successfully!');
+    });
 });
 
 fs.readFile('./node_modules/pixi-viewport/dist/cjs/viewport.js', (err, data) => {
@@ -43,12 +36,8 @@ fs.readFile('./node_modules/pixi-viewport/dist/cjs/viewport.js', (err, data) => 
     if (data.toString().split('\n')[0] == 'let window = globalThis;')
         return console.log('viewport.js already rewritten');
 
-    fs.writeFile(
-        './node_modules/pixi-viewport/dist/cjs/viewport.js',
-        'let window = globalThis;\n' + data,
-        (err, file) => {
-            if (err) throw err;
-            console.log('Rewrite viewport.js successfully!');
-        }
-    );
+    fs.writeFile('./node_modules/pixi-viewport/dist/cjs/viewport.js', 'let window = globalThis;\n' + data, (err) => {
+        if (err) throw err;
+        console.log('Rewrite viewport.js successfully!');
+    });
 });

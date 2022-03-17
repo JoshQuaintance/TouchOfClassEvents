@@ -25,8 +25,8 @@ export function checkIfBeyondWorld(sprite: DraggingSprite, x: number, y: any) {
         return false;
     }
 
-    let spriteMoveX = sprite.position.x + (x - sprite.dragging.x);
-    let spriteMoveY = sprite.position.y + (y - sprite.dragging.y);
+    const spriteMoveX = sprite.position.x + (x - sprite.dragging.x);
+    const spriteMoveY = sprite.position.y + (y - sprite.dragging.y);
 
     // Check if beyond in the x-axis
     if (

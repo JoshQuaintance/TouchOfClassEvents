@@ -27,7 +27,7 @@ export async function post(req) {
             };
 
         //Checks if the encrypted password matches what is in the database
-        let validatePass = await bcrypt.compare(password, userData.password);
+        const validatePass = await bcrypt.compare(password, userData.password);
 
         const onlyLinkedWithGoogle =
             userData.connections.length > 0 &&

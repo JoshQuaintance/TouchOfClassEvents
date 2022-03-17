@@ -4,7 +4,7 @@
  -->
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { mainSnackbarController, pageLoaded, user } from '$utils/stores';
+    import { newSnackbar, pageLoaded, user } from '$utils/stores';
     import { initGAPI } from '$utils/gapi';
     import { checkIfUserExist } from '$utils/db';
 
@@ -35,13 +35,12 @@
                     const profile = userObject.getBasicProfile();
 
                     const email = profile.getEmail();
-                    const name = profile.getName();
 
                     const userExist = await checkIfUserExist(email);
                     pageLoaded.set(false);
 
                     if (userExist == 3) {
-                        $mainSnackbarController.showSnackbar({
+                        newSnackbar({
                             props: {
                                 text: 'User found in our database with connection! Logging you in...',
                                 class: 'bg-green-500'
@@ -67,7 +66,7 @@
 
                     // If user exist by email
                     if (userExist == 1) {
-                        $mainSnackbarController.showSnackbar({
+                        newSnackbar({
                             props: {
                                 text: 'User exists in our database, linking account!',
                                 class: 'bg-blue-500'
@@ -87,7 +86,7 @@
                         let res = await linkAccounts.json();
 
                         if (res.code == 'social-link-success') {
-                            $mainSnackbarController.showSnackbar({
+                            newSnackbar({
                                 props: {
                                     text: 'Account Linked! Logging you in....',
                                     class: 'bg-green-500'
@@ -102,7 +101,7 @@
 
                     // If user doesn't exist
                     if (userExist == 0) {
-                        $mainSnackbarController.showSnackbar({
+                        newSnackbar({
                             props: {
                                 text: "Google account isn't linked to any accounts in our database!\nCreating a new account based on Google account",
                                 class: 'bg-blue-500'
@@ -122,7 +121,7 @@
                         let res = await createNewUserAndLink.json();
 
                         if (res.code == 'social-link-success') {
-                            $mainSnackbarController.showSnackbar({
+                            newSnackbar({
                                 props: {
                                     text: 'Account Linked! Logging you in....',
                                     class: 'bg-green-500'

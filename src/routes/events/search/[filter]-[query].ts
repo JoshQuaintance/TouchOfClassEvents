@@ -6,8 +6,8 @@ export async function get({ params }) {
     const Event = mongoose.models.Events || mongoose.model('Events', EventSchema);
     const { filter, query } = params;
 
-    let queryRegX = new RegExp(query, 'ig');
-    let getEvents = await Event.find({ [filter]: { $regex: queryRegX } });
+    const queryRegX = new RegExp(query, 'ig');
+    const getEvents = await Event.find({ [filter]: { $regex: queryRegX } });
 
     const retrievedData = getEvents.map((event) => {
         const { event_id, title, host, date, details } = event;

@@ -14,12 +14,11 @@
     </div>
 
     <h5 class="text-indigo-800 md:text-lg xl:text-xl font-semibold mb-4 md:mb-6">Please Wait</h5>
-    
+
     <Button
         href="/"
         noPrefetch
-        class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent"
-    >
+        class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-xl font-semibold transition duration-100 focus:bg-transparent">
         Back to Home
     </Button>
 </div>

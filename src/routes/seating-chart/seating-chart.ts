@@ -124,7 +124,7 @@ export async function run(el: HTMLDivElement): Promise<void> {
     initEventListeners();
 
     if (App.imported_data.length > 0) {
-        for (let item of App.imported_data) {
+        for (const item of App.imported_data) {
             new SpawnedObject(item);
         }
     }

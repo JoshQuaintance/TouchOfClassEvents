@@ -19,6 +19,7 @@
                     session.locals.user.admin ||
                     (session?.locals.isSignedIn && session?.locals.user.uid == serialized.createdBy),
                 event_data: serialized.seating_chart_data,
+                title: serialized.event_title,
                 mobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(session['user-agent'])
             }
         };
@@ -42,6 +43,8 @@
     export let event_data;
     export let event_id: string;
     export let authorized: boolean;
+    export let title: string;
+
     let el: HTMLDivElement;
     let modeReceiver = 'view';
     $: editMode = mobile ? false : authorized ? true : false;
@@ -55,6 +58,9 @@
         App.editMode = editMode;
         App.import_data(event_data);
         App.setEventTarget = new EventTarget();
+
+        console.log('title', title);
+        console.log('yes', event_data);
 
         // if (App.app != null) return;
 
@@ -86,6 +92,10 @@
     $: currentMode = modeReceiver;
     $: hintTextDynamic = $hintText;
 </script>
+
+<svelte:head>
+    <title>{title} - Touch of Class Events</title>
+</svelte:head>
 
 <span class="fixed right-2" style="right: .5rem; z-index: 100;">
     {currentMode}

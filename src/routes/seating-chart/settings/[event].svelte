@@ -12,12 +12,11 @@
 
         if (
             session?.locals.isSignedIn == false ||
-            !session.locals.user.admin ||
-            session?.locals.user.uid == serialized.createdBy
+            (!session.locals.user.admin && session?.locals.user.uid != serialized.event_metadata.createdBy)
         )
             return {
                 status: 403,
-                error: 'Only admin and owner of this event can view or update the settings'
+                error: "You really tried to get into settings didn't you. I don't know if you are signed in or not, but you ain't no admin or you didn't create the event buddy. So piss off..."
             };
         return {
             props: {
@@ -29,7 +28,7 @@
 </script>
 
 <script lang="ts">
-    import { mainSnackbarController } from '$utils/stores';
+    import { newSnackbar } from '$utils/stores';
     import DatePicker from '@beyonk/svelte-datepicker/src/components/DatePicker.svelte';
     import { TextField } from 'attractions';
     import dayjs from 'dayjs';
@@ -55,7 +54,7 @@
         let res = await updateData.json();
 
         if (res.code == 'event-modified') {
-            $mainSnackbarController.showSnackbar({
+            newSnackbar({
                 props: {
                     text: 'Event changes saved!',
                     class: 'bg-green-500'
@@ -98,16 +97,12 @@
 
             <div class="sm:col-span-2">
                 <span class="inline-block text-gray-800 text-sm sm:text-base mb-2 font-bold">Title</span>
-                <TextField
-                    name="title"
-                    bind:value={title} />
+                <TextField name="title" bind:value={title} />
             </div>
 
             <div class="sm:col-span-2">
                 <span class="inline-block text-gray-800 text-sm sm:text-base mb-2 font-bold">Host</span>
-                <TextField
-                    name="host"
-                    bind:value={host} />
+                <TextField name="host" bind:value={host} />
             </div>
 
             <div class="sm:col-span-2">
@@ -128,10 +123,7 @@
 
             <div class="sm:col-span-2">
                 <span class="inline-block text-gray-800 text-sm sm:text-base mb-2 font-bold">Details</span>
-                <TextField
-                    multiline
-                    name="message"
-                    bind:value={details} />
+                <TextField multiline name="message" bind:value={details} />
             </div>
 
             <div class="sm:col-span-2 flex justify-between items-center">
@@ -156,7 +148,7 @@
                         // Copy the text inside the text field
                         navigator.clipboard.writeText(chartLink.value);
 
-                        $mainSnackbarController.showSnackbar({
+                        newSnackbar({
                             props: {
                                 text: 'Copied link to clipboard!',
                                 class: 'bg-green-500'

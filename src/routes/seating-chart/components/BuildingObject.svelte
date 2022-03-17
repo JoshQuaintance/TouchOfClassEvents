@@ -2,7 +2,6 @@
     File Location: src/routes/seating-chart/utils/BuildingObject.svelte
     Description: A component to be able to toggle building objects
  -->
-
 <script lang="ts">
     import { percent } from '$utils/math';
     import App from '../utils/App';
@@ -23,6 +22,5 @@
         alt={name}
         style="height:{percent(65, percent(12, window.innerHeight))}px;"
         class="cursor-pointer peer"
-        on:click={changeBuildingObject}
-    />
+        on:click={changeBuildingObject} />
 </div>

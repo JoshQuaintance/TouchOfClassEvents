@@ -11,9 +11,9 @@ export async function post(request) {
     const uuid: typeof uuid_T = await import('uuid');
 
     // Get the parameters and the locals from the request
-    let { params, locals } = request;
+    const { params, locals } = request;
 
-    let { event } = params;
+    const { event } = params;
     // If the event param (which is seating-chart/new)
     if (event == 'new') {
         // If user isn't signed in, forbid from creating one
@@ -32,7 +32,7 @@ export async function post(request) {
 
         const body = JSON.parse(content as string);
         const Event = mongoose.models.Events || mongoose.model('Events', EventSchema);
-        let { date, title, host, details } = body;
+        const { date, title, host, details } = body;
 
         try {
             const event_id = uuidv4();
@@ -79,9 +79,9 @@ export async function post(request) {
 
         const Event = mongoose.models.Events || mongoose.model('Events', EventSchema);
 
-        let eventRegX = new RegExp('-' + event);
+        const eventRegX = new RegExp('-' + event);
 
-        let eventLookup = await Event.findOne({ event_id: { $regex: eventRegX } });
+        const eventLookup = await Event.findOne({ event_id: { $regex: eventRegX } });
 
         if (!eventLookup)
             return {
@@ -92,6 +92,7 @@ export async function post(request) {
             };
 
         locals.seating_chart_data = eventLookup.seating_chart_data;
+        locals.event_title = eventLookup.title;
         locals.createdBy = eventLookup.createdBy;
 
         return {
@@ -99,6 +100,7 @@ export async function post(request) {
             body: {
                 message: 'Event found, transferring data!',
                 seating_chart_data: eventLookup.seating_chart_data,
+                event_title: eventLookup.title,
                 createdBy: eventLookup.createdBy
             }
         };

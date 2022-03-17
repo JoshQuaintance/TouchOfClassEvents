@@ -37,8 +37,7 @@
         inputClass="label-change"
         on:keydown={(e) => {
             if (e.detail.nativeEvent.code == 'Enter') changeLabel();
-        }}
-    />
+        }} />
 
     <Button class="mt-2" on:click={changeLabel}>Confirm</Button>
 </Dialog>

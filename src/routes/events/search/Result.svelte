@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { mainSnackbarController } from '$utils/stores';
+    import { newSnackbar } from '$utils/stores';
 
     import { Button, Divider } from 'attractions';
     import dayjs from 'dayjs';
@@ -11,7 +11,7 @@
     export let event_id: string;
 
     function goToEvent() {
-        $mainSnackbarController.showSnackbar({
+        newSnackbar({
             props: {
                 text: 'Redirecting!',
                 class: 'bg-green-500'
@@ -19,7 +19,6 @@
             component: undefined,
             duration: 5000
         });
-
 
         location.replace('/seating-chart/' + event_id?.split('-')[event_id?.split('-').length - 1]);
     }

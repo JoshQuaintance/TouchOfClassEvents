@@ -29,7 +29,7 @@ export default function initEventListeners() {
         if (mode == 'view') {
             hintText.set('');
             viewport.drag({});
-            let buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
+            const buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
 
             if (shared['resizing']) {
                 const { spawnedObject, resizer } = shared['resizing'];
@@ -41,14 +41,14 @@ export default function initEventListeners() {
         }
 
         if (mode == 'build') {
-            let buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
-            let previousObject = Spawner.getSpawner(App.previous_object + '-spawner');
+            const buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
+            const previousObject = Spawner.getSpawner(App.previous_object + '-spawner');
 
             function highlighting(e: InteractionEvent) {
                 const sprite: DraggingSprite = Spawner.getSpawner(App.build_object + '-spawner')
                     .sprite as DraggingSprite;
                 const viewport = App.viewport;
-                let { x, y } = e.data.getLocalPosition(viewport);
+                const { x, y } = e.data.getLocalPosition(viewport);
                 if (sprite.dragging) {
                     if (!checkIfBeyondWorld(sprite, x, y)) {
                         sprite.position.x += x - sprite.dragging.x;
@@ -125,9 +125,9 @@ export default function initEventListeners() {
         viewport.drag({ pressDrag: false });
         hintText.set('');
 
-        let resizer = new Graphics();
+        const resizer = new Graphics();
 
-        let resizerWidth = 150;
+        const resizerWidth = 150;
 
         resizer
             .beginFill(0xdea3f8)
@@ -155,7 +155,7 @@ export default function initEventListeners() {
 
             sprite.data = e.data;
             sprite.alpha = 0.5;
-            let { x, y } = e.data.getLocalPosition(viewport);
+            const { x, y } = e.data.getLocalPosition(viewport);
             sprite.dragging = { x, y };
             viewport.drag({ pressDrag: false });
         }
@@ -165,7 +165,7 @@ export default function initEventListeners() {
             const viewport = App.viewport;
 
             if (sprite.dragging) {
-                let { x, y } = e.data.getLocalPosition(viewport);
+                const { x, y } = e.data.getLocalPosition(viewport);
 
                 if (
                     sprite.width + x - sprite.dragging.x > percent(35, objectSpawner.sprite.width) &&

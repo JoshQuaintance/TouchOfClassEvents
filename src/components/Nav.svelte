@@ -3,9 +3,8 @@
     Description: Navigation bar component
  -->
 <script lang="ts">
-    import { Button, DropdownShell, Dropdown } from 'attractions';
+    import { Button } from 'attractions';
     import { headerHeight, isSignedIn } from '$utils/stores';
-    import { page } from '$app/stores';
     import Icon from '$components/Icon.svelte';
 
     let navEl: HTMLElement;

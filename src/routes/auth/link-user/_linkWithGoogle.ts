@@ -11,9 +11,9 @@ import { encryptData } from '../auth-utils';
 import bcrypt from 'bcryptjs';
 
 export async function linkWithGoogle(
-    User: mongoose_T.Model<any, {}, {}, {}>,
+    User: mongoose_T.Model<unknown, Record<string, unknown>, Record<string, unknown>, Record<string, unknown>>,
     code: string,
-    newAccount: boolean = false
+    newAccount = false
 ) {
     try {
         const dev = process.env.NODE_ENV == 'development' || false;
@@ -30,8 +30,8 @@ export async function linkWithGoogle(
         // &client_secret=${import.meta.env['VITE_SECRET_GOOGLE_OAUTH_CLIENT_SECRET'] as string}&scope=&grant_type=authorization_code`;
 
         google.options({ auth: googleOAuth2Client });
-        let response = await googleOAuth2Client.getToken(code)
-        
+        const response = await googleOAuth2Client.getToken(code);
+
         const { access_token, refresh_token } = response.tokens;
 
         // Authorize our google oauth2 client with the access token
@@ -71,7 +71,7 @@ export async function linkWithGoogle(
                 noPass: true
             });
 
-            await newUser.save((err: any) => {
+            await newUser.save((err: unknown) => {
                 if (err)
                     throw {
                         status: 500,

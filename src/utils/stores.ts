@@ -21,8 +21,11 @@ interface UserProfile {
 
 export const headerHeight = writable(0);
 export const pageLoaded = writable(false);
-export const mainSnackbarController = writable(null);
-export const snackbarQueueEventTarget = writable(null)
+export const snackbarQueueEventTarget = writable(null);
+export const globalSnackbarQueue = writable([]);
+export const newSnackbar = function (item) {
+    globalSnackbarQueue.update((q) => [...q, item]);
+};
 
 export const isSignedIn = writable(false);
 export const user: Writable<UserProfile | {}> = writable({});

@@ -27,7 +27,6 @@
     <p>Are you sure to delete selected object?</p>
 
     <div class="flex-row justify-between">
-
         <Button class="" on:click={cancelDeletion}>Cancel</Button>
         <Button class="mt-2" on:click={confirmDeletion}>Confirm</Button>
     </div>

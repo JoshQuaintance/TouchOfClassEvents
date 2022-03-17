@@ -5,9 +5,9 @@ export async function get({ params, locals }) {
         const { mongoose, schemas } = await connectToDB();
         const { EventSchema } = await schemas;
         const Event = mongoose.models.Events || mongoose.model('Events', EventSchema);
-        let eventRegX = new RegExp('-' + params.event);
+        const eventRegX = new RegExp('-' + params.event);
 
-        let eventLookup = await Event.findOne({ event_id: { $regex: eventRegX } });
+        const eventLookup = await Event.findOne({ event_id: { $regex: eventRegX } });
 
         if (!eventLookup)
             return {
@@ -17,13 +17,14 @@ export async function get({ params, locals }) {
                 }
             };
 
-        const { event_id, title, details, host, date } = eventLookup;
+        const { event_id, title, details, host, date, createdBy } = eventLookup;
         locals.event_metadata = {
             event_id,
             title,
             details,
             host,
-            date
+            date,
+            createdBy
         };
 
         return {
@@ -35,7 +36,8 @@ export async function get({ params, locals }) {
                     title,
                     details,
                     host,
-                    date
+                    date,
+                    createdBy
                 }
             }
         };
@@ -58,11 +60,11 @@ export async function post({ params, body }) {
         const { mongoose, schemas } = await connectToDB();
         const { EventSchema } = await schemas;
         const Event = mongoose.models.Events || mongoose.model('Events', EventSchema);
-        let eventRegX = new RegExp('-' + params.event);
+        const eventRegX = new RegExp('-' + params.event);
 
-        let { title, details, host, date } = body;
+        const { title, details, host, date } = body;
 
-        let updateEvent = await Event.updateOne({ event_id: { $regex: eventRegX } }, { title, details, host, date });
+        const updateEvent = await Event.updateOne({ event_id: { $regex: eventRegX } }, { title, details, host, date });
 
         if (updateEvent.acknowledged)
             return {

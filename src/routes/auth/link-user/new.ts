@@ -12,7 +12,7 @@ export async function post(req: ServerRequest<Record<string, any>, DefaultBody>)
 
     try {
         if (connection == 'google') {
-            let response = await linkWithGoogle(User, code, true);
+            const response = await linkWithGoogle(User, code, true);
 
             return {
                 status: response.status,

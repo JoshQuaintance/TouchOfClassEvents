@@ -1,3 +1,4 @@
+/* eslint-disable */
 if (typeof window === 'undefined') {
     globalThis.window = {} as any;
 }

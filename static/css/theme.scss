@@ -11,6 +11,6 @@
 // }
 
 @forward '~attractions/_variables' with (
-  $main: rgba(99, 102, 241, 1),
+    $main: rgba(99, 102, 241, 1)
 );
 $something-else: red;
