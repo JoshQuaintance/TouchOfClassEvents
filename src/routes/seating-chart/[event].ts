@@ -73,7 +73,7 @@ export async function post(request) {
         }
     } else {
         if (event == 'save') {
-            console.log('y')
+            console.log('y');
             const { mongoose, schemas } = await connectToDB();
             const { EventSchema } = await schemas;
 
@@ -92,19 +92,19 @@ export async function post(request) {
                 return {
                     status: 500,
                     body: {
-                        message: "Error occured while updating seating chart!",
+                        message: 'Error occured while updating seating chart!',
                         error: e
                     }
-                }
+                };
             }
 
             return {
                 status: 200,
                 body: {
-                    message: "Update successful!"
+                    message: 'Update successful!'
                 }
-            }
-        };
+            };
+        }
         const { mongoose, schemas } = await connectToDB();
         const { EventSchema } = await schemas;
 

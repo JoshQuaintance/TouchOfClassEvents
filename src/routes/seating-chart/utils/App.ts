@@ -87,7 +87,7 @@ export default class App {
             })
         });
 
-        console.log(await res.json())
+        console.log(await res.json());
     }
 
     // If the user decides to undo an event (building a new object or deleting one)

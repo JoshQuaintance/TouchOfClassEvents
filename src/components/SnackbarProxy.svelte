@@ -4,20 +4,16 @@
 
     import { CustomEventInitType, globalSnackbarQueue, snackbarQueueEventTarget } from '$utils/stores';
 
-
     let containerProxy: SnackbarContainer;
 
     onMount(() => {
         snackbarQueueEventTarget.set(new EventTarget());
 
-        $snackbarQueueEventTarget.addEventListener(
-            'new-snackbar',
-            (e: CustomEventInitType) => {
-                let data = e.detail.data;
+        $snackbarQueueEventTarget.addEventListener('new-snackbar', (e: CustomEventInitType) => {
+            let data = e.detail.data;
 
-                containerProxy.showSnackbar(data);
-            }
-        );
+            containerProxy.showSnackbar(data);
+        });
     });
 
     $: if ($globalSnackbarQueue.length > 0)

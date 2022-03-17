@@ -38,7 +38,7 @@
     import { openModal, dialogUsed, hintText } from './utils/localStores';
     import LabelChangeDialog from './dialogs/LabelChangeDialog.svelte';
     import ConfirmDeletion from './dialogs/ConfirmDeletion.svelte';
-import type { CustomEventInitType } from '$utils/stores';
+    import type { CustomEventInitType } from '$utils/stores';
 
     export let mobile;
     export let event_data;

@@ -16,7 +16,6 @@
     function cancelDeletion() {
         closeCallback();
     }
-
 </script>
 
 <Dialog title="Change Label" {closeCallback}>

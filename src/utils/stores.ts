@@ -23,4 +23,4 @@ export const newSnackbar = function (item) {
 
 export const isSignedIn = writable(false);
 export const user: Writable<UserProfile | {}> = writable({});
-export interface CustomEventInitType extends CustomEventInit { }
+export interface CustomEventInitType extends CustomEventInit {}

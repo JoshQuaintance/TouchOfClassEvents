@@ -17,7 +17,7 @@
 </script>
 
 <script lang="ts">
-    import Login from './Login.svelte';
+    import Login from './LoginModule.svelte';
 </script>
 
 <svelte:head>

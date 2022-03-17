@@ -26,7 +26,7 @@ export async function post(req) {
                 }
             };
 
-        console.log(req)
+        console.log(req);
         //Checks if the encrypted password matches what is in the database
         const validatePass = await bcrypt.compare(password, userData.password);
 
