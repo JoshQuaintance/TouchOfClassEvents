@@ -3,8 +3,8 @@
  * Description: Main execution process
  */
 import '$utils/pixi-ssr-shim';
-import type * as PIXI from 'pixi.js';
-import { Application, Graphics } from 'pixi.js';
+import * as PIXI from 'pixi.js';
+import { Application, Graphics, TextStyle, Text } from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
 
 import App from './utils/App';
@@ -18,7 +18,8 @@ export async function init() {
         const app = new Application({
             backgroundColor: 0xfaf0f2,
             resizeTo: window,
-            autoStart: false
+            autoStart: false,
+            antialias: true
         });
 
         /**
@@ -115,17 +116,55 @@ export async function run(el: HTMLDivElement): Promise<void> {
         return newSpawner;
     }
 
-    const seatSpawner = createSpawner('seat');
+    // const seatSpawner = createSpawner('seat');
     const tableSpawner = createSpawner('table');
-    const circularTableSpawner = createSpawner('circular_table');
+    // const circularTableSpawner = createSpawner('circular_table');
+
+    let g = new Graphics();
+
+    g.beginFill(0xD1D1D1);
+
+    // set the line style to have a width of 5 and set the color to red
+    g.lineStyle(2, 0x222222);
+
+    let height = 73;
+
+    // draw a rectangle
+    g.drawRoundedRect(0,0, 227, height, height / 10 + 10);
+    g.endFill();
+
+    viewport.addChild(g)
+
+    g.position.x = viewport.center.x;
+    g.position.y = viewport.center.y;
+
+    g.pivot.x = percent(50, g.width);
+    g.pivot.y = percent(50, g.height);
+
+    
+
 
     app.stage.addChild(spawnerContainer.it);
 
     initEventListeners();
 
+    /*
+        This is where data is imported
+    */
     if (App.imported_data.length > 0) {
         for (const item of App.imported_data) {
             new SpawnedObject(item);
         }
     }
 }
+
+
+/*
+var graphic = new PIXI.Graphics()
+graphic.beginFill(0xFFFFFF, 0)
+graphic.drawRect(0, 0, 1, 1)
+graphic.endFill()
+var mySpriteContainer = new PIXI.Sprite(graphic.generateTexture(false));
+mySpriteContainer.anchor = new PIXI.Point(0.5, 0.5);
+
+*/
