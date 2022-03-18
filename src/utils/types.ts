@@ -31,6 +31,7 @@ export interface SpawnedObjectData {
     holdAmount: number;
     canHoldType: string;
     texture: string;
+    parentType: string;
 }
 
 export interface EventData {

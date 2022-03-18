@@ -115,6 +115,7 @@ export default function initEventListeners() {
 
     App.event_medium.addEventListener('options-resize', (e: CustomEventInit) => {
         const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
+        console.log(spawnedObject)
         const objectSpawner: Spawner = Spawner.getSpawner(spawnedObject.parentType);
         const { x, y } = spawnedObject.sprite.getLocalBounds();
 

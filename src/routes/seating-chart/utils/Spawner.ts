@@ -118,7 +118,7 @@ export class SpawnedObject {
         if ((data as SpawnedObjectData).discriminator === 'spawned-object-data') {
             SpawnedObject.addSpawnedObject(this);
 
-            const { label, isSeat, isTable, width, height, coords, holdAmount, canHoldType, texture } =
+            const { label, isSeat, isTable, width, height, coords, holdAmount, canHoldType, texture, parentType } =
                 data as SpawnedObjectData;
 
             this._sprite = new Sprite(App.resources[texture].texture);
@@ -131,6 +131,7 @@ export class SpawnedObject {
             this._sprite.y = coords.y;
             this._canHoldAmount = holdAmount;
             this._canHoldType = canHoldType;
+            this._parentType = parentType || `${this._sprite.texture.textureCacheIds[0]}-spawner`;
 
             this._sprite.anchor.set(0.5);
 
@@ -226,7 +227,8 @@ export class SpawnedObject {
             coords: { x: this._sprite.x, y: this._sprite.y },
             holdAmount: this._canHoldAmount,
             canHoldType: this._canHoldType,
-            texture: this._sprite.texture.textureCacheIds[0]
+            texture: this._sprite.texture.textureCacheIds[0],
+            parentType: this._parentType
         };
     }
 

@@ -1,7 +1,6 @@
 <script lang="ts">
     import Icon from '$components/Icon.svelte';
     import { Divider } from 'attractions';
-    import { onMount } from 'svelte';
     import App from '../utils/App';
 
     export let icon: string;
@@ -12,10 +11,6 @@
     };
     let contWidth: number;
     let tooltipEl: HTMLSpanElement;
-
-    onMount(() => {
-        tooltipEl.style.left = `calc(${contWidth}px + .5rem)`;
-    });
 </script>
 
 <div class="option-container relative" bind:clientWidth={contWidth}>

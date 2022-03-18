@@ -56,15 +56,12 @@
                                 password: 'GoogleAuth'
                             })
                         });
-                        console.log('here');
 
                         let res = await logUserIn.json();
 
-                        console.log(res);
-
                         if (res.code == 'user-cred-valid') {
                             location.replace('/');
-                        }
+                        } else location.reload();
                     }
 
                     // If user exist by email
