@@ -10,7 +10,7 @@ import { Viewport } from 'pixi-viewport';
 import App from './utils/App';
 import { percent } from '$utils/math';
 import Container from './utils/Container';
-import Spawner, { SpawnedObject } from './utils/Spawner';
+import { SpawnedObject, Spawner } from './utils/Spawner';
 import initEventListeners from './utils/initEventListeners';
 
 export async function init() {
@@ -103,45 +103,52 @@ export async function run(el: HTMLDivElement): Promise<void> {
 
     const spawnerContainer = new Container();
 
-    function createSpawner(name) {
-        const spawnerTexture = App.resources[name].texture;
-        const newSpawner = new Spawner(spawnerTexture, `${name}-spawner`);
+    function createSpawner(name, renderFunction: Function) {
+        // const spawnerTexture = App.resources[name].texture;
+        const newSpawner = new Spawner(name, renderFunction);
 
-        newSpawner.sprite.x = viewport.center.x;
-        newSpawner.sprite.y = viewport.center.y;
-        newSpawner.sprite.alpha = 0.5;
-        newSpawner.sprite.anchor.set(0.5);
-        newSpawner.sprite.scale.set(percent(65, percent(12, window.innerHeight)) / newSpawner.sprite.height);
+        // newSpawner.sprite.x = viewport.center.x;
+        // newSpawner.sprite.y = viewport.center.y;
+        // newSpawner.sprite.alpha = 0.5;
+        // newSpawner.sprite.anchor.set(0.5);
+        // newSpawner.sprite.scale.set(percent(65, percent(12, window.innerHeight)) / newSpawner.sprite.height);
 
         return newSpawner;
     }
 
+
+    function drawTable() {
+        let table = new Graphics();
+
+        table.beginFill(0xD1D1D1);
+
+        // set the line style to have a width of 2 and set the color to red
+        table.lineStyle(3, 0x111111, .7);
+
+        let height = 73;
+
+        // draw a rectangle
+        table.drawRoundedRect(0, 0, 227, height, height / 10 + 10);
+        table.endFill();
+
+
+        table.position.x = viewport.center.x;
+        table.position.y = viewport.center.y;
+
+        table.pivot.x = percent(50, table.width);
+        table.pivot.y = percent(50, table.height);
+
+        return table;
+    }
+
     // const seatSpawner = createSpawner('seat');
-    const tableSpawner = createSpawner('table');
+    const tableSpawner = createSpawner('table', drawTable);
     // const circularTableSpawner = createSpawner('circular_table');
 
-    let g = new Graphics();
 
-    g.beginFill(0xD1D1D1);
 
-    // set the line style to have a width of 5 and set the color to red
-    g.lineStyle(2, 0x222222);
 
-    let height = 73;
 
-    // draw a rectangle
-    g.drawRoundedRect(0,0, 227, height, height / 10 + 10);
-    g.endFill();
-
-    viewport.addChild(g)
-
-    g.position.x = viewport.center.x;
-    g.position.y = viewport.center.y;
-
-    g.pivot.x = percent(50, g.width);
-    g.pivot.y = percent(50, g.height);
-
-    
 
 
     app.stage.addChild(spawnerContainer.it);

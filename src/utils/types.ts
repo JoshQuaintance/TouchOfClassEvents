@@ -30,8 +30,8 @@ export interface SpawnedObjectData {
     coords: { x: number; y: number };
     holdAmount: number;
     canHoldType: string;
-    texture: string;
     parentType: string;
+    objectName: string;
 }
 
 export interface EventData {

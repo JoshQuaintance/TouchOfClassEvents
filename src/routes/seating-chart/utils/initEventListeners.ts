@@ -7,8 +7,8 @@ import '$utils/pixi-ssr-shim';
 import { Graphics, InteractionEvent } from 'pixi.js';
 import App from './App';
 import { checkIfBeyondWorld } from './extras';
-import type { DraggingSprite } from './extras';
-import Spawner, { SpawnedObject } from './Spawner';
+import type { DraggingSprite, DraggingGraphics } from './extras';
+import { Spawner, SpawnedObject } from './Spawner';
 import { dialogUsed, hintText, openModal } from './localStores';
 import { percent } from '$utils/math';
 
@@ -19,6 +19,7 @@ export default function initEventListeners() {
     App.event_medium.addEventListener('app-mode-changed', (e: CustomEventInit) => {
         const mode = e.detail.mode;
 
+
         if (mode == 'options-save') {
             App.mode = 'view';
 
@@ -28,39 +29,44 @@ export default function initEventListeners() {
         if (mode == 'view') {
             hintText.set('');
             viewport.drag({});
-            const buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
+            const buildingObject = Spawner.getSpawner(App.build_object);
 
-            if (shared['resizing']) {
-                const { spawnedObject, resizer } = shared['resizing'];
+            // if (shared['resizing']) {
+            //     const { spawnedObject, resizer } = shared['resizing'];
 
-                spawnedObject.sprite.removeChild(resizer);
-            }
+            //     spawnedObject.graphic.removeChild(resizer);
+            // }
 
-            if (buildingObject) viewport.removeChild(buildingObject.sprite);
+            if (buildingObject) viewport.removeChild(buildingObject.graphic);
         }
 
         if (mode == 'build') {
-            const buildingObject = Spawner.getSpawner(App.build_object + '-spawner');
-            const previousObject = Spawner.getSpawner(App.previous_object + '-spawner');
+            const buildingObject = Spawner.getSpawner(App.build_object);
+            const previousObject = Spawner.getSpawner(App.previous_object);
 
             viewport.on('pointermove', (e: InteractionEvent) => {
-                const sprite: DraggingSprite = Spawner.getSpawner(App.build_object + '-spawner')
-                    .sprite as DraggingSprite;
+                const graphic: DraggingGraphics = Spawner.getSpawner(App.build_object).graphic as DraggingGraphics;
                 const viewport = App.viewport;
                 const { x, y } = e.data.getLocalPosition(viewport);
-                if (sprite.dragging) {
-                    if (!checkIfBeyondWorld(sprite, x, y)) {
-                        sprite.position.x += x - sprite.dragging.x;
-                        sprite.position.y += y - sprite.dragging.y;
-                        sprite.dragging = { x, y };
-                    }
+
+                if (graphic.dragging) {
+                    if (!checkIfBeyondWorld(graphic, x, y)) return;
+
+                    buildingObject.x += x - graphic.dragging.x;
+                    buildingObject.y += y - graphic.dragging.y;
+                    graphic.dragging = { x, y };
+
                 } else {
-                    sprite.position.x = x;
-                    sprite.position.y = y;
+                    buildingObject.x = x;
+                    buildingObject.y = y;
                 }
-            });
-            if (previousObject) viewport.removeChild(previousObject.sprite);
-            viewport.addChild(buildingObject.sprite);
+
+
+
+            })
+
+            if (previousObject) viewport.removeChild(previousObject.graphic);
+            viewport.addChild(buildingObject.graphic);
             viewport.drag({ pressDrag: false });
         }
 
@@ -72,7 +78,7 @@ export default function initEventListeners() {
     App.event_medium.addEventListener('options-delete', (e: CustomEventInit) => {
         const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
 
-        hintText.set('');
+        // hintText.set('');
         dialogUsed.set('ConfirmDeletion');
 
         openModal.set(true);
@@ -81,15 +87,16 @@ export default function initEventListeners() {
             App.new_app_event({
                 event: 'delete-object',
                 additional: {
-                    sprite: spawnedObject.sprite,
-                    coords: { x: spawnedObject.sprite.x, y: spawnedObject.sprite.y },
-                    parent: spawnedObject.sprite.parent
+                    sprite: spawnedObject.graphic,
+                    coords: { x: spawnedObject.graphic.position.x, y: spawnedObject.graphic.position.y },
+                    parent: spawnedObject.graphic.parent
                 }
             });
             SpawnedObject.removeSpawnedObject(spawnedObject);
-            spawnedObject.sprite.parent.removeChild(spawnedObject.sprite);
+            spawnedObject.graphic.parent.removeChild(spawnedObject.graphic);
 
             App.event_medium.removeEventListener('deletion-confirmed', handleDeletion);
+
         }
 
         App.event_medium.addEventListener('deletion-confirmed', handleDeletion);

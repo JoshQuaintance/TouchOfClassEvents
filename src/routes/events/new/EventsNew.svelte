@@ -25,6 +25,8 @@
                 duration: 5000
             });
 
+        (document.getElementById('submit-btn') as HTMLButtonElement).disabled = true;
+
         const getMetadata = await fetch('/seating-chart/new', {
             method: 'POST',
             body: JSON.stringify({
@@ -108,7 +110,9 @@
 
             <div class="sm:col-span-2 flex justify-between items-center">
                 <Button
+                    
                     type="submit"
+                    id="submit-btn"
                     class="inline-block bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 focus-visible:ring ring-indigo-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3"
                     >Create Event</Button>
 

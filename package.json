@@ -1,6 +1,6 @@
 {
-    "name": "sveltekit-tailwind",
-    "version": "0.0.1",
+    "name": "touch-of-class-events-website",
+    "version": "1.0.2",
     "scripts": {
         "postinstall": "node ./fixGlobals.js",
         "dev": "svelte-kit dev",

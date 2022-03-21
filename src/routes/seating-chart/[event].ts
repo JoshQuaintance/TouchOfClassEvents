@@ -73,7 +73,6 @@ export async function post(request) {
         }
     } else {
         if (event == 'save') {
-            console.log('y');
             const { mongoose, schemas } = await connectToDB();
             const { EventSchema } = await schemas;
 

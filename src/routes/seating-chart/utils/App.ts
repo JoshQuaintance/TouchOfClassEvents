@@ -18,6 +18,7 @@ import type * as PIXI from 'pixi.js';
 import type { Viewport } from 'pixi-viewport';
 import { SpawnedObject } from './Spawner';
 import type { SpawnedObjectData } from '$utils/types';
+import { newSnackbar } from '$utils/stores';
 
 export type AppMode = 'view' | 'build' | `options-${string}`;
 
@@ -76,18 +77,29 @@ export default class App {
             new_data.push(spawnedObject.spawnedObjectData);
         });
 
-        this._seating_chart_data = [...new_data];
+        this._seating_chart_data = new_data;
         const event_id = window.location.pathname.replace('/seating-chart/', '');
 
         let res = await fetch('/seating-chart/save', {
             method: 'POST',
             body: JSON.stringify({
-                data: this._seating_chart_data,
+                data: new_data,
                 event_id
             })
         });
 
-        console.log(await res.json());
+        let serialized = await res.json()
+
+        if (serialized?.message == "Update successful!") {
+            newSnackbar({
+                props: {
+                    text: 'Seating Chart Saved!',
+                    class: 'bg-green-500'
+                },
+                component: undefined,
+                duration: 2000
+            })
+        }
     }
 
     // If the user decides to undo an event (building a new object or deleting one)

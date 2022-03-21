@@ -2,53 +2,66 @@
  * Location: src/routes/seating-chart/utils/Spawner.ts
  * Description: A Spawner class that will be able to spawn objects
  */
-import type { DraggingSprite } from './extras';
+import type { DraggingGraphics, DraggingSprite } from './extras';
 import '$utils/pixi-ssr-shim';
 
-import { Sprite, InteractionEvent, Texture, Text, TextStyle } from 'pixi.js';
-import App from './App';
-import { checkIfBeyondWorld } from './extras';
+import { Graphics, InteractionEvent } from 'pixi.js';
 import type { Viewport } from 'pixi-viewport';
 import type { SpawnedObjectData } from '$utils/types';
 
-export default class Spawner {
-    private _sprite: Sprite;
-    private _name: string;
-    private _textureSrc: string;
+import App from './App';
+import { checkIfBeyondWorld } from './extras';
+import { percent } from '$utils/math';
 
-    private static spawners = {};
 
-    constructor(src: Texture, name: string) {
-        this._textureSrc = src.textureCacheIds[0];
-        this._sprite = new Sprite(src);
-        this._name = name;
+export class Spawner {
 
-        this._sprite.buttonMode = true;
-        this._sprite.cursor = 'pointer';
-        this._sprite.interactive = true;
+    private _spawnerName: string;
+    private _objectName: string;
+    private _graphic: Graphics;
 
-        Spawner.spawners[name] = this;
+    private static spawners = {}
 
-        this._sprite.on('pointerdown', (e) => this.clicked(e));
+    constructor(name: string, renderFunction) {
+
+        this._spawnerName = `${name}-spawner`;
+        this._objectName = name;
+        this._graphic = renderFunction();
+
+        this._graphic.buttonMode = true;
+        this._graphic.cursor = 'pointer';
+        this._graphic.interactive = true;
+        this._graphic.alpha = .7;
+
+        Spawner.spawners[this._spawnerName] = this;
+
+
+        // App.viewport.addChild(this._graphic)
+
+        this._graphic.on('pointerdown', (e) => this.clicked(e));
+
     }
+
 
     private clicked(e: { data: { getLocalPosition: (arg0: Viewport) => { x: any; y: any } } }) {
         App.app.renderer.plugins.interaction.setCursorMode('pointer');
         const { x, y } = e.data.getLocalPosition(App.viewport);
 
-        if (!checkIfBeyondWorld(null, x, y)) this.spawnObject(x, y);
+        if (!checkIfBeyondWorld(null, x, y))
+            this.spawnObject(x, y);
     }
+
 
     private spawnObject(xCoords: number, yCoords: number) {
         const clone = new SpawnedObject(this.createClone(), {
-            parentType: this._name
+            parentType: this._spawnerName,
+            objectName: this._objectName
         });
 
-        clone.sprite.anchor.set(0.5);
-        clone.sprite.x = xCoords;
-        clone.sprite.y = yCoords;
-
-        App.viewport.addChild(clone.sprite);
+        clone.graphic.alpha = 1;
+        clone.graphic.position.x = xCoords - percent(50, clone.graphic.width);
+        clone.graphic.position.y = yCoords - percent(50, clone.graphic.height);
+        App.viewport.addChild(clone.graphic);
 
         SpawnedObject.addSpawnedObject(clone);
 
@@ -57,110 +70,153 @@ export default class Spawner {
         App.new_app_event({
             event: 'spawn-object',
             additional: {
-                sprite: clone.sprite,
-                coords: { x: clone.sprite.x, y: clone.sprite.y },
-                parent: clone.sprite.parent
+                sprite: clone.graphic,
+                coords: { x: clone.graphic.position.x, y: clone.graphic.position.y },
+                parent: clone.graphic.parent
             }
         });
 
         return true;
     }
 
-    private createClone(): Sprite {
-        const clone = new Sprite(this._sprite.texture);
-        clone.scale = this._sprite.scale;
+    private createClone(): Graphics {
+        const clone = this._graphic.clone();
 
         return clone;
     }
 
+
     set x(val: number) {
-        this._sprite.x = val;
+        this._graphic.position.x = val;
     }
 
     set y(val: number) {
-        this._sprite.y = val;
+        this._graphic.position.y = val;
     }
 
-    get sprite(): Sprite {
-        return this._sprite;
+    get graphic(): Graphics {
+        return this._graphic;
     }
 
     static getSpawner(name: string): Spawner {
-        return Spawner.spawners[name];
+        return Spawner.spawners[`${name}-spawner`];
     }
 }
+
+
 interface SpawnedObjectOptions {
     parentType: string;
+    objectName: string;
     label?: string;
+
 }
 
 export class SpawnedObject {
-    private _sprite: Sprite;
-    private _labelText: string;
-    private _label: Text | null;
+    private _graphic: Graphics;
     private _isSeat: boolean;
     private _isTable: boolean;
     private _parentType: string;
+    private _labelText: string;
     private _canHoldAmount: number;
     private _canHoldType: string;
+    private _objectName: string;
     private static _spawnedObjectsStore = [];
 
-    constructor(data: Sprite | SpawnedObjectData, options?: SpawnedObjectOptions) {
-        if (data instanceof Sprite) {
-            const { label, parentType } = options;
-            this._sprite = data;
+
+    constructor(data: Graphics | SpawnedObjectData, options?: SpawnedObjectOptions) {
+        if (data instanceof Graphics) {
+            const { label, parentType, objectName } = options;
+            this._graphic = data;
             this._isSeat = false;
             this._isTable = false;
             this._parentType = parentType;
             this._labelText = label || '';
+            this._objectName = objectName
         }
 
         if ((data as SpawnedObjectData).discriminator === 'spawned-object-data') {
             SpawnedObject.addSpawnedObject(this);
 
-            const { label, isSeat, isTable, width, height, coords, holdAmount, canHoldType, texture, parentType } =
+            const { label, isSeat, isTable, width, height, coords, holdAmount, canHoldType, parentType, objectName } =
                 data as SpawnedObjectData;
 
-            this._sprite = new Sprite(App.resources[texture].texture);
-            this.setLabel(label);
+            const parent = Spawner.getSpawner(objectName);
+
+            this._graphic = parent.graphic.clone();
+
+            // this.setLabel(label);
             this._isSeat = isSeat;
             this._isTable = isTable;
-            this._sprite.width = width;
-            this._sprite.height = height;
-            this._sprite.x = coords.x;
-            this._sprite.y = coords.y;
+            this._graphic.width = width;
+            this._graphic.height = height;
+            this._graphic.position.x = coords.x;
+            this._graphic.position.y = coords.y;
+            this._graphic.lineStyle(3, 0x111111, .7);
             this._canHoldAmount = holdAmount;
             this._canHoldType = canHoldType;
-            this._parentType = parentType || `${this._sprite.texture.textureCacheIds[0]}-spawner`;
-
-            this._sprite.anchor.set(0.5);
+            this._parentType = parentType;
+            this._objectName = objectName
 
             if (App.editMode) this.addPointerEvents();
 
-            App.viewport.addChild(this._sprite);
+            App.viewport.addChild(this._graphic);
         }
+    }
+
+    static get allSpawnedObjects() {
+        return this._spawnedObjectsStore;
+    }
+
+    static addSpawnedObject(obj: SpawnedObject) {
+        this._spawnedObjectsStore.push(obj);
+    }
+
+    static removeSpawnedObject(obj: SpawnedObject) {
+        const index = this._spawnedObjectsStore.indexOf(obj);
+        this._spawnedObjectsStore.splice(index, 1);
+    }
+
+    get spawnedObjectData(): SpawnedObjectData {
+        return {
+            discriminator: 'spawned-object-data',
+            label: this._labelText,
+            isSeat: this._isSeat,
+            isTable: this._isTable,
+            width: this._graphic.width,
+            height: this._graphic.height,
+            coords: { x: this._graphic.x, y: this._graphic.y },
+            holdAmount: this._canHoldAmount,
+            canHoldType: this._canHoldType,
+            parentType: this._parentType,
+            objectName: this._objectName
+
+        };
+    }
+
+    get graphic() {
+        return this._graphic;
     }
 
     addPointerEvents() {
         const _this = this;
 
         function onDragMove(e: InteractionEvent) {
-            const sprite: DraggingSprite = e.currentTarget as DraggingSprite;
+            const graphic: DraggingGraphics = e.currentTarget as DraggingGraphics;
             const viewport = App.viewport;
 
-            if (sprite.dragging) {
+            if (graphic.dragging) {
                 const { x, y } = e.data.getLocalPosition(viewport);
 
-                if (!checkIfBeyondWorld(sprite, x, y)) {
-                    sprite.position.x += x - sprite.dragging.x;
-                    sprite.position.y += y - sprite.dragging.y;
-                    sprite.dragging = { x, y };
+                if (!checkIfBeyondWorld(graphic, x, y)) {
+                    graphic.position.x += x - graphic.dragging.x;
+                    graphic.position.y += y - graphic.dragging.y;
+                    graphic.dragging = { x, y };
                 }
             }
         }
 
         function onDragStart(e: InteractionEvent) {
-            const sprite: DraggingSprite = e.currentTarget as DraggingSprite;
+            const graphic: DraggingGraphics = e.currentTarget as DraggingGraphics;
             const viewport = App.viewport;
 
             if (App.mode.startsWith('options-')) {
@@ -174,129 +230,31 @@ export class SpawnedObject {
                 return;
             }
 
-            sprite.data = e.data;
-            sprite.alpha = 0.5;
+            graphic.data = e.data;
+            graphic.alpha = 0.5;
             const { x, y } = e.data.getLocalPosition(viewport);
-            sprite.dragging = { x, y };
-            _this.sprite.cursor = 'grabbing';
+            graphic.dragging = { x, y };
+            _this._graphic.cursor = 'grabbing';
             viewport.drag({ pressDrag: false });
         }
 
         function onDragEnd(e: InteractionEvent) {
-            const sprite: DraggingSprite = e.currentTarget as DraggingSprite;
+            const graphic: DraggingGraphics = e.currentTarget as DraggingGraphics;
 
-            sprite.alpha = 1;
-            sprite.dragging = null;
-            sprite.data = null;
-            _this.sprite.cursor = 'grab';
+            graphic.alpha = 1;
+            graphic.dragging = null;
+            graphic.data = null;
+            _this._graphic.cursor = 'grab';
             if (App.mode != 'build') App.viewport.drag();
         }
-        _this.sprite.interactive = true;
-        _this.sprite.cursor = 'grab';
+        _this._graphic.interactive = true;
+        _this._graphic.cursor = 'grab';
 
-        _this.sprite.on('pointerdown', onDragStart);
-        _this.sprite.on('pointermove', onDragMove);
-        _this.sprite.on('pointerup', onDragEnd);
-        _this.sprite.on('pointerupoutside', onDragEnd);
+        _this._graphic.on('pointerdown', onDragStart);
+        _this._graphic.on('pointermove', onDragMove);
+        _this._graphic.on('pointerup', onDragEnd);
+        _this._graphic.on('pointerupoutside', onDragEnd);
     }
 
-    static get allSpawnedObjects() {
-        return this._spawnedObjectsStore;
-    }
 
-    static addSpawnedObject(obj: SpawnedObject) {
-        this._spawnedObjectsStore.push(obj);
-    }
-
-    static removeSpawnedObject(obj: SpawnedObject) {
-        console.log(obj);
-        const index = this._spawnedObjectsStore.indexOf(obj);
-        console.log(index);
-        this._spawnedObjectsStore.splice(index, 1);
-        console.log(this._spawnedObjectsStore);
-    }
-
-    get spawnedObjectData(): SpawnedObjectData {
-        return {
-            discriminator: 'spawned-object-data',
-            label: this._labelText,
-            isSeat: this._isSeat,
-            isTable: this._isTable,
-            width: this._sprite.width,
-            height: this._sprite.height,
-            coords: { x: this._sprite.x, y: this._sprite.y },
-            holdAmount: this._canHoldAmount,
-            canHoldType: this._canHoldType,
-            texture: this._sprite.texture.textureCacheIds[0],
-            parentType: this._parentType
-        };
-    }
-
-    get isSeat() {
-        return this._isSeat;
-    }
-
-    get isTable() {
-        return this._isTable;
-    }
-
-    get parentType() {
-        return this._parentType;
-    }
-
-    get label() {
-        return this._label;
-    }
-
-    get sprite() {
-        return this._sprite;
-    }
-
-    setLabel(text: string, style?: TextStyle) {
-        if (this._label) {
-            this._sprite.removeChild(this._label);
-            this._label = null;
-        }
-
-        this._labelText = text;
-
-        const defaultStyle = new TextStyle({
-            align: 'center',
-            wordWrap: true,
-            wordWrapWidth: this._sprite.width - 100,
-            fontSize: '150px'
-        });
-
-        const label = new Text(text, style || defaultStyle);
-
-        label.anchor.set(0.5);
-
-        this._label = label;
-        this._sprite.addChild(label);
-    }
-
-    clone() {
-        console.error('NOT IMPLEMENTED');
-    }
-
-    makeNormalObject() {
-        this._isSeat = false;
-        this._isTable = false;
-    }
-
-    makeSeat(capacity?: number) {
-        if (this._isTable) return Error('This object is already a table. Make it a normal object first!');
-
-        this._canHoldAmount = capacity || 1;
-        this._canHoldType = 'person';
-        this._isSeat = true;
-    }
-
-    makeTable(capacity?: number) {
-        if (this._isSeat) return Error('This object is already a seat. Make it a normal object first!');
-
-        this._canHoldAmount = capacity || 1;
-        this._canHoldType = 'seat';
-        this._isTable = true;
-    }
 }

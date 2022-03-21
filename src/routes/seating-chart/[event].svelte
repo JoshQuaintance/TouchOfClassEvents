@@ -73,10 +73,21 @@
             viewport.fit(false, viewport.screenWidth, viewport.screenHeight);
         });
 
-        window.addEventListener('keyup', (e) => {
+        window.addEventListener('keydown', (e) => {
+            
+            e.preventDefault();
+
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            } else if (window.event) {
+                window.event.cancelBubble = true;
+            }
+
             if (e.key == 'Escape') App.mode = 'view';
-            if (e.key == 'z' && e.ctrlKey) App.undo_prev_event();
-            if (e.key == 's' && e.ctrlKey) App.save_seating_chart();
+
+            if (e.key === 'z' && e.ctrlKey) App.undo_prev_event();
+
+            if (e.ctrlKey && e.key === 's') App.save_seating_chart();
         });
 
         App.event_medium.addEventListener(
@@ -102,7 +113,7 @@
         this={dialogs[$dialogUsed]}
         closeCallback={() => {
             openModal.set(false);
-            App.mode = 'view';
+            // App.mode = 'view';
 
             closeCallback();
         }} />
