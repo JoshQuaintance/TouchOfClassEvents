@@ -4,10 +4,10 @@
  */
 import '$utils/pixi-ssr-shim';
 
-import { Graphics, InteractionEvent } from 'pixi.js';
+import { Graphics, graphicsUtils, InteractionEvent } from 'pixi.js';
 import App from './App';
 import { checkIfBeyondWorld } from './extras';
-import type { DraggingSprite, DraggingGraphics } from './extras';
+import type { DraggingGraphics } from './extras';
 import { Spawner, SpawnedObject } from './Spawner';
 import { dialogUsed, hintText, openModal } from './localStores';
 import { percent } from '$utils/math';
@@ -122,29 +122,33 @@ export default function initEventListeners() {
 
     App.event_medium.addEventListener('options-resize', (e: CustomEventInit) => {
         const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
-        console.log(spawnedObject)
-        const objectSpawner: Spawner = Spawner.getSpawner(spawnedObject.parentType);
-        const { x, y } = spawnedObject.sprite.getLocalBounds();
+        const objectSpawner: Spawner = Spawner.getSpawner(spawnedObject.objectName);
+        const { x, y } = spawnedObject.graphic.getLocalBounds();
 
         App.mode = 'options-resizing';
         viewport.drag({ pressDrag: false });
         hintText.set('');
 
-        const resizer = new Graphics();
+        const resizer = new Graphics() as DraggingGraphics;
 
-        const resizerWidth = 150;
+        const resizerWidth = percent(10, spawnedObject.graphic.width);
 
         resizer
             .beginFill(0xdea3f8)
             .drawRect(Math.abs(x) - resizerWidth, Math.abs(y) - resizerWidth, resizerWidth, resizerWidth)
             .endFill();
 
+
+        resizer.pivot.x = percent(50, resizer.width);
+        resizer.pivot.y = percent(50, resizer.height);
         resizer.zIndex = 100;
         resizer.interactive = true;
         resizer.buttonMode = true;
+        resizer.position.set(spawnedObject.graphic.width + percent(50, resizer.width), spawnedObject.graphic.height + percent(50, resizer.height));
+        console.log(spawnedObject.graphic.width, 'before')
         resizer.cursor = 'nwse-resize';
 
-        spawnedObject.sprite.addChild(resizer);
+        spawnedObject.graphic.addChild(resizer);
         shared['resizing'] = {
             spawnedObject,
             resizer
@@ -153,49 +157,111 @@ export default function initEventListeners() {
         resizer.on('pointerdown', dragStart);
         resizer.on('pointermove', dragMove);
         resizer.on('pointerup', dragEnd);
+        resizer.on('pointerupoutside', dragEnd);
+
 
         function dragStart(e: InteractionEvent) {
-            const sprite: DraggingSprite = spawnedObject.sprite as DraggingSprite;
+            const graphic: DraggingGraphics = spawnedObject.graphic as DraggingGraphics;
             const viewport = App.viewport;
 
-            sprite.data = e.data;
-            sprite.alpha = 0.5;
-            const { x, y } = e.data.getLocalPosition(viewport);
-            sprite.dragging = { x, y };
+            resizer.data = e.data;
+            graphic.alpha = 0.5;
+            const { x, y } = e.data.getLocalPosition(graphic);
+
+            resizer.dragging = { x, y };
             viewport.drag({ pressDrag: false });
+
         }
 
         function dragMove(e: InteractionEvent) {
-            const sprite: DraggingSprite = spawnedObject.sprite as DraggingSprite;
+            const graphic: DraggingGraphics = spawnedObject.graphic as DraggingGraphics;
             const viewport = App.viewport;
 
-            if (sprite.dragging) {
-                const { x, y } = e.data.getLocalPosition(viewport);
+            if (resizer.dragging) {
+                const { x, y } = e.data.getLocalPosition(graphic);
+                graphic.dragging = resizer.dragging;
 
                 if (
-                    sprite.width + x - sprite.dragging.x > percent(35, objectSpawner.sprite.width) &&
-                    sprite.height + y - sprite.dragging.y > percent(35, objectSpawner.sprite.height)
+                    graphic.width + x - resizer.dragging.x > percent(35, objectSpawner.graphic.width) &&
+                    graphic.height + y - resizer.dragging.y > percent(35, objectSpawner.graphic.height) &&
+                    !checkIfBeyondWorld(graphic, graphic.width + x - resizer.dragging.x, graphic.height + y - resizer.dragging.y)
                 ) {
-                    sprite.width += x - sprite.dragging.x;
-                    sprite.height += y - sprite.dragging.y;
-                    sprite.dragging = { x, y };
+                    graphic.width += x - resizer.dragging.x;
+                    graphic.height += y - resizer.dragging.y;
                 } else {
-                    // eslint-disable no-self-assign
-                    sprite.width = sprite.width;
-                    // eslint-disable no-self-assign
-                    sprite.height = sprite.height;
-                    sprite.dragging = { x, y };
+                    resizer.dragging = { x, y }
                 }
+
             }
+
         }
+
+        // function dragMove(e: InteractionEvent) {
+        //     const graphic: DraggingGraphics = spawnedObject.graphic as DraggingGraphics;
+        //     const viewport = App.viewport;
+
+        //     if (graphic.dragging) {
+        //         const { x, y } = e.data.getLocalPosition(viewport);
+        //         console.log(e.data.getLocalPosition(graphic))
+
+        //         if (
+        //             graphic.width + x - graphic.dragging.x > percent(35, objectSpawner.graphic.width) &&
+        //             graphic.height + y - graphic.dragging.y > percent(35, objectSpawner.graphic.height)
+        //         ) {
+
+        //             // graphic.width += x - graphic.dragging.x;
+        //             // graphic.height += y - graphic.dragging.y;
+        //             let tempDimensions = {
+        //                 height: graphic.height,
+        //                 width: graphic.width
+        //             }
+        //             console.log(graphic.height, graphic.width)
+        //             graphic.clear();
+        //             graphic.width = tempDimensions.width 
+        //             graphic.height = tempDimensions.height 
+        //             graphic.beginFill(0xD1D1D1);
+
+        //             // set the line style to have a width of 2 and set the color to red
+        //             graphic.lineStyle(3, 0x111111, .7);
+
+        //             let height = graphic.height - 6;
+        //             let width = graphic.width - 6;
+
+        //             // draw a rectangle
+        //             graphic.drawRoundedRect(0, 0, (width + x - graphic.dragging.x) / 2, (height + y - graphic.dragging.y) / 2, height / 10 + 10);
+        //             graphic.endFill();
+
+        //             graphic.dragging = { x, y };
+        //         } else {
+        //             // eslint-disable no-self-assign
+        //             graphic.width = graphic.width;
+        //             // eslint-disable no-self-assign
+        //             graphic.height = graphic.height;
+        //             graphic.dragging = { x, y };
+        //         }
+        //     }
+        // }
 
         function dragEnd(e: InteractionEvent) {
-            const sprite: DraggingSprite = spawnedObject.sprite as DraggingSprite;
+            const graphic: DraggingGraphics = spawnedObject.graphic as DraggingGraphics;
 
-            sprite.alpha = 1;
-            sprite.dragging = null;
-            sprite.data = null;
+            graphic.alpha = 1;
+            resizer.dragging = null;
+            resizer.data = null;
             if (App.mode != 'build') App.viewport.drag();
         }
+
+
+        // function dragStart(e: InteractionEvent) {
+        //     const graphic: DraggingGraphics = spawnedObject.graphic as DraggingGraphics;
+        //     const viewport = App.viewport;
+
+        //     graphic.data = e.data;
+        //     graphic.alpha = 0.5;
+        //     const { x, y } = e.data.getLocalPosition(viewport);
+        //     graphic.dragging = { x, y };
+        //     viewport.drag({ pressDrag: false });
+        // }
+
     });
 }

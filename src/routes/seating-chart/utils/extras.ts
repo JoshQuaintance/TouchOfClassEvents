@@ -8,12 +8,6 @@ import type { Graphics } from '@pixi/graphics';
 
 import App from './App';
 
-interface DraggingSprite extends Sprite {
-    dragging: { x: number; y: number };
-    pointerInSprite?: boolean;
-    data?: InteractionData;
-}
-
 interface DraggingGraphics extends Graphics {
     dragging: { x: number; y: number };
     pointerInGraphic?: boolean;
@@ -50,4 +44,4 @@ export function checkIfBeyondWorld(graphic: DraggingGraphics, x: number, y: any)
         return true;
 }
 
-export type { DraggingSprite, DraggingGraphics };
+export type { DraggingGraphics };

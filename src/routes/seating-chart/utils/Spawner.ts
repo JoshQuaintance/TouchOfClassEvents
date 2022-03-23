@@ -2,10 +2,10 @@
  * Location: src/routes/seating-chart/utils/Spawner.ts
  * Description: A Spawner class that will be able to spawn objects
  */
-import type { DraggingGraphics, DraggingSprite } from './extras';
+import type { DraggingGraphics } from './extras';
 import '$utils/pixi-ssr-shim';
 
-import { Graphics, InteractionEvent } from 'pixi.js';
+import { Graphics, InteractionEvent, TextStyle, Text } from 'pixi.js';
 import type { Viewport } from 'pixi-viewport';
 import type { SpawnedObjectData } from '$utils/types';
 
@@ -27,6 +27,7 @@ export class Spawner {
         this._spawnerName = `${name}-spawner`;
         this._objectName = name;
         this._graphic = renderFunction();
+
 
         this._graphic.buttonMode = true;
         this._graphic.cursor = 'pointer';
@@ -121,6 +122,7 @@ export class SpawnedObject {
     private _canHoldType: string;
     private _objectName: string;
     private static _spawnedObjectsStore = [];
+    private _label: any;
 
 
     constructor(data: Graphics | SpawnedObjectData, options?: SpawnedObjectOptions) {
@@ -140,11 +142,14 @@ export class SpawnedObject {
             const { label, isSeat, isTable, width, height, coords, holdAmount, canHoldType, parentType, objectName } =
                 data as SpawnedObjectData;
 
+
             const parent = Spawner.getSpawner(objectName);
+            
 
             this._graphic = parent.graphic.clone();
 
-            // this.setLabel(label);
+            
+            this.setLabel(label);
             this._isSeat = isSeat;
             this._isTable = isTable;
             this._graphic.width = width;
@@ -156,6 +161,7 @@ export class SpawnedObject {
             this._canHoldType = canHoldType;
             this._parentType = parentType;
             this._objectName = objectName
+
 
             if (App.editMode) this.addPointerEvents();
 
@@ -177,6 +183,8 @@ export class SpawnedObject {
     }
 
     get spawnedObjectData(): SpawnedObjectData {
+
+        console.log(this._graphic.height, 'sent')
         return {
             discriminator: 'spawned-object-data',
             label: this._labelText,
@@ -195,6 +203,40 @@ export class SpawnedObject {
 
     get graphic() {
         return this._graphic;
+    }
+
+    get objectName() {
+        return this._objectName;
+    }
+
+    get parentType() {
+        return this._parentType;
+    }
+
+    setLabel(text: string, style?: TextStyle) {
+        if (this._label) {
+            this._graphic.removeChild(this._label);
+            this._label = null;
+        }
+
+        this._labelText = text;
+
+        const defaultStyle = new TextStyle({
+            align: 'center',
+            wordWrap: true,
+            wordWrapWidth: this._graphic.width,
+            fontSize: `${percent(9, this._graphic.width)}px`
+        });
+
+        const label = new Text(text, style || defaultStyle);
+
+        // Centers the text location
+        label.anchor.set(0.5);
+        label.x = percent(50, this._graphic.width);
+        label.y = percent(50, this._graphic.height);
+
+        this._label = label;
+        this._graphic.addChild(label);
     }
 
     addPointerEvents() {

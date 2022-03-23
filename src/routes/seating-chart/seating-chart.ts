@@ -69,9 +69,6 @@ export async function init() {
          * Preload Resources
          */
         app.loader.baseUrl = '/images';
-        app.loader.add('seat', 'seat.svg');
-        app.loader.add('table', 'table.svg');
-        app.loader.add('circular_table', 'circular_table.svg');
 
         app.loader.onComplete.add(() => resolve(true));
         app.loader.onError.add(() => {
@@ -137,6 +134,7 @@ export async function run(el: HTMLDivElement): Promise<void> {
 
         table.pivot.x = percent(50, table.width);
         table.pivot.y = percent(50, table.height);
+
 
         return table;
     }
