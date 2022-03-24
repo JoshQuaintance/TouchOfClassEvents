@@ -130,9 +130,21 @@ export class SpawnedObject {
     private static _spawnedObjectsStore = [];
     private _label: any;
     private _labelStyle: TextStyle
+    private _dimensions: { width: number, height: number, set: (w: number, h: number) => void }
 
 
     constructor(data: Graphics | SpawnedObjectData, options?: SpawnedObjectOptions) {
+        const _ = this;
+
+        this._dimensions = {
+            width: _._graphic?.width || 0,
+            height: _._graphic?.height || 0,
+            set: (w: number, h: number) => {
+                _._dimensions.width = w;
+                _._dimensions.height = h;
+            }
+        }
+
         if (data instanceof Graphics) {
             const { label, parentType, objectName } = options;
             this._graphic = data;
@@ -141,6 +153,7 @@ export class SpawnedObject {
             this._parentType = parentType;
             this._labelText = label || '';
             this._objectName = objectName
+            this._dimensions.set(this._graphic.width, this._graphic.height);
         }
 
         if ((data as SpawnedObjectData).discriminator === 'spawned-object-data') {
@@ -156,6 +169,7 @@ export class SpawnedObject {
             this._graphic = parent.renderFunction(width, height);
 
 
+            this._dimensions.set(width, height);
             this.setLabel(label, labelStyle);
             this._isSeat = isSeat;
             this._isTable = isTable;
@@ -196,8 +210,8 @@ export class SpawnedObject {
             label: this._labelText,
             isSeat: this._isSeat,
             isTable: this._isTable,
-            width: this._graphic.width,
-            height: this._graphic.height,
+            width: this._dimensions.width,
+            height: this._dimensions.height,
             coords: { x: this._graphic.x, y: this._graphic.y },
             holdAmount: this._canHoldAmount,
             canHoldType: this._canHoldType,
@@ -222,6 +236,10 @@ export class SpawnedObject {
 
     get parentType() {
         return this._parentType;
+    }
+
+    get dimensions() {
+        return this._dimensions
     }
 
     setLabel(text: string, style?: TextStyle) {

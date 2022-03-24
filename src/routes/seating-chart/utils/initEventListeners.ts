@@ -208,6 +208,8 @@ export default function initEventListeners() {
 
                     resizer.position.set(graphic.origin.width + x - graphic.dragging.x, graphic.origin.height + y - graphic.dragging.y)
 
+                    spawnedObject.dimensions.set(width, height)
+
                     graphic.dragging = { x, y };
 
 
