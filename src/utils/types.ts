@@ -1,3 +1,5 @@
+import type { TextStyle } from "pixi.js";
+
 export type Base64 = string;
 export type UUID = string;
 
@@ -32,6 +34,7 @@ export interface SpawnedObjectData {
     canHoldType: string;
     parentType: string;
     objectName: string;
+    labelStyle: TextStyle;
 }
 
 export interface EventData {

@@ -1,5 +1,5 @@
 export function toPercent(num: number): number {
-    if (num < 1) throw Error('Cannot have a percentage lower than 1');
+    if (num <= 0) throw Error('Cannot have a percentage lower than 1');
     return num / 100;
 }
 

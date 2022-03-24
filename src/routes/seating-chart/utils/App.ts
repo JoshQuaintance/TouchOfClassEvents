@@ -41,7 +41,7 @@ interface AppEvent {
 export default class App {
     private static _viewport: Viewport;
     private static _app: Application;
-    private static _resources: PIXI_Utils.Dict<LoaderResource>;
+    // private static _resources: PIXI_Utils.Dict<LoaderResource>;
     private static _border: Graphics;
     private static _mode: AppMode;
     private static _event_medium: EventTarget;
@@ -155,9 +155,9 @@ export default class App {
         this._build_object = obj;
     }
 
-    static set resources(res: PIXI_Utils.Dict<LoaderResource>) {
-        this._resources = res;
-    }
+    // static set resources(res: PIXI_Utils.Dict<LoaderResource>) {
+    //     this._resources = res;
+    // }
 
     static set border(b: Graphics) {
         this._border = b;
@@ -215,9 +215,9 @@ export default class App {
         return this._previous_object;
     }
 
-    static get resources() {
-        return this._resources;
-    }
+    // static get resources() {
+    //     return this._resources;
+    // }
 
     static get border() {
         return this._border;

@@ -68,18 +68,20 @@ export async function init() {
         /**
          * Preload Resources
          */
-        app.loader.baseUrl = '/images';
+        // app.loader.baseUrl = '/images';
 
-        app.loader.onComplete.add(() => resolve(true));
-        app.loader.onError.add(() => {
-            alert('Error preloading resources');
+        // app.loader.onComplete.add(() => resolve(true));
+        // app.loader.onError.add(() => {
+        //     alert('Error preloading resources');
 
-            reject('Error preloading resources');
-        });
+        //     reject('Error preloading resources');
+        // });
 
-        app.loader.load();
+        // app.loader.load();
 
-        App.resources = app.loader.resources;
+        // App.resources = app.loader.resources;
+
+        resolve(true);
     });
 }
 
@@ -114,23 +116,18 @@ export async function run(el: HTMLDivElement): Promise<void> {
     }
 
 
-    function drawTable() {
+    function drawTable(width, height) {
         let table = new Graphics();
 
         table.beginFill(0xD1D1D1);
-
         // set the line style to have a width of 2 and set the color to red
         table.lineStyle(3, 0x111111, .7);
 
-        let height = 73;
+        if (!height) height = 73;
 
         // draw a rectangle
         table.drawRoundedRect(0, 0, 227, height, height / 10 + 10);
         table.endFill();
-
-
-        table.position.x = viewport.center.x;
-        table.position.y = viewport.center.y;
 
         table.pivot.x = percent(50, table.width);
         table.pivot.y = percent(50, table.height);
@@ -142,7 +139,6 @@ export async function run(el: HTMLDivElement): Promise<void> {
     // const seatSpawner = createSpawner('seat');
     const tableSpawner = createSpawner('table', drawTable);
     // const circularTableSpawner = createSpawner('circular_table');
-
 
 
 

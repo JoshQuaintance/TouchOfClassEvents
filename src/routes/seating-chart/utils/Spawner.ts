@@ -19,6 +19,7 @@ export class Spawner {
     private _spawnerName: string;
     private _objectName: string;
     private _graphic: Graphics;
+    private _renderFunction: Function;
 
     private static spawners = {}
 
@@ -33,6 +34,7 @@ export class Spawner {
         this._graphic.cursor = 'pointer';
         this._graphic.interactive = true;
         this._graphic.alpha = .7;
+        this._renderFunction = renderFunction;
 
         Spawner.spawners[this._spawnerName] = this;
 
@@ -60,8 +62,8 @@ export class Spawner {
         });
 
         clone.graphic.alpha = 1;
-        clone.graphic.position.x = xCoords - percent(50, clone.graphic.width);
-        clone.graphic.position.y = yCoords - percent(50, clone.graphic.height);
+        clone.graphic.position.x = xCoords
+        clone.graphic.position.y = yCoords;
         App.viewport.addChild(clone.graphic);
 
         SpawnedObject.addSpawnedObject(clone);
@@ -81,7 +83,7 @@ export class Spawner {
     }
 
     private createClone(): Graphics {
-        const clone = this._graphic.clone();
+        const clone = this.renderFunction();
 
         return clone;
     }
@@ -97,6 +99,10 @@ export class Spawner {
 
     get graphic(): Graphics {
         return this._graphic;
+    }
+
+    get renderFunction(): Function {
+        return this._renderFunction;
     }
 
     static getSpawner(name: string): Spawner {
@@ -123,6 +129,7 @@ export class SpawnedObject {
     private _objectName: string;
     private static _spawnedObjectsStore = [];
     private _label: any;
+    private _labelStyle: TextStyle
 
 
     constructor(data: Graphics | SpawnedObjectData, options?: SpawnedObjectOptions) {
@@ -139,21 +146,19 @@ export class SpawnedObject {
         if ((data as SpawnedObjectData).discriminator === 'spawned-object-data') {
             SpawnedObject.addSpawnedObject(this);
 
-            const { label, isSeat, isTable, width, height, coords, holdAmount, canHoldType, parentType, objectName } =
+            const { label, isSeat, isTable, width, height, coords, holdAmount, canHoldType, parentType, objectName, labelStyle } =
                 data as SpawnedObjectData;
 
 
             const parent = Spawner.getSpawner(objectName);
-            
 
-            this._graphic = parent.graphic.clone();
 
-            
-            this.setLabel(label);
+            this._graphic = parent.renderFunction(width, height);
+
+
+            this.setLabel(label, labelStyle);
             this._isSeat = isSeat;
             this._isTable = isTable;
-            this._graphic.width = width;
-            this._graphic.height = height;
             this._graphic.position.x = coords.x;
             this._graphic.position.y = coords.y;
             this._graphic.lineStyle(3, 0x111111, .7);
@@ -182,9 +187,10 @@ export class SpawnedObject {
         this._spawnedObjectsStore.splice(index, 1);
     }
 
+
+
     get spawnedObjectData(): SpawnedObjectData {
 
-        console.log(this._graphic.height, 'sent')
         return {
             discriminator: 'spawned-object-data',
             label: this._labelText,
@@ -196,7 +202,8 @@ export class SpawnedObject {
             holdAmount: this._canHoldAmount,
             canHoldType: this._canHoldType,
             parentType: this._parentType,
-            objectName: this._objectName
+            objectName: this._objectName,
+            labelStyle: this._labelStyle
 
         };
     }
@@ -207,6 +214,10 @@ export class SpawnedObject {
 
     get objectName() {
         return this._objectName;
+    }
+
+    get labelText() {
+        return this._labelText;
     }
 
     get parentType() {
@@ -228,7 +239,9 @@ export class SpawnedObject {
             fontSize: `${percent(9, this._graphic.width)}px`
         });
 
-        const label = new Text(text, style || defaultStyle);
+        this._labelStyle = style || defaultStyle;
+
+        const label = new Text(text, this._labelStyle);
 
         // Centers the text location
         label.anchor.set(0.5);
