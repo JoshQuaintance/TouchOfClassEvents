@@ -143,9 +143,9 @@
         flex flex-row justify-around items-center
         bg-red-500"
             style="bottom: 0; height: {percent(12, window.innerHeight)}px">
-            <BuildingObject src="seat" name="seat" />
-            <BuildingObject src="table" name="table" />
-            <BuildingObject src="circular_table" name="circular_table" />
+            <BuildingObject src="seat" name="square" />
+            <BuildingObject src="table" name="rect" />
+            <BuildingObject src="circular_table" name="circle" />
         </div>
     {/if}
     <div

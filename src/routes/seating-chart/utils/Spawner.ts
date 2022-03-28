@@ -27,7 +27,7 @@ export class Spawner {
 
         this._spawnerName = `${name}-spawner`;
         this._objectName = name;
-        this._graphic = renderFunction();
+        this._graphic = renderFunction({ pivot: true });
 
 
         this._graphic.buttonMode = true;
@@ -83,7 +83,7 @@ export class Spawner {
     }
 
     private createClone(): Graphics {
-        const clone = this.renderFunction();
+        const clone = this.renderFunction({ pivot: true });
 
         return clone;
     }
@@ -130,7 +130,7 @@ export class SpawnedObject {
     private static _spawnedObjectsStore = [];
     private _label: any;
     private _labelStyle: TextStyle
-    private _dimensions: { width: number, height: number, set: (w: number, h: number) => void }
+    private _dimensions: { width: number, height: number, set: (w: number, h: number) => void, }
 
 
     constructor(data: Graphics | SpawnedObjectData, options?: SpawnedObjectOptions) {
@@ -162,19 +162,21 @@ export class SpawnedObject {
             const { label, isSeat, isTable, width, height, coords, holdAmount, canHoldType, parentType, objectName, labelStyle } =
                 data as SpawnedObjectData;
 
+            console.log(width, height, 'init')
+
 
             const parent = Spawner.getSpawner(objectName);
 
 
-            this._graphic = parent.renderFunction(width, height);
-
-
             this._dimensions.set(width, height);
+            this._graphic = parent.renderFunction({ width, height, pivot: false });
+
+
             this.setLabel(label, labelStyle);
             this._isSeat = isSeat;
             this._isTable = isTable;
             this._graphic.position.x = coords.x;
-            this._graphic.position.y = coords.y;
+            this._graphic.position.y = coords.y
             this._graphic.lineStyle(3, 0x111111, .7);
             this._canHoldAmount = holdAmount;
             this._canHoldType = canHoldType;
@@ -204,6 +206,7 @@ export class SpawnedObject {
 
 
     get spawnedObjectData(): SpawnedObjectData {
+        console.log(this._dimensions, 'sent')
 
         return {
             discriminator: 'spawned-object-data',

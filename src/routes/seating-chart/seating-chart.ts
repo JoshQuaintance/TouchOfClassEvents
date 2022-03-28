@@ -103,46 +103,69 @@ export async function run(el: HTMLDivElement): Promise<void> {
     const spawnerContainer = new Container();
 
     function createSpawner(name, renderFunction: Function) {
-        // const spawnerTexture = App.resources[name].texture;
         const newSpawner = new Spawner(name, renderFunction);
-
-        // newSpawner.sprite.x = viewport.center.x;
-        // newSpawner.sprite.y = viewport.center.y;
-        // newSpawner.sprite.alpha = 0.5;
-        // newSpawner.sprite.anchor.set(0.5);
-        // newSpawner.sprite.scale.set(percent(65, percent(12, window.innerHeight)) / newSpawner.sprite.height);
 
         return newSpawner;
     }
 
 
-    function drawTable(width, height) {
-        let table = new Graphics();
+    function drawRect({ width = 277, height = 73, pivot = false } = {}) {
+        let graphic = new Graphics();
 
-        table.beginFill(0xD1D1D1);
+        graphic.beginFill(0xD1D1D1);
         // set the line style to have a width of 2 and set the color to red
-        table.lineStyle(3, 0x111111, .7);
-
-        if (!height) height = 73;
+        graphic.lineStyle(3, 0x111111, .7);
 
         // draw a rectangle
-        table.drawRoundedRect(0, 0, 227, height, height / 10 + 10);
-        table.endFill();
+        graphic.drawRoundedRect(0, 0, width, height, height / 10 + 10);
+        graphic.endFill();
 
-        table.pivot.x = percent(50, table.width);
-        table.pivot.y = percent(50, table.height);
+        if (!pivot) return graphic;
 
+        graphic.pivot.x = percent(50, graphic.width);
+        graphic.pivot.y = percent(50, graphic.height);
 
-        return table;
+        return graphic;
     }
 
-    // const seatSpawner = createSpawner('seat');
-    const tableSpawner = createSpawner('table', drawTable);
-    // const circularTableSpawner = createSpawner('circular_table');
+    function drawSquare({ width = 138, pivot = false } = {}) {
+        let graphic = new Graphics();
 
+        graphic.beginFill(0xD1D1D1);
 
+        graphic.lineStyle(3, 0x111111, .7);
 
+        graphic.drawRoundedRect(0, 0, width, width, width / 10 + 10);
 
+        graphic.endFill();
+
+        if (!pivot) return graphic;
+
+        graphic.pivot.set(percent(50, graphic.width));
+
+        return graphic;
+
+    }
+
+    function drawCircle({ width = 128, height = width, pivot = false } = {}) {
+        let graphic = new Graphics();
+
+        graphic.beginFill(0xD1D1D1);
+        graphic.lineStyle(3, 0x111111, .7);
+
+        graphic.drawEllipse(0, 0, width, height);
+        graphic.endFill();
+
+        if (!pivot) return graphic;
+
+        // graphic.pivot.set(percent(50, graphic.width));
+
+        return graphic;
+    }
+
+    const rectSpawner = createSpawner('rect', drawRect);
+    const squareSpawner = createSpawner('square', drawSquare);
+    const circleSpawner = createSpawner('circle', drawCircle);
 
 
     app.stage.addChild(spawnerContainer.it);

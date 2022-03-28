@@ -41,6 +41,7 @@ export default function initEventListeners() {
         }
 
         if (mode == 'build') {
+            console.log(App.build_object)
             const buildingObject = Spawner.getSpawner(App.build_object);
             const previousObject = Spawner.getSpawner(App.previous_object);
 
@@ -123,27 +124,30 @@ export default function initEventListeners() {
         const objectSpawner: Spawner = Spawner.getSpawner(spawnedObject.objectName);
         const { x, y } = spawnedObject.graphic.getLocalBounds();
 
+        const __graphic = spawnedObject.graphic as DraggingGraphics
+        __graphic.origin = { width: __graphic.width, height: __graphic.height, x: __graphic.position.x, y: __graphic.position.y } as DraggingGraphics
+
+
         App.mode = 'options-resizing';
         viewport.drag({ pressDrag: false });
-        hintText.set('');
 
         const resizer = new Graphics() as DraggingGraphics;
 
-        const resizerWidth = percent(10, spawnedObject.graphic.width);
+        const resizerWidth = percent(8, spawnedObject.graphic.width);
 
         resizer
             .beginFill(0xdea3f8)
-            .drawRect(Math.abs(x) - resizerWidth, Math.abs(y) - resizerWidth, resizerWidth, resizerWidth)
+            //spawnedObject.graphic.width / (spawnedObject.objectName == 'circle' ? 2 : 1), spawnedObject.graphic.height / (spawnedObject.objectName == 'circle' ? 2 : 1)
+            .drawRect(0, 0, resizerWidth, resizerWidth)
             .endFill();
 
 
-        resizer.pivot.x = percent(50, resizer.width);
-        resizer.pivot.y = percent(50, resizer.height);
+        // resizer.pivot.x = percent(50, resizer.width);
+        // resizer.pivot.y = percent(50, resizer.height);
         resizer.zIndex = 100;
         resizer.interactive = true;
         resizer.buttonMode = true;
-        resizer.position.set(spawnedObject.graphic.width + percent(50, resizer.width), spawnedObject.graphic.height + percent(50, resizer.height));
-        
+
         resizer.cursor = 'nwse-resize';
 
         spawnedObject.graphic.addChild(resizer);
@@ -152,10 +156,9 @@ export default function initEventListeners() {
             resizer
         };
 
-        let __graphic = spawnedObject.graphic as DraggingGraphics
-        __graphic.origin = { width: __graphic.width, height: __graphic.height, x: __graphic.position.x, y: __graphic.position.y } as DraggingGraphics
 
-        console.log(spawnedObject.graphic.width)
+        // resizer.position.set(__graphic.origin.width - percent(10, __graphic.origin.width), __graphic.origin.height - percent(10, __graphic.origin.height));
+
 
         resizer.on('pointerdown', dragStart);
         resizer.on('pointermove', dragMove);
@@ -170,26 +173,26 @@ export default function initEventListeners() {
 
             if (graphic.dragging) {
                 const { x, y } = e.data.getLocalPosition(viewport);
-                // console.log(e.data.getLocalPosition(graphic))
 
                 if (
                     graphic.origin.width + x - graphic.dragging.x > percent(35, objectSpawner.graphic.width) &&
                     graphic.origin.height + y - graphic.dragging.y > percent(35, objectSpawner.graphic.height) &&
                     !checkIfBeyondWorld(graphic, x, y)
                 ) {
-                    // console.log(graphic.origin)
                     let width = graphic.origin.width + x - graphic.dragging.x - 6;
                     let height = graphic.origin.height + y - graphic.dragging.y - 6;
 
 
-
                     graphic.scale.set(1, 1);
+
                     graphic.clear();
                     graphic.beginFill(0xD1D1D1);
 
                     graphic.lineStyle(3, 0x111111, .7);
 
-                    graphic.drawRoundedRect(0, 0, width, height, Math.abs(height) / 10 + 10);
+                    if (spawnedObject.objectName == 'circle') graphic.drawEllipse(0, 0, width, height);
+                    else graphic.drawRoundedRect(0, 0, width, height, Math.abs(height) / 10 + 10);
+
                     graphic.endFill();
 
                     graphic.updateTransform();
@@ -206,7 +209,7 @@ export default function initEventListeners() {
                     graphic.origin.width += x - graphic.dragging.x;
                     graphic.origin.height += y - graphic.dragging.y;
 
-                    resizer.position.set(graphic.origin.width + x - graphic.dragging.x, graphic.origin.height + y - graphic.dragging.y)
+                    resizer.position.set((graphic.origin.width + x - graphic.dragging.x) / (spawnedObject.objectName == 'circle' ? 2 : 1), (graphic.origin.height + y - graphic.dragging.y) / (spawnedObject.objectName == 'circle' ? 2 : 1))
 
                     spawnedObject.dimensions.set(width, height)
 
