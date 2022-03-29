@@ -153,12 +153,12 @@ export async function run(el: HTMLDivElement): Promise<void> {
         graphic.beginFill(0xD1D1D1);
         graphic.lineStyle(3, 0x111111, .7);
 
-        graphic.drawEllipse(0, 0, width, height);
+        graphic.drawEllipse(0, 0, width / 2, height  / 2);
         graphic.endFill();
 
         if (!pivot) return graphic;
 
-        // graphic.pivot.set(percent(50, graphic.width));
+        graphic.pivot.set(width - graphic.width, height - graphic.height);
 
         return graphic;
     }

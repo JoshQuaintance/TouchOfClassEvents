@@ -137,13 +137,13 @@ export default function initEventListeners() {
 
         resizer
             .beginFill(0xdea3f8)
-            //spawnedObject.graphic.width / (spawnedObject.objectName == 'circle' ? 2 : 1), spawnedObject.graphic.height / (spawnedObject.objectName == 'circle' ? 2 : 1)
-            .drawRect(0, 0, resizerWidth, resizerWidth)
-            .endFill();
+        if (spawnedObject.objectName == 'circle')
+            resizer.drawRect(spawnedObject.graphic.width / 2, spawnedObject.graphic.height / 2, resizerWidth, resizerWidth)
+        else
+            resizer.drawRect(spawnedObject.graphic.width, spawnedObject.graphic.height, resizerWidth, resizerWidth)
 
+        resizer.endFill();
 
-        // resizer.pivot.x = percent(50, resizer.width);
-        // resizer.pivot.y = percent(50, resizer.height);
         resizer.zIndex = 100;
         resizer.interactive = true;
         resizer.buttonMode = true;
@@ -157,9 +157,6 @@ export default function initEventListeners() {
         };
 
 
-        // resizer.position.set(__graphic.origin.width - percent(10, __graphic.origin.width), __graphic.origin.height - percent(10, __graphic.origin.height));
-
-
         resizer.on('pointerdown', dragStart);
         resizer.on('pointermove', dragMove);
         resizer.on('pointerup', dragEnd);
@@ -169,8 +166,6 @@ export default function initEventListeners() {
             const graphic: DraggingGraphics = spawnedObject.graphic as DraggingGraphics;
             const viewport = App.viewport;
 
-
-
             if (graphic.dragging) {
                 const { x, y } = e.data.getLocalPosition(viewport);
 
@@ -179,9 +174,9 @@ export default function initEventListeners() {
                     graphic.origin.height + y - graphic.dragging.y > percent(35, objectSpawner.graphic.height) &&
                     !checkIfBeyondWorld(graphic, x, y)
                 ) {
+
                     let width = graphic.origin.width + x - graphic.dragging.x - 6;
                     let height = graphic.origin.height + y - graphic.dragging.y - 6;
-
 
                     graphic.scale.set(1, 1);
 
@@ -190,13 +185,10 @@ export default function initEventListeners() {
 
                     graphic.lineStyle(3, 0x111111, .7);
 
-                    if (spawnedObject.objectName == 'circle') graphic.drawEllipse(0, 0, width, height);
+                    if (spawnedObject.objectName == 'circle') graphic.drawEllipse(0, 0, width / 2, height / 2);
                     else graphic.drawRoundedRect(0, 0, width, height, Math.abs(height) / 10 + 10);
 
                     graphic.endFill();
-
-                    graphic.updateTransform();
-                    graphic.calculateBounds();
 
                     // TODO: Find a way to make sure the text is inside the container
                     spawnedObject.setLabel(spawnedObject.labelText, new TextStyle({
@@ -206,21 +198,19 @@ export default function initEventListeners() {
                         fontSize: `${percent(9, width)}px`
                     }))
 
+
                     graphic.origin.width += x - graphic.dragging.x;
                     graphic.origin.height += y - graphic.dragging.y;
 
-                    resizer.position.set((graphic.origin.width + x - graphic.dragging.x) / (spawnedObject.objectName == 'circle' ? 2 : 1), (graphic.origin.height + y - graphic.dragging.y) / (spawnedObject.objectName == 'circle' ? 2 : 1))
-
+                    if (spawnedObject.objectName == 'circle')
+                        resizer.position.set((graphic.origin.width + x - graphic.dragging.x) / 2, (graphic.origin.height + y - graphic.dragging.y) / 2);
+                    else
+                        resizer.position.set(graphic.origin.width + x - graphic.dragging.x, graphic.origin.height + y - graphic.dragging.y)
+                        
                     spawnedObject.dimensions.set(width, height)
 
                     graphic.dragging = { x, y };
-
-
                 } else {
-                    // eslint-disable no-self-assign
-                    graphic.width = graphic.width;
-                    // eslint-disable no-self-assign
-                    graphic.height = graphic.height;
                     graphic.dragging = { x, y };
                 }
             }
