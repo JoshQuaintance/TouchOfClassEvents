@@ -122,10 +122,14 @@ export default function initEventListeners() {
     App.event_medium.addEventListener('options-resize', (e: CustomEventInit) => {
         const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
         const objectSpawner: Spawner = Spawner.getSpawner(spawnedObject.objectName);
-        const { x, y } = spawnedObject.graphic.getLocalBounds();
 
         const __graphic = spawnedObject.graphic as DraggingGraphics
         __graphic.origin = { width: __graphic.width, height: __graphic.height, x: __graphic.position.x, y: __graphic.position.y } as DraggingGraphics
+
+        const resizerPos = {
+            x: __graphic.width,
+            y: __graphic.height
+        }
 
 
         App.mode = 'options-resizing';
@@ -174,11 +178,13 @@ export default function initEventListeners() {
                     graphic.origin.height + y - graphic.dragging.y > percent(35, objectSpawner.graphic.height) &&
                     !checkIfBeyondWorld(graphic, x, y)
                 ) {
+                    // if (spawnedObject.objectName == 'circle')
+                    //     resizer.position.set((graphic.origin.width + x - graphic.dragging.x) / 2, (graphic.origin.height + y - graphic.dragging.y) / 2);
+                    // else
+                    //     resizer.position.set(graphic.origin.width + x - graphic.dragging.x, graphic.origin.height + y - graphic.dragging.y)
 
                     let width = graphic.origin.width + x - graphic.dragging.x - 6;
                     let height = graphic.origin.height + y - graphic.dragging.y - 6;
-
-                    graphic.scale.set(1, 1);
 
                     graphic.clear();
                     graphic.beginFill(0xD1D1D1);
@@ -191,23 +197,32 @@ export default function initEventListeners() {
                     graphic.endFill();
 
                     // TODO: Find a way to make sure the text is inside the container
-                    spawnedObject.setLabel(spawnedObject.labelText, new TextStyle({
+                    let lbl = spawnedObject.setLabel(spawnedObject.labelText, new TextStyle({
                         align: 'center',
                         wordWrap: true,
                         wordWrapWidth: width,
                         fontSize: `${percent(9, width)}px`
                     }))
 
+                    if (spawnedObject.objectName == 'circle') lbl.position.set(0)
 
                     graphic.origin.width += x - graphic.dragging.x;
                     graphic.origin.height += y - graphic.dragging.y;
+                    resizerPos.x = graphic.origin.width;
+                    resizerPos.y = graphic.origin.height;
 
+                    // console.log(graphic.origin.width, graphic.origin.height, '\n', graphic.width, graphic.height, '\n', graphic.origin.width + x - graphic.dragging.x, graphic.origin.height + y - graphic.dragging.y)
+                    console.log(resizerPos)
+                    resizer.clear();
+                    resizer.beginFill(0xdea3f8)
                     if (spawnedObject.objectName == 'circle')
-                        resizer.position.set((graphic.origin.width + x - graphic.dragging.x) / 2, (graphic.origin.height + y - graphic.dragging.y) / 2);
+                        resizer.drawRect(resizerPos.x / 2, resizerPos.y / 2, percent(8, spawnedObject.graphic.width), percent(8, spawnedObject.graphic.width))
                     else
-                        resizer.position.set(graphic.origin.width + x - graphic.dragging.x, graphic.origin.height + y - graphic.dragging.y)
-                        
+                        resizer.drawRect(resizerPos.x, resizerPos.y, percent(8, spawnedObject.graphic.width), percent(8, spawnedObject.graphic.width))
+                    resizer.endFill();
+
                     spawnedObject.dimensions.set(width, height)
+
 
                     graphic.dragging = { x, y };
                 } else {

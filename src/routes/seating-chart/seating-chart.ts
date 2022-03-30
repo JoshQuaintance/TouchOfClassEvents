@@ -157,8 +157,7 @@ export async function run(el: HTMLDivElement): Promise<void> {
         graphic.endFill();
 
         if (!pivot) return graphic;
-
-        graphic.pivot.set(width - graphic.width, height - graphic.height);
+            graphic.pivot.set(width - graphic.width, height - graphic.height);
 
         return graphic;
     }

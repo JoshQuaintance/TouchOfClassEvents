@@ -85,14 +85,11 @@
         }
 
         window.addEventListener('keydown', (e) => {
-        
-
             if (e.key == 'Escape') App.mode = 'view';
 
             if (e.key === 'z' && e.ctrlKey) eventPreventDefault(e) && App.undo_prev_event();
-        
+
             if (e.ctrlKey && e.key === 's') eventPreventDefault(e) && App.save_seating_chart();
-            
         });
 
         App.event_medium.addEventListener(

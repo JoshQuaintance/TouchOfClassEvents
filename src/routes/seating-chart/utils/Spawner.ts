@@ -38,9 +38,6 @@ export class Spawner {
 
         Spawner.spawners[this._spawnerName] = this;
 
-
-        // App.viewport.addChild(this._graphic)
-
         this._graphic.on('pointerdown', (e) => this.clicked(e));
 
     }
@@ -266,11 +263,13 @@ export class SpawnedObject {
 
         // Centers the text location
         label.anchor.set(0.5);
-        label.x = percent(50, this._graphic.width);
-        label.y = percent(50, this._graphic.height);
+        if (this.objectName != 'circle')
+            label.position.set(percent(50, this._graphic.width), percent(50, this._graphic.height))
 
         this._label = label;
         this._graphic.addChild(label);
+
+        return label;
     }
 
     addPointerEvents() {
