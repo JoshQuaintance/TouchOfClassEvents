@@ -1,7 +1,7 @@
 <!-- 
     File Location: src/components/Icon.svelte
     Description: Icons component using material design icons
-    Icons: https://icon-sets.iconify.design/mdi/
+    Icons: https://icon-sets.iconify.designcopy/mdi/
  -->
 <script>
     import Icon from '@iconify/svelte';

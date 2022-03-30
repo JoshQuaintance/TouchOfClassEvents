@@ -19,6 +19,7 @@ export class Spawner {
     private _spawnerName: string;
     private _objectName: string;
     private _graphic: Graphics;
+    private _originalGraphic: Graphics;
     private _renderFunction: Function;
 
     private static spawners = {}
@@ -28,6 +29,7 @@ export class Spawner {
         this._spawnerName = `${name}-spawner`;
         this._objectName = name;
         this._graphic = renderFunction({ pivot: true });
+        this._originalGraphic = this._graphic;
 
 
         this._graphic.buttonMode = true;
@@ -47,34 +49,41 @@ export class Spawner {
         App.app.renderer.plugins.interaction.setCursorMode('pointer');
         const { x, y } = e.data.getLocalPosition(App.viewport);
 
+
         if (!checkIfBeyondWorld(null, x, y))
             this.spawnObject(x, y);
     }
 
 
-    private spawnObject(xCoords: number, yCoords: number) {
-        const clone = new SpawnedObject(this.createClone(), {
-            parentType: this._spawnerName,
-            objectName: this._objectName
-        });
+    private spawnObject(xCoords: number, yCoords: number, spawnedObject: SpawnedObject = null) {
+        if (!spawnedObject) {
+            const clone = new SpawnedObject(this.createClone(), {
+                parentType: this._spawnerName,
+                objectName: this._objectName
+            });
 
-        clone.graphic.alpha = 1;
-        clone.graphic.position.x = xCoords
-        clone.graphic.position.y = yCoords;
-        App.viewport.addChild(clone.graphic);
+            clone.graphic.alpha = 1;
+            clone.graphic.position.x = xCoords
+            clone.graphic.position.y = yCoords;
+            App.viewport.addChild(clone.graphic);
 
-        SpawnedObject.addSpawnedObject(clone);
+            SpawnedObject.addSpawnedObject(clone);
 
-        if (App.editMode) clone.addPointerEvents();
+            if (App.editMode) clone.addPointerEvents();
 
-        App.new_app_event({
-            event: 'spawn-object',
-            additional: {
-                sprite: clone.graphic,
-                coords: { x: clone.graphic.position.x, y: clone.graphic.position.y },
-                parent: clone.graphic.parent
-            }
-        });
+            App.new_app_event({
+                event: 'spawn-object',
+                additional: {
+                    sprite: clone.graphic,
+                    coords: { x: clone.graphic.position.x, y: clone.graphic.position.y },
+                    parent: clone.graphic.parent
+                }
+            });
+        }
+
+        spawnedObject
+
+
 
         return true;
     }
@@ -83,6 +92,21 @@ export class Spawner {
         const clone = this.renderFunction({ pivot: true });
 
         return clone;
+    }
+
+    copySpawnedObject(obj: SpawnedObject) {
+        App.build_object = this._objectName;
+        App.mode = 'build';
+
+        this._graphic = obj.graphic;
+        this._graphic.on('pointerdown', (e) => {
+            const { x, y } = e.data.getLocalPosition(App.viewport);
+
+
+            if (!checkIfBeyondWorld(null, x, y))
+                this.spawnObject(x, y, obj);
+        });
+
     }
 
 
@@ -159,8 +183,6 @@ export class SpawnedObject {
             const { label, isSeat, isTable, width, height, coords, holdAmount, canHoldType, parentType, objectName, labelStyle } =
                 data as SpawnedObjectData;
 
-            console.log(width, height, 'init')
-
 
             const parent = Spawner.getSpawner(objectName);
 
@@ -206,7 +228,6 @@ export class SpawnedObject {
 
 
     get spawnedObjectData(): SpawnedObjectData {
-        console.log(this._dimensions, 'sent')
 
         return {
             discriminator: 'spawned-object-data',
@@ -245,6 +266,10 @@ export class SpawnedObject {
         return this._dimensions
     }
 
+    clone() {
+        return new SpawnedObject(this.spawnedObjectData)
+    }
+
     setLabel(text: string, style?: TextStyle) {
         if (this._label) {
             this._graphic.removeChild(this._label);
@@ -253,7 +278,6 @@ export class SpawnedObject {
 
 
         this._labelText = text;
-        console.log(this._labelText)
 
         const defaultStyle = new TextStyle({
             align: 'center',

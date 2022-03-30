@@ -72,12 +72,13 @@ export default function initEventListeners() {
         if (mode == 'options-resize') hintText.set('Select an object to resize');
 
         if (mode == 'options-delete') hintText.set('Select an object to delete');
+
+        if (mode == 'options-copy') hintText.set('Select an object to copy');
     });
 
     App.event_medium.addEventListener('options-delete', (e: CustomEventInit) => {
         const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
 
-        // hintText.set('');
         dialogUsed.set('ConfirmDeletion');
 
         openModal.set(true);
@@ -209,7 +210,7 @@ export default function initEventListeners() {
                     resizerPos.x = graphic.origin.width;
                     resizerPos.y = graphic.origin.height;
 
-                    
+
                     resizer.clear();
                     resizer.beginFill(0xdea3f8)
                     if (spawnedObject.objectName == 'circle')
@@ -250,4 +251,13 @@ export default function initEventListeners() {
         }
 
     });
+
+    App.event_medium.addEventListener('options-copy', (e: CustomEventInit) => {
+        const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
+        const objectSpawner: Spawner = Spawner.getSpawner(spawnedObject.objectName);
+
+        hintText.set('')
+
+        objectSpawner.copySpawnedObject(spawnedObject.clone());
+    })
 }

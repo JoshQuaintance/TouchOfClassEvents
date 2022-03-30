@@ -171,6 +171,8 @@
             <OptionsButton icon="form-textbox" tooltip="Add/Edit Label" event="add-label" />
 
             <OptionsButton icon="arrow-top-left-bottom-right" tooltip="Resize Object" event="resize" />
+
+            <OptionsButton icon="content-copy" tooltip="Copy Object" event="copy" />
         {/if}
         <OptionsButton
             icon="power"
