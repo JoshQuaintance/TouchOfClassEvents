@@ -197,22 +197,19 @@ export default function initEventListeners() {
                     graphic.endFill();
 
                     // TODO: Find a way to make sure the text is inside the container
-                    let lbl = spawnedObject.setLabel(spawnedObject.labelText, new TextStyle({
+                    spawnedObject.setLabel(spawnedObject.labelText, new TextStyle({
                         align: 'center',
                         wordWrap: true,
                         wordWrapWidth: width,
                         fontSize: `${percent(9, width)}px`
                     }))
 
-                    if (spawnedObject.objectName == 'circle') lbl.position.set(0)
-
                     graphic.origin.width += x - graphic.dragging.x;
                     graphic.origin.height += y - graphic.dragging.y;
                     resizerPos.x = graphic.origin.width;
                     resizerPos.y = graphic.origin.height;
 
-                    // console.log(graphic.origin.width, graphic.origin.height, '\n', graphic.width, graphic.height, '\n', graphic.origin.width + x - graphic.dragging.x, graphic.origin.height + y - graphic.dragging.y)
-                    console.log(resizerPos)
+                    
                     resizer.clear();
                     resizer.beginFill(0xdea3f8)
                     if (spawnedObject.objectName == 'circle')

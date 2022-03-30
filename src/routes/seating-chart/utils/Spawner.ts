@@ -169,7 +169,7 @@ export class SpawnedObject {
             this._graphic = parent.renderFunction({ width, height, pivot: false });
 
 
-            this.setLabel(label, labelStyle);
+            let lbl = this.setLabel(label, labelStyle);
             this._isSeat = isSeat;
             this._isTable = isTable;
             this._graphic.position.x = coords.x;
@@ -179,6 +179,9 @@ export class SpawnedObject {
             this._canHoldType = canHoldType;
             this._parentType = parentType;
             this._objectName = objectName
+
+            if (this.objectName == 'circle')
+                lbl.position.set(0)
 
 
             if (App.editMode) this.addPointerEvents();
@@ -248,7 +251,9 @@ export class SpawnedObject {
             this._label = null;
         }
 
+
         this._labelText = text;
+        console.log(this._labelText)
 
         const defaultStyle = new TextStyle({
             align: 'center',
@@ -262,9 +267,14 @@ export class SpawnedObject {
         const label = new Text(text, this._labelStyle);
 
         // Centers the text location
-        label.anchor.set(0.5);
+        label.anchor.set(.5)
+
         if (this.objectName != 'circle')
             label.position.set(percent(50, this._graphic.width), percent(50, this._graphic.height))
+        else
+            label.position.set(0)
+
+        console.log(label.position)
 
         this._label = label;
         this._graphic.addChild(label);
