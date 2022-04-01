@@ -80,7 +80,7 @@ export default class App {
         this._seating_chart_data = new_data;
         const event_id = window.location.pathname.replace('/seating-chart/', '');
 
-        let res = await fetch('/seating-chart/save', {
+        const res = await fetch('/seating-chart/save', {
             method: 'POST',
             body: JSON.stringify({
                 data: new_data,
@@ -88,7 +88,7 @@ export default class App {
             })
         });
 
-        let serialized = await res.json()
+        const serialized = await res.json()
 
         if (serialized?.message == "Update successful!") {
             newSnackbar({

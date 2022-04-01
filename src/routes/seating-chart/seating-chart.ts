@@ -110,7 +110,7 @@ export async function run(el: HTMLDivElement): Promise<void> {
 
 
     function drawRect({ width = 277, height = 73, pivot = false } = {}) {
-        let graphic = new Graphics();
+        const graphic = new Graphics();
 
         graphic.beginFill(0xD1D1D1);
         // set the line style to have a width of 2 and set the color to red
@@ -129,7 +129,7 @@ export async function run(el: HTMLDivElement): Promise<void> {
     }
 
     function drawSquare({ width = 138, pivot = false } = {}) {
-        let graphic = new Graphics();
+        const graphic = new Graphics();
 
         graphic.beginFill(0xD1D1D1);
 
@@ -148,7 +148,7 @@ export async function run(el: HTMLDivElement): Promise<void> {
     }
 
     function drawCircle({ width = 128, height = width, pivot = false } = {}) {
-        let graphic = new Graphics();
+        const graphic = new Graphics();
 
         graphic.beginFill(0xD1D1D1);
         graphic.lineStyle(3, 0x111111, .7);

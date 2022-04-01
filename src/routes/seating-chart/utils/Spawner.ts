@@ -79,10 +79,27 @@ export class Spawner {
                     parent: clone.graphic.parent
                 }
             });
+        } else {
+            const clone = spawnedObject.clone();
+
+            clone.graphic.removeAllListeners();
+            clone.graphic.alpha = 1;
+            clone.graphic.position.set(xCoords, yCoords);
+
+            App.viewport.addChild(clone.graphic);
+
+            if (App.editMode) clone.addPointerEvents();
+
+            App.new_app_event({
+                event: 'spawn-object',
+                additional: {
+                    sprite: clone.graphic,
+                    coords: clone.graphic.position,
+                    parent: clone.graphic.parent
+                }
+            })
+
         }
-
-        spawnedObject
-
 
 
         return true;
@@ -95,20 +112,36 @@ export class Spawner {
     }
 
     copySpawnedObject(obj: SpawnedObject) {
+        this._graphic = obj.graphic;
+
+        if (obj.objectName != 'circle') obj.graphic.pivot.set(obj.graphic.width / 2, obj.graphic.height / 2)
+        this._graphic.buttonMode = true;
+        this._graphic.cursor = 'pointer';
+        this._graphic.interactive = true;
+
         App.build_object = this._objectName;
         App.mode = 'build';
+        const _ = this;
 
-        this._graphic = obj.graphic;
-        this._graphic.on('pointerdown', (e) => {
+        function spawnerClicked(e) {
             const { x, y } = e.data.getLocalPosition(App.viewport);
 
-
             if (!checkIfBeyondWorld(null, x, y))
-                this.spawnObject(x, y, obj);
-        });
+                _.spawnObject(x, y, obj)
+
+        }
+
+        this._graphic.on('pointerdown', spawnerClicked);
+
+        function resetGraphicEvent(e: CustomEventInit) {
+            Spawner.resetAllGraphicToDefault();
+
+            App.event_medium.removeEventListener('app-mode-changed', resetGraphicEvent)
+        }
+
+        App.event_medium.addEventListener('app-mode-changed', resetGraphicEvent)
 
     }
-
 
     set x(val: number) {
         this._graphic.position.x = val;
@@ -126,11 +159,20 @@ export class Spawner {
         return this._renderFunction;
     }
 
+    resetGraphicToDefault() {
+        this._graphic = this._originalGraphic;
+    }
+
     static getSpawner(name: string): Spawner {
         return Spawner.spawners[`${name}-spawner`];
     }
-}
 
+    static resetAllGraphicToDefault() {
+        for (const prop in this.spawners) {
+            this.spawners[prop].resetGraphicToDefault();
+        }
+    }
+}
 
 interface SpawnedObjectOptions {
     parentType: string;
@@ -191,7 +233,7 @@ export class SpawnedObject {
             this._graphic = parent.renderFunction({ width, height, pivot: false });
 
 
-            let lbl = this.setLabel(label, labelStyle);
+            const lbl = this.setLabel(label, labelStyle);
             this._isSeat = isSeat;
             this._isTable = isTable;
             this._graphic.position.x = coords.x;

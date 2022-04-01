@@ -41,9 +41,9 @@ export default function initEventListeners() {
         }
 
         if (mode == 'build') {
-            console.log(App.build_object)
             const buildingObject = Spawner.getSpawner(App.build_object);
             const previousObject = Spawner.getSpawner(App.previous_object);
+            buildingObject.graphic.alpha = 0.7
 
             viewport.on('pointermove', (e: InteractionEvent) => {
                 const graphic: DraggingGraphics = Spawner.getSpawner(App.build_object).graphic as DraggingGraphics;
@@ -179,13 +179,9 @@ export default function initEventListeners() {
                     graphic.origin.height + y - graphic.dragging.y > percent(35, objectSpawner.graphic.height) &&
                     !checkIfBeyondWorld(graphic, x, y)
                 ) {
-                    // if (spawnedObject.objectName == 'circle')
-                    //     resizer.position.set((graphic.origin.width + x - graphic.dragging.x) / 2, (graphic.origin.height + y - graphic.dragging.y) / 2);
-                    // else
-                    //     resizer.position.set(graphic.origin.width + x - graphic.dragging.x, graphic.origin.height + y - graphic.dragging.y)
 
-                    let width = graphic.origin.width + x - graphic.dragging.x - 6;
-                    let height = graphic.origin.height + y - graphic.dragging.y - 6;
+                    const width = graphic.origin.width + x - graphic.dragging.x - 6;
+                    const height = graphic.origin.height + y - graphic.dragging.y - 6;
 
                     graphic.clear();
                     graphic.beginFill(0xD1D1D1);
@@ -258,6 +254,8 @@ export default function initEventListeners() {
 
         hintText.set('')
 
-        objectSpawner.copySpawnedObject(spawnedObject.clone());
+        const clone = spawnedObject.clone();
+        clone.graphic.removeAllListeners();
+        objectSpawner.copySpawnedObject(clone);
     })
 }
