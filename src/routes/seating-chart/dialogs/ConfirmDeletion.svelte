@@ -18,7 +18,7 @@
     }
 </script>
 
-<Dialog title="Change Label" {closeCallback}>
+<Dialog title="Delete Item?" {closeCallback}>
     <p>Are you sure to delete selected object?</p>
 
     <div class="flex-row justify-between">
