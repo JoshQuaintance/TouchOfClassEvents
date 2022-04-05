@@ -110,8 +110,18 @@ export default function initEventListeners() {
 
         function handleLabelChange(e: CustomEventInit) {
             const newLabel: string = e.detail.additional.label;
+            const fontSize: string = e.detail.additional.fontSize;
 
-            spawnedObject.setLabel(newLabel);
+            console.log(fontSize)
+
+
+
+            spawnedObject.setLabel(newLabel, new TextStyle({
+                align: 'center',
+                wordWrap: true,
+                wordWrapWidth: spawnedObject.graphic.width,
+                fontSize: fontSize || `${percent(9, spawnedObject.graphic.width)}px`
+            }));
 
             // Remove the event listener so that this element doesn't change label when a different object is changing label
             App.event_medium.removeEventListener('label-change-input', handleLabelChange);
