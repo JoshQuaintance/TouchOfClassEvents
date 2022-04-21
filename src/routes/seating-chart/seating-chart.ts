@@ -108,13 +108,12 @@ export async function run(el: HTMLDivElement): Promise<void> {
         return newSpawner;
     }
 
-
     function drawRect({ width = 277, height = 73, pivot = false } = {}) {
         const graphic = new Graphics();
 
-        graphic.beginFill(0xD1D1D1);
+        graphic.beginFill(0xd1d1d1);
         // set the line style to have a width of 2 and set the color to red
-        graphic.lineStyle(3, 0x111111, .7);
+        graphic.lineStyle(3, 0x111111, 0.7);
 
         // draw a rectangle
         graphic.drawRoundedRect(0, 0, width, height, height / 10 + 10);
@@ -131,9 +130,9 @@ export async function run(el: HTMLDivElement): Promise<void> {
     function drawSquare({ width = 138, pivot = false } = {}) {
         const graphic = new Graphics();
 
-        graphic.beginFill(0xD1D1D1);
+        graphic.beginFill(0xd1d1d1);
 
-        graphic.lineStyle(3, 0x111111, .7);
+        graphic.lineStyle(3, 0x111111, 0.7);
 
         graphic.drawRoundedRect(0, 0, width, width, width / 10 + 10);
 
@@ -144,20 +143,19 @@ export async function run(el: HTMLDivElement): Promise<void> {
         graphic.pivot.set(percent(50, graphic.width));
 
         return graphic;
-
     }
 
     function drawCircle({ width = 128, height = width, pivot = false } = {}) {
         const graphic = new Graphics();
 
-        graphic.beginFill(0xD1D1D1);
-        graphic.lineStyle(3, 0x111111, .7);
+        graphic.beginFill(0xd1d1d1);
+        graphic.lineStyle(3, 0x111111, 0.7);
 
-        graphic.drawEllipse(0, 0, width / 2, height  / 2);
+        graphic.drawEllipse(0, 0, width / 2, height / 2);
         graphic.endFill();
 
         if (!pivot) return graphic;
-            graphic.pivot.set(width - graphic.width, height - graphic.height);
+        graphic.pivot.set(width - graphic.width, height - graphic.height);
 
         return graphic;
     }
@@ -165,7 +163,6 @@ export async function run(el: HTMLDivElement): Promise<void> {
     const rectSpawner = createSpawner('rect', drawRect);
     const squareSpawner = createSpawner('square', drawSquare);
     const circleSpawner = createSpawner('circle', drawCircle);
-
 
     app.stage.addChild(spawnerContainer.it);
 
@@ -180,7 +177,6 @@ export async function run(el: HTMLDivElement): Promise<void> {
         }
     }
 }
-
 
 /*
 var graphic = new PIXI.Graphics()

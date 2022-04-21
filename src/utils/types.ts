@@ -1,4 +1,4 @@
-import type { TextStyle } from "pixi.js";
+import type { TextStyle } from 'pixi.js';
 
 export type Base64 = string;
 export type UUID = string;

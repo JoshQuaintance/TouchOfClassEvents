@@ -19,7 +19,6 @@ export default function initEventListeners() {
     App.event_medium.addEventListener('app-mode-changed', (e: CustomEventInit) => {
         const mode = e.detail.mode;
 
-
         if (mode == 'options-save') {
             App.mode = 'view';
 
@@ -43,7 +42,7 @@ export default function initEventListeners() {
         if (mode == 'build') {
             const buildingObject = Spawner.getSpawner(App.build_object);
             const previousObject = Spawner.getSpawner(App.previous_object);
-            buildingObject.graphic.alpha = 0.7
+            buildingObject.graphic.alpha = 0.7;
 
             viewport.on('pointermove', (e: InteractionEvent) => {
                 const graphic: DraggingGraphics = Spawner.getSpawner(App.build_object).graphic as DraggingGraphics;
@@ -56,13 +55,11 @@ export default function initEventListeners() {
                     buildingObject.x += x - graphic.dragging.x;
                     buildingObject.y += y - graphic.dragging.y;
                     graphic.dragging = { x, y };
-
                 } else {
                     buildingObject.x = x;
                     buildingObject.y = y;
                 }
-
-            })
+            });
 
             if (previousObject) viewport.removeChild(previousObject.graphic);
             viewport.addChild(buildingObject.graphic);
@@ -96,7 +93,6 @@ export default function initEventListeners() {
             spawnedObject.graphic.parent.removeChild(spawnedObject.graphic);
 
             App.event_medium.removeEventListener('deletion-confirmed', handleDeletion);
-
         }
 
         App.event_medium.addEventListener('deletion-confirmed', handleDeletion);
@@ -118,13 +114,15 @@ export default function initEventListeners() {
             const newLabel: string = e.detail.additional.label;
             const fontSize: string = e.detail.additional.fontSize;
 
-
-            spawnedObject.setLabel(newLabel, new TextStyle({
-                align: 'center',
-                wordWrap: true,
-                wordWrapWidth: spawnedObject.graphic.width,
-                fontSize: fontSize || `${percent(9, spawnedObject.graphic.width)}px`
-            }));
+            spawnedObject.setLabel(
+                newLabel,
+                new TextStyle({
+                    align: 'center',
+                    wordWrap: true,
+                    wordWrapWidth: spawnedObject.graphic.width,
+                    fontSize: fontSize || `${percent(9, spawnedObject.graphic.width)}px`
+                })
+            );
 
             // Remove the event listener so that this element doesn't change label when a different object is changing label
             App.event_medium.removeEventListener('label-change-input', handleLabelChange);
@@ -137,14 +135,18 @@ export default function initEventListeners() {
         const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
         const objectSpawner: Spawner = Spawner.getSpawner(spawnedObject.objectName);
 
-        const __graphic = spawnedObject.graphic as DraggingGraphics
-        __graphic.origin = { width: __graphic.width, height: __graphic.height, x: __graphic.position.x, y: __graphic.position.y } as DraggingGraphics
+        const __graphic = spawnedObject.graphic as DraggingGraphics;
+        __graphic.origin = {
+            width: __graphic.width,
+            height: __graphic.height,
+            x: __graphic.position.x,
+            y: __graphic.position.y
+        } as DraggingGraphics;
 
         const resizerPos = {
             x: __graphic.width,
             y: __graphic.height
-        }
-
+        };
 
         App.mode = 'options-resizing';
         viewport.drag({ pressDrag: false });
@@ -153,12 +155,15 @@ export default function initEventListeners() {
 
         const resizerWidth = percent(8, spawnedObject.graphic.width);
 
-        resizer
-            .beginFill(0xdea3f8)
+        resizer.beginFill(0xdea3f8);
         if (spawnedObject.objectName == 'circle')
-            resizer.drawRect(spawnedObject.graphic.width / 2, spawnedObject.graphic.height / 2, resizerWidth, resizerWidth)
-        else
-            resizer.drawRect(spawnedObject.graphic.width, spawnedObject.graphic.height, resizerWidth, resizerWidth)
+            resizer.drawRect(
+                spawnedObject.graphic.width / 2,
+                spawnedObject.graphic.height / 2,
+                resizerWidth,
+                resizerWidth
+            );
+        else resizer.drawRect(spawnedObject.graphic.width, spawnedObject.graphic.height, resizerWidth, resizerWidth);
 
         resizer.endFill();
 
@@ -173,7 +178,6 @@ export default function initEventListeners() {
             spawnedObject,
             resizer
         };
-
 
         resizer.on('pointerdown', dragStart);
         resizer.on('pointermove', dragMove);
@@ -192,14 +196,13 @@ export default function initEventListeners() {
                     graphic.origin.height + y - graphic.dragging.y > percent(35, objectSpawner.graphic.height) &&
                     !checkIfBeyondWorld(graphic, x, y)
                 ) {
-
                     const width = graphic.origin.width + x - graphic.dragging.x - 6;
                     const height = graphic.origin.height + y - graphic.dragging.y - 6;
 
                     graphic.clear();
-                    graphic.beginFill(0xD1D1D1);
+                    graphic.beginFill(0xd1d1d1);
 
-                    graphic.lineStyle(3, 0x111111, .7);
+                    graphic.lineStyle(3, 0x111111, 0.7);
 
                     if (spawnedObject.objectName == 'circle') graphic.drawEllipse(0, 0, width / 2, height / 2);
                     else graphic.drawRoundedRect(0, 0, width, height, Math.abs(height) / 10 + 10);
@@ -207,29 +210,40 @@ export default function initEventListeners() {
                     graphic.endFill();
 
                     // TODO: Find a way to make sure the text is inside the container
-                    spawnedObject.setLabel(spawnedObject.labelText, new TextStyle({
-                        align: 'center',
-                        wordWrap: true,
-                        wordWrapWidth: width,
-                        fontSize: `${percent(9, width)}px`
-                    }))
+                    spawnedObject.setLabel(
+                        spawnedObject.labelText,
+                        new TextStyle({
+                            align: 'center',
+                            wordWrap: true,
+                            wordWrapWidth: width,
+                            fontSize: `${percent(9, width)}px`
+                        })
+                    );
 
                     graphic.origin.width += x - graphic.dragging.x;
                     graphic.origin.height += y - graphic.dragging.y;
                     resizerPos.x = graphic.origin.width;
                     resizerPos.y = graphic.origin.height;
 
-
                     resizer.clear();
-                    resizer.beginFill(0xdea3f8)
+                    resizer.beginFill(0xdea3f8);
                     if (spawnedObject.objectName == 'circle')
-                        resizer.drawRect(resizerPos.x / 2, resizerPos.y / 2, percent(8, spawnedObject.graphic.width), percent(8, spawnedObject.graphic.width))
+                        resizer.drawRect(
+                            resizerPos.x / 2,
+                            resizerPos.y / 2,
+                            percent(8, spawnedObject.graphic.width),
+                            percent(8, spawnedObject.graphic.width)
+                        );
                     else
-                        resizer.drawRect(resizerPos.x, resizerPos.y, percent(8, spawnedObject.graphic.width), percent(8, spawnedObject.graphic.width))
+                        resizer.drawRect(
+                            resizerPos.x,
+                            resizerPos.y,
+                            percent(8, spawnedObject.graphic.width),
+                            percent(8, spawnedObject.graphic.width)
+                        );
                     resizer.endFill();
 
-                    spawnedObject.dimensions.set(width, height)
-
+                    spawnedObject.dimensions.set(width, height);
 
                     graphic.dragging = { x, y };
                 } else {
@@ -244,9 +258,7 @@ export default function initEventListeners() {
             graphic.dragging = null;
             graphic.data = null;
             if (App.mode != 'build') App.viewport.drag();
-
         }
-
 
         function dragStart(e: InteractionEvent) {
             const graphic: DraggingGraphics = spawnedObject.graphic as DraggingGraphics;
@@ -258,17 +270,16 @@ export default function initEventListeners() {
             graphic.dragging = { x, y };
             viewport.drag({ pressDrag: false });
         }
-
     });
 
     App.event_medium.addEventListener('options-copy', (e: CustomEventInit) => {
         const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
         const objectSpawner: Spawner = Spawner.getSpawner(spawnedObject.objectName);
 
-        hintText.set('')
+        hintText.set('');
 
         const clone = spawnedObject.clone();
         clone.graphic.removeAllListeners();
         objectSpawner.copySpawnedObject(clone);
-    })
+    });
 }

@@ -88,9 +88,9 @@ export default class App {
             })
         });
 
-        const serialized = await res.json()
+        const serialized = await res.json();
 
-        if (serialized?.message == "Update successful!") {
+        if (serialized?.message == 'Update successful!') {
             newSnackbar({
                 props: {
                     text: 'Seating Chart Saved!',
@@ -98,7 +98,7 @@ export default class App {
                 },
                 component: undefined,
                 duration: 2000
-            })
+            });
         }
     }
 

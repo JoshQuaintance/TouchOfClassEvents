@@ -13,47 +13,38 @@ import App from './App';
 import { checkIfBeyondWorld } from './extras';
 import { percent } from '$utils/math';
 
-
 export class Spawner {
-
     private _spawnerName: string;
     private _objectName: string;
     private _graphic: Graphics;
     private _originalGraphic: Graphics;
     private _renderFunction: Function;
 
-    private static spawners = {}
+    private static spawners = {};
 
     constructor(name: string, renderFunction) {
-
         this._spawnerName = `${name}-spawner`;
         this._objectName = name;
         this._graphic = renderFunction({ pivot: true });
         this._originalGraphic = this._graphic;
 
-
         this._graphic.buttonMode = true;
         this._graphic.cursor = 'pointer';
         this._graphic.interactive = true;
-        this._graphic.alpha = .7;
+        this._graphic.alpha = 0.7;
         this._renderFunction = renderFunction;
 
         Spawner.spawners[this._spawnerName] = this;
 
         this._graphic.on('pointerdown', (e) => this.clicked(e));
-
     }
-
 
     private clicked(e: { data: { getLocalPosition: (arg0: Viewport) => { x: any; y: any } } }) {
         App.app.renderer.plugins.interaction.setCursorMode('pointer');
         const { x, y } = e.data.getLocalPosition(App.viewport);
 
-
-        if (!checkIfBeyondWorld(null, x, y))
-            this.spawnObject(x, y);
+        if (!checkIfBeyondWorld(null, x, y)) this.spawnObject(x, y);
     }
-
 
     private spawnObject(xCoords: number, yCoords: number, spawnedObject: SpawnedObject = null) {
         if (!spawnedObject) {
@@ -63,7 +54,7 @@ export class Spawner {
             });
 
             clone.graphic.alpha = 1;
-            clone.graphic.position.x = xCoords
+            clone.graphic.position.x = xCoords;
             clone.graphic.position.y = yCoords;
             App.viewport.addChild(clone.graphic);
 
@@ -97,10 +88,8 @@ export class Spawner {
                     coords: clone.graphic.position,
                     parent: clone.graphic.parent
                 }
-            })
-
+            });
         }
-
 
         return true;
     }
@@ -114,7 +103,7 @@ export class Spawner {
     copySpawnedObject(obj: SpawnedObject) {
         this._graphic = obj.graphic;
 
-        if (obj.objectName != 'circle') obj.graphic.pivot.set(obj.graphic.width / 2, obj.graphic.height / 2)
+        if (obj.objectName != 'circle') obj.graphic.pivot.set(obj.graphic.width / 2, obj.graphic.height / 2);
         this._graphic.buttonMode = true;
         this._graphic.cursor = 'pointer';
         this._graphic.interactive = true;
@@ -126,9 +115,7 @@ export class Spawner {
         function spawnerClicked(e) {
             const { x, y } = e.data.getLocalPosition(App.viewport);
 
-            if (!checkIfBeyondWorld(null, x, y))
-                _.spawnObject(x, y, obj)
-
+            if (!checkIfBeyondWorld(null, x, y)) _.spawnObject(x, y, obj);
         }
 
         this._graphic.on('pointerdown', spawnerClicked);
@@ -136,11 +123,10 @@ export class Spawner {
         function resetGraphicEvent(e: CustomEventInit) {
             Spawner.resetAllGraphicToDefault();
 
-            App.event_medium.removeEventListener('app-mode-changed', resetGraphicEvent)
+            App.event_medium.removeEventListener('app-mode-changed', resetGraphicEvent);
         }
 
-        App.event_medium.addEventListener('app-mode-changed', resetGraphicEvent)
-
+        App.event_medium.addEventListener('app-mode-changed', resetGraphicEvent);
     }
 
     set x(val: number) {
@@ -178,7 +164,6 @@ interface SpawnedObjectOptions {
     parentType: string;
     objectName: string;
     label?: string;
-
 }
 
 export class SpawnedObject {
@@ -192,9 +177,8 @@ export class SpawnedObject {
     private _objectName: string;
     private static _spawnedObjectsStore = [];
     private _label: any;
-    private _labelStyle: TextStyle
-    private _dimensions: { width: number, height: number, set: (w: number, h: number) => void, }
-
+    private _labelStyle: TextStyle;
+    private _dimensions: { width: number; height: number; set: (w: number, h: number) => void };
 
     constructor(data: Graphics | SpawnedObjectData, options?: SpawnedObjectOptions) {
         const _ = this;
@@ -206,7 +190,7 @@ export class SpawnedObject {
                 _._dimensions.width = w;
                 _._dimensions.height = h;
             }
-        }
+        };
 
         if (data instanceof Graphics) {
             const { label, parentType, objectName } = options;
@@ -215,38 +199,44 @@ export class SpawnedObject {
             this._isTable = false;
             this._parentType = parentType;
             this._labelText = label || '';
-            this._objectName = objectName
+            this._objectName = objectName;
             this._dimensions.set(this._graphic.width, this._graphic.height);
         }
 
         if ((data as SpawnedObjectData).discriminator === 'spawned-object-data') {
             SpawnedObject.addSpawnedObject(this);
 
-            const { label, isSeat, isTable, width, height, coords, holdAmount, canHoldType, parentType, objectName, labelStyle } =
-                data as SpawnedObjectData;
-
+            const {
+                label,
+                isSeat,
+                isTable,
+                width,
+                height,
+                coords,
+                holdAmount,
+                canHoldType,
+                parentType,
+                objectName,
+                labelStyle
+            } = data as SpawnedObjectData;
 
             const parent = Spawner.getSpawner(objectName);
 
-
             this._dimensions.set(width, height);
             this._graphic = parent.renderFunction({ width, height, pivot: false });
-
 
             const lbl = this.setLabel(label, labelStyle);
             this._isSeat = isSeat;
             this._isTable = isTable;
             this._graphic.position.x = coords.x;
-            this._graphic.position.y = coords.y
-            this._graphic.lineStyle(3, 0x111111, .7);
+            this._graphic.position.y = coords.y;
+            this._graphic.lineStyle(3, 0x111111, 0.7);
             this._canHoldAmount = holdAmount;
             this._canHoldType = canHoldType;
             this._parentType = parentType;
-            this._objectName = objectName
+            this._objectName = objectName;
 
-            if (this.objectName == 'circle')
-                lbl.position.set(0)
-
+            if (this.objectName == 'circle') lbl.position.set(0);
 
             if (App.editMode) this.addPointerEvents();
 
@@ -267,10 +257,7 @@ export class SpawnedObject {
         this._spawnedObjectsStore.splice(index, 1);
     }
 
-
-
     get spawnedObjectData(): SpawnedObjectData {
-
         return {
             discriminator: 'spawned-object-data',
             label: this._labelText,
@@ -284,7 +271,6 @@ export class SpawnedObject {
             parentType: this._parentType,
             objectName: this._objectName,
             labelStyle: this._labelStyle
-
         };
     }
 
@@ -305,11 +291,11 @@ export class SpawnedObject {
     }
 
     get dimensions() {
-        return this._dimensions
+        return this._dimensions;
     }
 
     clone() {
-        return new SpawnedObject(this.spawnedObjectData)
+        return new SpawnedObject(this.spawnedObjectData);
     }
 
     get labelStyle() {
@@ -321,7 +307,6 @@ export class SpawnedObject {
             this._graphic.removeChild(this._label);
             this._label = null;
         }
-
 
         this._labelText = text;
 
@@ -337,12 +322,11 @@ export class SpawnedObject {
         const label = new Text(text, this._labelStyle);
 
         // Centers the text location
-        label.anchor.set(.5)
+        label.anchor.set(0.5);
 
         if (this.objectName != 'circle')
-            label.position.set(percent(50, this._graphic.width), percent(50, this._graphic.height))
-        else
-            label.position.set(0)
+            label.position.set(percent(50, this._graphic.width), percent(50, this._graphic.height));
+        else label.position.set(0);
 
         this._label = label;
         this._graphic.addChild(label);
@@ -408,6 +392,4 @@ export class SpawnedObject {
         _this._graphic.on('pointerup', onDragEnd);
         _this._graphic.on('pointerupoutside', onDragEnd);
     }
-
-
 }

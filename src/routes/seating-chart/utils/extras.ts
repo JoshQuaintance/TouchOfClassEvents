@@ -12,7 +12,7 @@ interface DraggingGraphics extends Graphics {
     dragging: { x: number; y: number };
     pointerInGraphic?: boolean;
     data?: InteractionData;
-    origin: { width, height, x, y };
+    origin: { width; height; x; y };
 }
 
 export function checkIfBeyondWorld(graphic: DraggingGraphics, x: number, y: any) {

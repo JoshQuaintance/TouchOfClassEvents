@@ -216,8 +216,6 @@ export class SpawnedObject {
         console.log(this._spawnedObjectsStore);
     }
 
-
-
     get isSeat() {
         return this._isSeat;
     }
