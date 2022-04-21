@@ -35,75 +35,80 @@
         closeCallback();
     }
 
-    $: data = $dialogData;
-    $: value = data.prevLabel;
-    $: fontUnit = data?.fontSize?.match(/rem|px|em/gi)[0] || 'px';
-    $: fontSize = data.fontSize?.replace(fontUnit, '');
+    function hydrateData(data) {
+        value = data.prevLabel;
+        fontUnit = data?.fontSize?.match(/rem|px|em/gi)[0] || 'px';
+        fontSize = data.fontSize?.replace(fontUnit, '');;
+    }
+
+    $: hydrateData($dialogData);
 </script>
 
-<Dialog title="Change Label" {closeCallback}>
-    <div class="container flex flex-row">
-        <div>
-            <p>Insert the label here:</p>
-            <TextField
-                bind:value
-                inputClass="label-change"
-                on:keydown={(e) => {
-                    if (e.detail.nativeEvent.code == 'Enter') changeLabel();
-                }} />
-            <br />
-            <p>Font Size</p>
-            <TextField bind:value={fontSize} type="number" inputClass="label-change" on:keydown={(e) => {}} />
-            <div class="w-full flex justify-start items-center relative">
-                <button
-                    type="button"
-                    on:click={toggleFilter}
-                    class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
-                    style="margin-left: auto; order: 2;">
-                    Unit: &nbsp;<strong>{fontUnit}</strong>
-                    <Icon icon="chevron-down" />
-                </button>
+<!-- {#key dialogData} -->
+    <Dialog title="Change Label" {closeCallback}>
+        <div class="container flex flex-row">
+            <div>
+                <p>Insert the label here:</p>
+                <TextField
+                    bind:value
+                    inputClass="label-change"
+                    on:keydown={(e) => {
+                        if (e.detail.nativeEvent.code == 'Enter') changeLabel();
+                    }} />
+                <br />
+                <p>Font Size</p>
+                <TextField bind:value={fontSize} type="number" inputClass="label-change" on:keydown={(e) => {}} />
+                <div class="w-full flex justify-start items-center relative">
+                    <button
+                        type="button"
+                        on:click={toggleFilter}
+                        class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
+                        style="margin-left: auto; order: 2;">
+                        Unit: &nbsp;<strong>{fontUnit}</strong>
+                        <Icon icon="chevron-down" />
+                    </button>
 
-                <div
-                    class="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden"
-                    role="menu"
-                    bind:this={unitSelection}
-                    aria-orientation="vertical"
-                    aria-labelledby="menu-button"
-                    style="top: 100%; z-index: 20 !important;"
-                    tabindex="-1">
-                    <div class="py-1 " role="none">
-                        <a
-                            class="text-gray-600 block px-4 py-2 text-sm cursor-pointer hover:bg-gray-400"
-                            role="menuitem"
-                            tabindex="-1"
-                            id="menu-item-0"
-                            on:click={() => changeUnit('px')}>
-                            px
-                        </a>
+                    <div
+                        class="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden"
+                        role="menu"
+                        bind:this={unitSelection}
+                        aria-orientation="vertical"
+                        aria-labelledby="menu-button"
+                        style="top: 100%; z-index: 20 !important;"
+                        tabindex="-1">
+                        <div class="py-1 " role="none">
+                            <a
+                                class="text-gray-600 block px-4 py-2 text-sm cursor-pointer hover:bg-gray-400"
+                                role="menuitem"
+                                tabindex="-1"
+                                id="menu-item-0"
+                                on:click={() => changeUnit('px')}>
+                                px
+                            </a>
 
-                        <a
-                            class="text-gray-600 block px-4 py-2 text-sm cursor-pointer hover:bg-gray-400"
-                            role="menuitem"
-                            tabindex="-1"
-                            id="menu-item-1"
-                            on:click={() => changeUnit('em')}>
-                            em
-                        </a>
+                            <a
+                                class="text-gray-600 block px-4 py-2 text-sm cursor-pointer hover:bg-gray-400"
+                                role="menuitem"
+                                tabindex="-1"
+                                id="menu-item-1"
+                                on:click={() => changeUnit('em')}>
+                                em
+                            </a>
 
-                        <a
-                            class="text-gray-600 block px-4 py-2 text-sm cursor-pointer hover:bg-gray-400"
-                            role="menuitem"
-                            tabindex="-1"
-                            id="menu-item-1"
-                            on:click={() => changeUnit('rem')}>
-                            rem
-                        </a>
+                            <a
+                                class="text-gray-600 block px-4 py-2 text-sm cursor-pointer hover:bg-gray-400"
+                                role="menuitem"
+                                tabindex="-1"
+                                id="menu-item-1"
+                                on:click={() => changeUnit('rem')}>
+                                rem
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <Button class="mt-2" on:click={changeLabel}>Confirm</Button>
+                <Button class="mt-2" on:click={changeLabel}>Confirm</Button>
+            </div>
         </div>
-    </div>
-</Dialog>
+    </Dialog>
+<!-- {/key} -->

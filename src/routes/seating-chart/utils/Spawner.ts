@@ -56,6 +56,9 @@ export class Spawner {
             clone.graphic.alpha = 1;
             clone.graphic.position.x = xCoords;
             clone.graphic.position.y = yCoords;
+
+            if (clone.objectName != 'circle') clone.graphic.pivot.set(percent(50, clone.graphic.width) , percent(50, clone.graphic.height))
+
             App.viewport.addChild(clone.graphic);
 
             SpawnedObject.addSpawnedObject(clone);
@@ -76,6 +79,8 @@ export class Spawner {
             clone.graphic.removeAllListeners();
             clone.graphic.alpha = 1;
             clone.graphic.position.set(xCoords, yCoords);
+
+            if (clone.objectName != 'circle') clone.graphic.pivot.set(percent(50, clone.graphic.width), percent(50, clone.graphic.height))
 
             App.viewport.addChild(clone.graphic);
 
