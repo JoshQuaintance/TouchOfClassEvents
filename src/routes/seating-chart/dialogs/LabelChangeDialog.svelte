@@ -2,9 +2,8 @@
     import Icon from '$components/Icon.svelte';
 
     import { Button, Dialog, TextField } from 'attractions';
-    import { beforeUpdate } from 'svelte';
     import App from '../utils/App';
-    import { openModal } from '../utils/localStores';
+    import { dialogData } from '../utils/localStores';
 
     export let closeCallback: (e?: CustomEvent<{ nativeEvent: MouseEvent }>) => void;
 
@@ -16,7 +15,6 @@
     function changeUnit(unit) {
         fontUnit = unit;
         unitSelection.classList.toggle('hidden');
-
     }
 
     function toggleFilter() {
@@ -37,11 +35,10 @@
         closeCallback();
     }
 
-    beforeUpdate(() => {
-        setTimeout(() => {
-            (document.querySelector('input.label-change') as HTMLInputElement).focus();
-        }, 100);
-    });
+    $: data = $dialogData;
+    $: value = data.prevLabel;
+    $: fontUnit = data?.fontSize?.match(/rem|px|em/gi)[0] || 'px';
+    $: fontSize = data.fontSize?.replace(fontUnit, '');
 </script>
 
 <Dialog title="Change Label" {closeCallback}>
@@ -99,7 +96,7 @@
                             role="menuitem"
                             tabindex="-1"
                             id="menu-item-1"
-                            on:click={() => changeUnit('em')}>
+                            on:click={() => changeUnit('rem')}>
                             rem
                         </a>
                     </div>

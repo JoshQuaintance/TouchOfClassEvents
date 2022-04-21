@@ -9,7 +9,7 @@ import App from './App';
 import { checkIfBeyondWorld } from './extras';
 import type { DraggingGraphics } from './extras';
 import { Spawner, SpawnedObject } from './Spawner';
-import { dialogUsed, hintText, openModal } from './localStores';
+import { dialogData, dialogUsed, hintText, openModal } from './localStores';
 import { percent } from '$utils/math';
 
 export default function initEventListeners() {
@@ -106,14 +106,17 @@ export default function initEventListeners() {
         const spawnedObject: SpawnedObject = e.detail.additional.spawnedObject;
 
         dialogUsed.set('LabelChangeDialog');
+
+        dialogData.set({
+            prevLabel: spawnedObject.labelText,
+            fontSize: spawnedObject.labelStyle['_fontSize'] || ''
+        });
+
         openModal.set(true);
 
         function handleLabelChange(e: CustomEventInit) {
             const newLabel: string = e.detail.additional.label;
             const fontSize: string = e.detail.additional.fontSize;
-
-            console.log(fontSize)
-
 
 
             spawnedObject.setLabel(newLabel, new TextStyle({

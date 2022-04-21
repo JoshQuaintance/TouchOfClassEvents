@@ -312,6 +312,10 @@ export class SpawnedObject {
         return new SpawnedObject(this.spawnedObjectData)
     }
 
+    get labelStyle() {
+        return this._labelStyle;
+    }
+
     setLabel(text: string, style?: TextStyle) {
         if (this._label) {
             this._graphic.removeChild(this._label);
@@ -339,8 +343,6 @@ export class SpawnedObject {
             label.position.set(percent(50, this._graphic.width), percent(50, this._graphic.height))
         else
             label.position.set(0)
-
-        console.log(label.position)
 
         this._label = label;
         this._graphic.addChild(label);

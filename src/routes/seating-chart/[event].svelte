@@ -35,10 +35,11 @@
     import BuildingObject from './components/BuildingObject.svelte';
     import OptionsButton from './components/OptionsButton.svelte';
     import { Modal } from 'attractions';
-    import { openModal, dialogUsed, hintText } from './utils/localStores';
+    import { openModal, dialogUsed, hintText, dialogData } from './utils/localStores';
     import LabelChangeDialog from './dialogs/LabelChangeDialog.svelte';
     import ConfirmDeletion from './dialogs/ConfirmDeletion.svelte';
     import type { CustomEventInitType } from '$utils/stores';
+    import { get } from 'svelte/store';
 
     export let mobile;
     export let event_data;
