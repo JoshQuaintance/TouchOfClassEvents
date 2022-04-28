@@ -206,7 +206,7 @@
         <div class="grid sm:grid-cols-2 gap-6">
             <!-- product - start -->
             <a
-                href="/seating-chart/e54317bde4d5"
+                href="/seating-chart/af791bd0a51d"
                 class="group h-80 flex items-end bg-gray-100 rounded-lg overflow-hidden shadow-lg relative p-4">
                 <img
                     src="/images/wedding-seating-chart.png"
