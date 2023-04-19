@@ -1,5 +1,9 @@
 # Touch of Class Events Source Code -<br>A BPA Competition
 
+## Disclaimer
+
+This project is now deprecated and a lot of its features will not work. Some of the reasons are the fact that SvelteKit 1.0 was released and there are a lot of breaking changes. The MongoDB Atlas Database is also frozen due to inactivity. In order to reactivate this project, a whole rewrite of the codebase will be necessary!
+
 ## About
 
 This web application was made in participation of a [Business Professionals of America (BPA)](https://bpa.org) competition. Any code that is in this repository is open source and public until our team hand it over to BPA for grading.
